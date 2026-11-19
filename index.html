@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.4 | Colchones América</title>
+  <title>ColchoBoard v3.5 | Colchones América</title>
 
   <!-- Manifiesto PWA y Favicon -->
   <link rel="manifest" href="./manifest.json" />
@@ -108,7 +108,7 @@
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
           <img src="./icon.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.4</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.5</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -169,7 +169,7 @@
             <img src="./icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.4</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.5</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
@@ -188,7 +188,7 @@
         <nav class="p-3 space-y-1 overflow-y-auto flex-1">
           <button onclick="switchModule('resumen')" data-nav="resumen" class="nav-btn tab-active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
             <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-            <span>Carátula Ejecutiva</span>
+            <span>Dashboard Ejecutivo</span>
           </button>
 
           <button onclick="switchModule('scorecard')" data-nav="scorecard" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
@@ -266,7 +266,7 @@
               </button>
               <div>
                 <div class="flex flex-wrap items-center gap-2">
-                  <h1 id="moduleTitle" class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">Carátula Ejecutiva</h1>
+                  <h1 id="moduleTitle" class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">Dashboard Ejecutivo</h1>
                   <span id="headerPeriodPill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Sin datos cargados</span>
                 </div>
                 <p id="moduleSubtitle" class="text-[11px] text-slate-500">Consulta Real Sell In y Sell Out • MXN</p>
@@ -327,20 +327,20 @@
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           </div>
           <h3 class="text-sm font-extrabold text-navy-900">Aún no hay información cargada en el sistema</h3>
-          <p class="text-xs text-slate-500 max-w-md mx-auto">Este portal muestra exclusivamente datos reales importados desde tu archivo Excel (pestañas <strong>BD Sell In</strong>, <strong>SELL OUT</strong> y <strong>Directorio de tiendas</strong>).</p>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">Este portal muestra exclusivamente datos reales importados desde tu archivo Excel (pestañas <strong>BD Sell In</strong>, <strong>SELL OUT</strong>, <strong>Directorio de tiendas</strong> y <strong>Share</strong>).</p>
           <button onclick="switchModule('excel')" class="px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold transition">
             Cargar Archivo Excel Ahora
           </button>
         </div>
 
         <!-- ======================================================= -->
-        <!-- MÓDULO 1: CARÁTULA EJECUTIVA DUAL                       -->
+        <!-- MÓDULO 1: DASHBOARD EJECUTIVO (3 COLUMNAS SIMÉTRICAS)   -->
         <!-- ======================================================= -->
         <section id="module-resumen" class="module-section space-y-5">
           <!-- Banner Ejecutivo -->
           <div class="bg-[#081226] text-white rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div>
-              <h2 id="coverBannerTitle" class="text-base sm:text-lg font-black tracking-tight">Reporte de Ventas Sell In | Sell Out</h2>
+              <h2 id="coverBannerTitle" class="text-base sm:text-lg font-black tracking-tight">Dashboard Ejecutivo • Sell In | Sell Out</h2>
               <p id="coverBannerSub" class="text-xs text-teal-300 font-medium">Carga tu archivo Excel para visualizar resultados reales</p>
             </div>
             <div class="text-right">
@@ -349,10 +349,10 @@
             </div>
           </div>
 
-          <!-- Grid 3 Columnas: Sell In (Turquesa) | Sell Out (Navy) | YoY Dual & Zonas Dona -->
-          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+          <!-- Grid 3 Columnas Simétricas (misma altura total) -->
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
             <!-- COLUMNA SELL IN -->
-            <div class="xl:col-span-4 space-y-4">
+            <div class="xl:col-span-4 flex flex-col gap-4">
               <div class="grid grid-cols-2 gap-3">
                 <div class="sellin-card text-navy-950 rounded-2xl p-4 shadow-sm">
                   <span class="block text-[10px] font-extrabold uppercase tracking-wider opacity-80">Ventas Totales Sell In MXN</span>
@@ -366,17 +366,17 @@
 
               <div class="bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs">
                 <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In × Modelo ($)</h3>
-                <div class="relative h-48 w-full"><canvas id="chartSellInBars"></canvas></div>
+                <div class="relative h-52 w-full"><canvas id="chartSellInBars"></canvas></div>
               </div>
 
-              <div class="bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs">
+              <div class="bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs flex-1 flex flex-col">
                 <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In Share × Modelo (Dona %)</h3>
-                <div class="relative h-56 w-full"><canvas id="chartSellInDonut"></canvas></div>
+                <div class="relative flex-1 min-h-[240px] w-full"><canvas id="chartSellInDonut"></canvas></div>
               </div>
             </div>
 
             <!-- COLUMNA SELL OUT -->
-            <div class="xl:col-span-4 space-y-4">
+            <div class="xl:col-span-4 flex flex-col gap-4">
               <div class="grid grid-cols-2 gap-3">
                 <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
                   <span class="block text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Ventas Totales Sell Out MXN</span>
@@ -390,18 +390,18 @@
 
               <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
                 <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">Sell Out × Modelo ($)</h3>
-                <div class="relative h-48 w-full"><canvas id="chartSellOutBars"></canvas></div>
+                <div class="relative h-52 w-full"><canvas id="chartSellOutBars"></canvas></div>
               </div>
 
-              <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
+              <div class="sellout-card text-white rounded-2xl p-4 shadow-sm flex-1 flex flex-col">
                 <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">Sell Out Share × Modelo (Dona %)</h3>
-                <div class="relative h-56 w-full"><canvas id="chartSellOutDonut"></canvas></div>
+                <div class="relative flex-1 min-h-[240px] w-full"><canvas id="chartSellOutDonut"></canvas></div>
               </div>
             </div>
 
-            <!-- COLUMNA ACUMULADOS ANUALES DUAL (SELL IN & SELL OUT) + DESEMPEÑO POR ZONA (DONA) -->
-            <div class="xl:col-span-4 space-y-4">
-              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
+            <!-- COLUMNA ACUMULADOS ANUALES DUAL + DESEMPEÑO POR ZONA (SIMÉTRICA EN ALTURA) -->
+            <div class="xl:col-span-4 flex flex-col gap-4">
+              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3.5">
                 <div class="flex items-center justify-between">
                   <h3 class="text-xs font-extrabold uppercase tracking-wider text-navy-900">Acumulados Anuales YoY</h3>
                   <span id="yoyYearsPill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">-- vs --</span>
@@ -413,48 +413,48 @@
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Sell In Acumulado</span>
                     <span id="valGrowthInInline" class="text-[11px] font-black text-slate-600 tabular-nums">0% MXN · 0% PCS</span>
                   </div>
-                  <div class="grid grid-cols-2 gap-2">
-                    <div class="yoy-card-teal text-white rounded-xl p-2.5">
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div class="yoy-card-teal text-white rounded-xl p-3">
                       <span id="lblAcumInPrevMxn" class="block text-[10px] font-semibold opacity-90">Sell In Ant.</span>
-                      <p id="valAcumInPrevMxn" class="text-sm sm:text-base font-black mt-0.5 tabular-nums">$0</p>
-                      <span id="valAcumInPrevPcs" class="block text-[10px] font-bold opacity-90 tabular-nums">0 pzas</span>
+                      <p id="valAcumInPrevMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                      <span id="valAcumInPrevPcs" class="block text-[11px] font-bold opacity-90 tabular-nums">0 pzas</span>
                     </div>
-                    <div class="yoy-card-teal text-white rounded-xl p-2.5">
+                    <div class="yoy-card-teal text-white rounded-xl p-3">
                       <span id="lblAcumInCurrMxn" class="block text-[10px] font-semibold opacity-90">Sell In Act.</span>
-                      <p id="valAcumInCurrMxn" class="text-sm sm:text-base font-black mt-0.5 tabular-nums">$0</p>
-                      <span id="valAcumInCurrPcs" class="block text-[10px] font-bold opacity-90 tabular-nums">0 pzas</span>
+                      <p id="valAcumInCurrMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                      <span id="valAcumInCurrPcs" class="block text-[11px] font-bold opacity-90 tabular-nums">0 pzas</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Bloque Sell Out YoY -->
-                <div class="space-y-1.5 pt-1 border-t border-slate-100">
+                <div class="space-y-1.5 pt-2 border-t border-slate-100">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-navy-900">Sell Out Acumulado</span>
                     <span id="valGrowthOutInline" class="text-[11px] font-black text-slate-600 tabular-nums">0% MXN · 0% PCS</span>
                   </div>
-                  <div class="grid grid-cols-2 gap-2">
-                    <div class="yoy-card-navy text-white rounded-xl p-2.5">
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div class="yoy-card-navy text-white rounded-xl p-3">
                       <span id="lblAcumOutPrevMxn" class="block text-[10px] font-semibold text-sky-300">Sell Out Ant.</span>
-                      <p id="valAcumOutPrevMxn" class="text-sm sm:text-base font-black mt-0.5 tabular-nums">$0</p>
-                      <span id="valAcumOutPrevPcs" class="block text-[10px] font-bold text-slate-300 tabular-nums">0 pzas</span>
+                      <p id="valAcumOutPrevMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                      <span id="valAcumOutPrevPcs" class="block text-[11px] font-bold text-slate-300 tabular-nums">0 pzas</span>
                     </div>
-                    <div class="yoy-card-navy text-white rounded-xl p-2.5">
+                    <div class="yoy-card-navy text-white rounded-xl p-3">
                       <span id="lblAcumOutCurrMxn" class="block text-[10px] font-semibold text-sky-300">Sell Out Act.</span>
-                      <p id="valAcumOutCurrMxn" class="text-sm sm:text-base font-black mt-0.5 tabular-nums">$0</p>
-                      <span id="valAcumOutCurrPcs" class="block text-[10px] font-bold text-slate-300 tabular-nums">0 pzas</span>
+                      <p id="valAcumOutCurrMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                      <span id="valAcumOutCurrPcs" class="block text-[11px] font-bold text-slate-300 tabular-nums">0 pzas</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Desempeño por Zona en Dona con Nombres y Porcentajes -->
-              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
+              <!-- Desempeño por Zona en Dona (se estira para empatar altura con columnas izquierdas) -->
+              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs flex-1 flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-2">
                   <h3 class="text-xs font-extrabold uppercase tracking-wider text-navy-900">Desempeño por Zona (Dona %)</h3>
                   <span id="topZonePill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-700">Líder: --</span>
                 </div>
-                <div class="relative h-60 w-full"><canvas id="chartZonesDonut"></canvas></div>
+                <div class="relative flex-1 min-h-[280px] w-full flex items-center"><canvas id="chartZonesDonut"></canvas></div>
               </div>
             </div>
           </div>
@@ -489,14 +489,14 @@
         </section>
 
         <!-- ======================================================= -->
-        <!-- MÓDULO 2: SCORECARD COMERCIAL (SIMÉTRICO)               -->
+        <!-- MÓDULO 2: SCORECARD COMERCIAL (ÚLTIMOS 5 AÑOS)          -->
         <!-- ======================================================= -->
         <section id="module-scorecard" class="module-section hidden space-y-4">
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
             <div class="px-4 py-3 bg-[#081226] text-white flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 <h3 class="text-sm sm:text-base font-black tracking-wider uppercase">SCORECARD COMERCIAL</h3>
-                <span id="scYearRangeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-lime-400/20 text-lime-300 border border-lime-400/30">2022 - 2026</span>
+                <span id="scYearRangeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-lime-400/20 text-lime-300 border border-lime-400/30">Últimos 5 años</span>
               </div>
               <div class="no-snapshot flex flex-wrap items-center gap-2">
                 <label class="flex items-center gap-1.5 text-[11px] font-bold text-slate-300 bg-white/10 px-2.5 py-1 rounded-lg">
@@ -552,7 +552,7 @@
           <div class="no-snapshot bg-[#081226] text-white rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div>
               <h2 class="text-base sm:text-lg font-black tracking-tight">Share x Marca • Participación de Mercado</h2>
-              <p class="text-xs text-teal-300 font-medium">Memoria histórica por mes y acumulado anual • Paleta oficial y logotipos originales</p>
+              <p class="text-xs text-teal-300 font-medium">Se actualiza automáticamente desde la pestaña Share de tu Excel • Mensual y Acumulado Anual</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <button onclick="toggleShareEditorPanel()" id="btnToggleShareEditor" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition">
@@ -632,7 +632,7 @@
             </div>
           </div>
 
-          <!-- REPORTE EJECUTIVO: SHARE X MARCA (HOMOLOGADO CON COLCHOBOARD) -->
+          <!-- REPORTE EJECUTIVO: SHARE X MARCA -->
           <div class="share-slide-wrapper">
             <div id="shareSlideExportArea" class="share-slide-canvas rounded-2xl shadow-lg border border-slate-200/90 overflow-hidden mx-auto max-w-[1240px]">
 
@@ -714,13 +714,13 @@
             </div>
             <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
               <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comparativo vs Corte Anterior</span>
-              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Guarda al menos 2 cortes para ver variación en puntos porcentuales (pp).</div>
+              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Guarda o importa al menos 2 cortes para ver variación en puntos porcentuales (pp).</div>
             </div>
           </div>
         </section>
 
         <!-- ======================================================= -->
-        <!-- MÓDULO 4: MATRIZ DINÁMICA BI (COLUMNAS ORDENADAS)       -->
+        <!-- MÓDULO 4: MATRIZ DINÁMICA BI                            -->
         <!-- ======================================================= -->
         <section id="module-pivote" class="module-section hidden space-y-4">
           <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
@@ -800,13 +800,14 @@
         <section id="module-clientes" class="module-section hidden space-y-5">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-              <div class="px-5 py-3.5 border-b border-slate-100">
+              <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
                 <h3 class="text-sm font-extrabold text-navy-900">Resumen por Cliente / Cadena</h3>
+                <span id="clientsCountBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">0 clientes</span>
               </div>
-              <div class="overflow-x-auto">
+              <div class="overflow-x-auto max-h-[500px]">
                 <table class="w-full text-left border-collapse text-xs tabular-nums">
                   <thead>
-                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200">
+                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200 sticky top-0">
                       <th class="py-2.5 px-4">Cliente</th>
                       <th class="py-2.5 px-3">Segmento</th>
                       <th class="py-2.5 px-3 text-right text-teal-700">Sell In ($)</th>
@@ -951,7 +952,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 class="text-base font-black text-navy-900">Cargar Información Real desde Excel (.xlsx)</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (No. Sucursal, Tienda Oficial y Nombre de Zona), <strong>BD Sell In</strong> (Columnas N y S) y <strong>SELL OUT</strong>.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong>, <strong>BD Sell In</strong> (Columnas N y S), <strong>SELL OUT</strong> y la nueva pestaña <strong>Share</strong> (Enero–Octubre y cierres).</p>
               </div>
               <button onclick="clearSavedDatabase()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
                 Limpiar Base Guardada
@@ -978,7 +979,7 @@
             <label class="block border-2 border-dashed border-slate-300 hover:border-teal-500 hover:bg-teal-50/30 rounded-2xl p-8 text-center cursor-pointer transition">
               <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" onchange="handleMainExcelFile(event)" class="hidden" />
               <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_6.xlsx)</p>
-              <p class="text-xs text-slate-500 mt-1">Procesa automáticamente BD Sell In, Sell Out, Directorio de tiendas y Segmento</p>
+              <p class="text-xs text-slate-500 mt-1">Procesa automáticamente BD Sell In, Sell Out, Directorio de tiendas y Share</p>
             </label>
 
             <!-- Panel de Diagnóstico y Botón de Aplicar -->
@@ -1005,7 +1006,7 @@
   <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
 
   <!-- ========================================================= -->
-  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.4)              -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.5)              -->
   <!-- ========================================================= -->
   <script>
     // ---------------------------------------------------------
@@ -1020,12 +1021,13 @@
       { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',          cred: '2001', name: 'JONATHAN MORALES', canEdit: false }
     ];
 
-    const SESSION_KEY = 'colchoboard_session_v34';
+    const SESSION_KEY = 'colchoboard_session_v35';
     const SHARE_STORAGE_KEY = 'colchoboard_share_history_v1';
     let currentUser = null;
     let activeModule = 'resumen';
     let allRecords = [];
     let stagedRecords = [];
+    let stagedShareReports = [];
     let chartInstances = {};
     let deferredInstallPrompt = null;
 
@@ -1096,6 +1098,7 @@
     async function clearSavedDatabase() {
       allRecords = [];
       stagedRecords = [];
+      stagedShareReports = [];
       await saveRecordsToDB([]);
       populateFilterDropdowns();
       renderActiveModule();
@@ -1190,14 +1193,14 @@
       });
 
       const titles = {
-        resumen: ['Carátula Ejecutiva', 'Consulta Real Sell In y Sell Out • MXN'],
-        scorecard: ['Scorecard Comercial', 'Histórico mensual 2022 - Actual • 1H, 2H, Total, Acumulado y Ticket Promedio'],
+        resumen: ['Dashboard Ejecutivo', 'Consulta Real Sell In y Sell Out • MXN'],
+        scorecard: ['Scorecard Comercial', 'Histórico mensual últimos 5 años • 1H, 2H, Total, Acumulado y Ticket Promedio'],
         share: ['Share x Marca', 'Participación de mercado por marca • Mensual y Acumulado Anual'],
         pivote: ['Matriz Dinámica BI', 'Cruces interactivos por Cliente, Modelo, Medida, Zona, Sucursal, Mes y Año'],
         clientes: ['Clientes & Tiendas', 'Desempeño por cliente y ranking por No. de Sucursal'],
         modelos: ['Modelos & Zonas', 'Distribución detallada por zona geográfica y portafolio'],
         explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, sucursal o modelo'],
-        excel: ['Cargar Excel', 'Actualización ágil desde BD Sell In, SELL OUT y Directorio de tiendas']
+        excel: ['Cargar Excel', 'Actualización ágil desde BD Sell In, SELL OUT, Directorio de tiendas y Share']
       };
       const meta = titles[mod] || titles.resumen;
       document.getElementById('moduleTitle').textContent = meta[0];
@@ -1216,7 +1219,7 @@
     }
 
     // ---------------------------------------------------------
-    // 4. FILTROS GLOBALES Y UTILIDADES
+    // 4. FILTROS GLOBALES Y VALIDACIÓN DE ZONAS REALES
     // ---------------------------------------------------------
     function normalizeText(str) {
       return String(str ?? '')
@@ -1226,10 +1229,23 @@
         .trim();
     }
 
+    function isNumericLike(val) {
+      const s = String(val ?? '').trim();
+      return /^[-+$]?\d+([.,]\d+)?%?$/.test(s);
+    }
+
+    function isValidZoneName(z) {
+      const s = String(z ?? '').trim().toUpperCase();
+      if (!s) return false;
+      if (s === 'SIN ZONA' || s === 'SIN UEN' || s === 'CORPORATIVO' || s === 'GENERAL') return false;
+      if (isNumericLike(s)) return false;
+      if (/^ZONA\s+\d+/.test(s)) return false;
+      return /[A-ZÁÉÍÓÚÑ]{3,}/.test(s);
+    }
+
     function normalizeZoneLabel(raw) {
-      const clean = String(raw ?? '').trim().replace(/\s+/g, ' ');
-      if (!clean) return '';
-      return clean.toUpperCase();
+      const clean = String(raw ?? '').trim().replace(/\s+/g, ' ').toUpperCase();
+      return clean;
     }
 
     function populateFilterDropdowns() {
@@ -1238,11 +1254,7 @@
       const years = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => b - a);
       const clients = [...new Set(allRecords.map(r => r.client).filter(Boolean))].sort();
       const segments = [...new Set(allRecords.map(r => r.segment).filter(Boolean))].sort();
-      const zones = [...new Set(
-        allRecords
-          .filter(r => r.zone && r.zone !== 'SIN ZONA' && r.zone !== 'SIN UEN' && r.zone !== 'CORPORATIVO')
-          .map(r => r.zone)
-      )].sort();
+      const zones = [...new Set(allRecords.map(r => r.zone).filter(isValidZoneName))].sort();
 
       const selY = document.getElementById('filterYear');
       const prevY = selY.value;
@@ -1431,7 +1443,7 @@
     }
 
     // ---------------------------------------------------------
-    // 6. MÓDULO 1: CARÁTULA EJECUTIVA
+    // 6. MÓDULO 1: DASHBOARD EJECUTIVO
     // ---------------------------------------------------------
     function renderCoverModule() {
       const rows = getFilteredRecords();
@@ -1587,7 +1599,7 @@
       // Desempeño por Zona en DONA con Nombres Reales y Porcentajes
       const zoneMap = new Map();
       outRows.forEach(r => {
-        if (!r.zone || r.zone === 'SIN ZONA' || r.zone === 'SIN UEN' || r.zone === 'CORPORATIVO') return;
+        if (!isValidZoneName(r.zone)) return;
         zoneMap.set(r.zone, (zoneMap.get(r.zone) || 0) + r.amount);
       });
       const zoneArr = [...zoneMap.entries()].map(([z, a]) => ({ z, a })).filter(x => x.a > 0).sort((a, b) => b.a - a.a);
@@ -1704,7 +1716,7 @@
     }
 
     // ---------------------------------------------------------
-    // 7. MÓDULO 2: SCORECARD COMERCIAL (REJILLA SIMÉTRICA FIJA)
+    // 7. MÓDULO 2: SCORECARD COMERCIAL (SOLO ÚLTIMOS 5 AÑOS)
     // ---------------------------------------------------------
     let lastScorecardExportRows = [];
 
@@ -1719,10 +1731,12 @@
         return;
       }
 
-      const years = [...new Set(rows.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => a - b);
+      // Mostrar estrictamente los últimos 5 años
+      const allYears = [...new Set(rows.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => a - b);
+      const years = allYears.slice(-5);
       const currYear = years[years.length - 1];
       const prevYear = years.includes(currYear - 1) ? currYear - 1 : (years.length > 1 ? years[years.length - 2] : currYear - 1);
-      document.getElementById('scYearRangeBadge').textContent = `${years[0]} - ${currYear}`;
+      document.getElementById('scYearRangeBadge').textContent = `${years[0]} - ${currYear} (Últimos ${years.length} años)`;
 
       const agg = { SELL_IN: {}, SELL_OUT: {} };
       years.forEach(y => {
@@ -1791,7 +1805,6 @@
         return `<span class="${cls} font-extrabold">${pct > 0 ? '+' : ''}${pct.toFixed(0)}%</span>`;
       };
 
-      // Colgroup idéntico para las 4 tablas => simetría vertical perfecta
       const uniformColGroup = `
         <colgroup>
           <col style="width: 132px;" />
@@ -1922,7 +1935,7 @@
     }
 
     // ---------------------------------------------------------
-    // 8. MÓDULO 3: SHARE X MARCA (HOMOLOGADO + MEMORIA ANUAL)
+    // 8. MÓDULO 3: SHARE X MARCA (HOMOLOGADO + AUTO EXCEL)
     // ---------------------------------------------------------
     const OFFICIAL_SHARE_BRANDS = [
       {
@@ -2030,7 +2043,11 @@
       `).join('');
 
       refreshSavedShareDropdown();
-      syncSharePeriodLabels();
+      if (shareHistory.length > 0) {
+        loadSavedShareReport(shareHistory[0].id, true);
+      } else {
+        syncSharePeriodLabels();
+      }
     }
 
     function toggleShareEditorPanel() {
@@ -2223,7 +2240,10 @@
         brands: Object.fromEntries(entries.map(e => [e.id, e.sales]))
       };
 
+      // Reemplazar si ya existe mismo periodLabel
+      shareHistory = shareHistory.filter(h => h.periodLabel !== record.periodLabel);
       shareHistory.unshift(record);
+      shareHistory.sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
       localStorage.setItem(SHARE_STORAGE_KEY, JSON.stringify(shareHistory));
       refreshSavedShareDropdown();
       renderShareSlide();
@@ -2244,19 +2264,19 @@
       }
     }
 
-    function loadSavedShareReport(id) {
+    function loadSavedShareReport(id, silent = false) {
       const item = shareHistory.find(h => h.id === id);
       if (!item) return;
       document.getElementById('shareStartDate').value = item.startDate || '';
       document.getElementById('shareEndDate').value = item.endDate || '';
       document.getElementById('sharePeriodLabel').value = item.periodLabel || '';
-      document.getElementById('shareReportType').value = item.reportType || 'parcial';
+      document.getElementById('shareReportType').value = item.reportType || 'mensual';
       OFFICIAL_SHARE_BRANDS.forEach(b => {
         const inp = document.getElementById(`shareInput_${b.id}`);
-        if (inp) inp.value = item.brands[b.id] || 0;
+        if (inp) inp.value = Math.round(item.brands[b.id] || 0);
       });
       renderShareSlide();
-      showToast(`Corte "${item.periodLabel}" cargado`);
+      if (!silent) showToast(`Corte "${item.periodLabel}" cargado`);
     }
 
     function buildMonthlyAccumulatedShare() {
@@ -2268,7 +2288,7 @@
       });
 
       if (!monthlyReports.length) {
-        return showToast(`Guarda al menos un "Cierre Mensual Definitivo" ${targetYear === 'ALL' ? '' : 'de ' + targetYear}`);
+        return showToast(`No hay "Cierres Mensuales Definitivos" guardados ${targetYear === 'ALL' ? '' : 'de ' + targetYear}`);
       }
 
       const totals = {};
@@ -2309,11 +2329,12 @@
     function renderSharePrevComparison(currentComputed) {
       const box = document.getElementById('sharePrevDiffSummary');
       if (!box) return;
-      if (shareHistory.length < 1) {
-        box.textContent = 'Guarda cortes en memoria para comparar variación en puntos porcentuales (pp) contra el periodo previo.';
+      const currLabel = (document.getElementById('sharePeriodLabel').value || '').trim().toUpperCase();
+      const prev = shareHistory.find(h => h.periodLabel !== currLabel);
+      if (!prev) {
+        box.textContent = 'Guarda o importa al menos 2 cortes para ver variación en puntos porcentuales (pp).';
         return;
       }
-      const prev = shareHistory[0];
       const prevTotal = Object.values(prev.brands).reduce((s, v) => s + Number(v || 0), 0);
       if (prevTotal <= 0) return;
 
@@ -2333,6 +2354,116 @@
       return OFFICIAL_SHARE_BRANDS.find(b => b.aliases.some(al => norm === al || norm.includes(al)));
     }
 
+    // Lector inteligente de la pestaña SHARE (soporta formato Matriz Marca x Meses y formato Tabular Lista)
+    function parseShareWorksheet(ws) {
+      const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      if (!aoa.length) return [];
+
+      // Detectar año de referencia en primeras filas o encabezados
+      let detectedYear = 2026;
+      for (let i = 0; i < Math.min(6, aoa.length); i++) {
+        for (const c of (aoa[i] || [])) {
+          const ym = String(c ?? '').match(/\b(202[0-9])\b/);
+          if (ym) { detectedYear = Number(ym[1]); break; }
+        }
+      }
+
+      const reportsByKey = new Map();
+      const ensureReport = (year, month, label, isPartial = false) => {
+        const key = `${year}-${String(month).padStart(2, '0')}`;
+        if (!reportsByKey.has(key)) {
+          const lastDay = new Date(year, month, 0).getDate();
+          reportsByKey.set(key, {
+            id: `sh_xl_${key}`,
+            periodLabel: label || `${MONTH_SHORT_ES[month].toUpperCase()} ${year}`,
+            startDate: `${year}-${String(month).padStart(2, '0')}-01`,
+            endDate: `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`,
+            year,
+            month,
+            reportType: isPartial ? 'parcial' : 'mensual',
+            brands: {}
+          });
+        }
+        return reportsByKey.get(key);
+      };
+
+      // 1) Intentar formato MATRICIAL: columnas con meses (Ene, Feb, Mar... Oct, Nov) y filas con Marcas
+      let headerRowIdx = -1;
+      let monthCols = [];
+      for (let i = 0; i < Math.min(12, aoa.length); i++) {
+        const row = aoa[i] || [];
+        const foundCols = [];
+        row.forEach((cell, cIdx) => {
+          const m = parseMonthNum(cell);
+          if (m >= 1 && m <= 12) {
+            const yrMatch = String(cell).match(/\b(202[0-9])\b/);
+            foundCols.push({ cIdx, month: m, year: yrMatch ? Number(yrMatch[1]) : detectedYear, rawHeader: String(cell).trim() });
+          }
+        });
+        if (foundCols.length >= 2) {
+          headerRowIdx = i;
+          monthCols = foundCols;
+          break;
+        }
+      }
+
+      if (headerRowIdx >= 0 && monthCols.length >= 2) {
+        for (let r = headerRowIdx + 1; r < aoa.length; r++) {
+          const row = aoa[r] || [];
+          let brandObj = null;
+          for (let c = 0; c < Math.min(4, row.length); c++) {
+            brandObj = matchOfficialBrand(row[c]);
+            if (brandObj) break;
+          }
+          if (!brandObj) continue;
+
+          monthCols.forEach(mc => {
+            const val = parseNum(row[mc.cIdx]);
+            if (val > 0) {
+              const isPartial = normalizeText(mc.rawHeader).includes('parcial') || /\d+\s*-\s*\d+/.test(mc.rawHeader);
+              const rep = ensureReport(mc.year, mc.month, `${MONTH_SHORT_ES[mc.month].toUpperCase()} ${mc.year}`, isPartial);
+              rep.brands[brandObj.id] = (rep.brands[brandObj.id] || 0) + val;
+            }
+          });
+        }
+      }
+
+      // 2) Si no detectó formato matricial, intentar formato TABULAR (Filas con Marca, Mes/Fecha, Año, Ventas/Importe)
+      if (reportsByKey.size === 0) {
+        const smart = sheetToSmartData(ws, ['marca', 'mes', 'fecha', 'venta', 'importe', 'monto', 'sell out', 'ano', 'año']);
+        smart.rows.forEach(r => {
+          const rawBrand = getSmartCell(r, ['Marca', 'Fabricante', 'Proveedor', 'Nombre'], ['marca', 'fabricante']);
+          const bObj = matchOfficialBrand(rawBrand);
+          if (!bObj) return;
+
+          const val = parseNum(getSmartCell(r, ['Ventas ($)', 'Ventas', 'Importe', 'Monto', 'Sell Out', 'Total'], ['venta', 'importe', 'monto', 'total']));
+          if (val <= 0) return;
+
+          const pDate = parseFlexibleDate(getSmartCell(r, ['Fecha', 'Corte', 'Date'], ['fecha', 'corte']));
+          const yr = pDate ? pDate.year : (parseInt(String(getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year'])).match(/\d{4}/)?.[0] || '', 10) || detectedYear);
+          const mo = pDate ? pDate.month : (parseMonthNum(getSmartCell(r, ['Mes', 'Month', 'Periodo'], ['mes', 'month', 'periodo'])) || 11);
+
+          const rep = ensureReport(yr, mo, `${MONTH_SHORT_ES[mo].toUpperCase()} ${yr}`, false);
+          rep.brands[bObj.id] = (rep.brands[bObj.id] || 0) + val;
+        });
+      }
+
+      return [...reportsByKey.values()]
+        .filter(rep => Object.values(rep.brands).reduce((s, v) => s + v, 0) > 0)
+        .sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
+    }
+
+    function mergeShareReportsIntoHistory(newReports) {
+      if (!newReports || !newReports.length) return;
+      const map = new Map();
+      shareHistory.forEach(h => map.set(h.periodLabel, h));
+      newReports.forEach(rep => map.set(rep.periodLabel, rep));
+      shareHistory = [...map.values()].sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
+      localStorage.setItem(SHARE_STORAGE_KEY, JSON.stringify(shareHistory));
+      refreshSavedShareDropdown();
+      if (shareHistory.length) loadSavedShareReport(shareHistory[0].id, true);
+    }
+
     function handleShareExcelUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -2341,31 +2472,12 @@
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
           const targetSheet = wb.SheetNames.find(n => normalizeText(n).includes('share') || normalizeText(n).includes('marca')) || wb.SheetNames[0];
-          const smart = sheetToSmartData(wb.Sheets[targetSheet], ['marca', 'venta', 'importe', 'monto', 'sell out', 'total']);
-          const sums = {};
-          let matched = 0;
-
-          smart.rows.forEach(r => {
-            const rawBrand = getSmartCell(r, ['Marca', 'Fabricante', 'Proveedor', 'Nombre'], ['marca', 'fabricante']);
-            const bObj = matchOfficialBrand(rawBrand);
-            if (!bObj) return;
-            const amount = parseNum(getSmartCell(r, ['Ventas ($)', 'Ventas', 'Importe', 'Monto', 'Sell Out', 'Total'], ['venta', 'importe', 'monto', 'total']));
-            if (amount > 0) {
-              sums[bObj.id] = (sums[bObj.id] || 0) + amount;
-              matched++;
-            }
-          });
-
-          if (!matched) {
+          const reports = parseShareWorksheet(wb.Sheets[targetSheet]);
+          if (!reports.length) {
             return showToast('No se detectaron marcas oficiales con importes en el archivo.');
           }
-
-          OFFICIAL_SHARE_BRANDS.forEach(b => {
-            const inp = document.getElementById(`shareInput_${b.id}`);
-            if (inp) inp.value = Math.round(sums[b.id] || 0);
-          });
-          renderShareSlide();
-          showToast(`Share importado desde "${targetSheet}" (${matched} filas procesadas)`);
+          mergeShareReportsIntoHistory(reports);
+          showToast(`Share actualizado: ${reports.length} corte(s) importado(s) desde "${targetSheet}"`);
         } catch (err) {
           console.error(err);
           showToast('Error al leer Excel de Share');
@@ -2413,7 +2525,7 @@
     }
 
     // ---------------------------------------------------------
-    // 9. MÓDULO 4: MATRIZ DINÁMICA BI (COLUMNAS PROPORCIONADAS)
+    // 9. MÓDULO 4: MATRIZ DINÁMICA BI
     // ---------------------------------------------------------
     let lastPivotExportRows = [];
 
@@ -2482,13 +2594,11 @@
       const colTotals = {};
       cols.forEach(c => colTotals[c] = 0);
 
-      // Anchos ordenados y proporcionados según número de columnas
       const firstColW = rowDim === 'store' ? 240 : 190;
       const dataColW = cols.length <= 4 ? 140 : 112;
       const totalColW = 135;
       const pctColW = 86;
-      const minTableW = firstColW + (cols.length * dataColW) + totalColW + pctColW;
-      tbl.style.minWidth = `${minTableW}px`;
+      tbl.style.minWidth = `${firstColW + (cols.length * dataColW) + totalColW + pctColW}px`;
 
       colGroup.innerHTML = `
         <col style="width: ${firstColW}px;" />
@@ -2543,25 +2653,31 @@
     // 10. MÓDULOS CLIENTES, MODELOS/ZONAS Y CONSULTA POR FECHA
     // ---------------------------------------------------------
     function renderClientsModule() {
-      const rows = getFilteredRecords();
+      // Para la tabla Resumen por Cliente mostramos todos los clientes del periodo (respetando Año, Mes, Segmento y Zona)
+      const allPeriodClients = getFilteredRecords({ client: 'ALL' });
+      const filteredRows = getFilteredRecords();
       const cMap = new Map();
       const sMap = new Map();
 
-      rows.forEach(r => {
+      allPeriodClients.forEach(r => {
         const c = cMap.get(r.client) || { segment: r.segment, inA: 0, inU: 0, outA: 0, outU: 0 };
         if (r.channel === 'SELL_IN') { c.inA += r.amount; c.inU += r.units; }
         else { c.outA += r.amount; c.outU += r.units; }
         cMap.set(r.client, c);
+      });
 
+      filteredRows.forEach(r => {
         if (r.channel === 'SELL_OUT') {
           const sk = r.storeId || r.storeName || 'Sin Sucursal';
           const s = sMap.get(sk) || { storeId: r.storeId, storeName: r.storeName || sk, zone: r.zone, units: 0, amount: 0 };
           s.units += r.units;
           s.amount += r.amount;
-          if (r.zone && r.zone !== 'SIN ZONA' && r.zone !== 'SIN UEN') s.zone = r.zone;
+          if (isValidZoneName(r.zone)) s.zone = r.zone;
           sMap.set(sk, s);
         }
       });
+
+      document.getElementById('clientsCountBadge').textContent = `${cMap.size} cliente(s)`;
 
       document.getElementById('clientsSummaryBody').innerHTML = [...cMap.entries()]
         .sort((a, b) => (b[1].inA + b[1].outA) - (a[1].inA + a[1].outA))
@@ -2602,7 +2718,7 @@
         else { m.outU += r.units; m.outA += r.amount; }
         mMap.set(r.model, m);
 
-        if (r.zone && r.zone !== 'SIN ZONA' && r.zone !== 'SIN UEN') {
+        if (isValidZoneName(r.zone)) {
           const z = zMap.get(r.zone) || { inA: 0, outU: 0, outA: 0 };
           if (r.channel === 'SELL_IN') z.inA += r.amount;
           else { z.outU += r.units; z.outA += r.amount; }
@@ -2654,9 +2770,9 @@
 
       document.getElementById('explorerCountInfo').textContent = `${fmtInt.format(rows.length)} registros encontrados`;
       document.getElementById('explorerTableBody').innerHTML = rows.slice(0, 300).map(r => {
-        const storeLabel = r.storeId && r.storeName && r.storeName !== `Sucursal ${r.storeId}`
+        const storeLabel = r.storeId && r.storeName
           ? `<span class="text-teal-700 font-mono font-bold mr-1">${r.storeId}</span>· ${r.storeName}`
-          : (r.storeId ? `${r.storeId} · ${r.storeName}` : (r.storeName || '—'));
+          : (r.storeName || '—');
         const badge = r.channel === 'SELL_IN'
           ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-700 border border-teal-200">Sell In</span>'
           : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Sell Out</span>';
@@ -2695,7 +2811,7 @@
     }
 
     // ---------------------------------------------------------
-    // 11. MOTOR DE LECTURA DE EXCEL (DIRECTORIO INTELIGENTE + SEGMENTO + BD SELL IN + SELL OUT)
+    // 11. MOTOR DE LECTURA DE EXCEL (LIMPIO Y PRECISO)
     // ---------------------------------------------------------
     function parseNum(v) {
       if (typeof v === 'number') return isFinite(v) ? v : 0;
@@ -2712,9 +2828,12 @@
       if (typeof v === 'number' && v >= 1 && v <= 12) return Math.round(v);
       const s = normalizeText(v);
       const n = parseInt(s, 10);
-      if (!isNaN(n) && n >= 1 && n <= 12) return n;
+      if (!isNaN(n) && n >= 1 && n <= 12 && /^\d{1,2}$/.test(s)) return n;
       const map = { ene: 1, jan: 1, feb: 2, mar: 3, abr: 4, apr: 4, may: 5, jun: 6, jul: 7, ago: 8, aug: 8, sep: 9, set: 9, oct: 10, nov: 11, dic: 12, dec: 12 };
-      return map[s.slice(0, 3)] || 0;
+      for (const [prefix, num] of Object.entries(map)) {
+        if (s.startsWith(prefix)) return num;
+      }
+      return 0;
     }
 
     function parseFlexibleDate(val) {
@@ -2818,6 +2937,7 @@
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
           const parsed = [];
+          const shareParsed = [];
           const diagLines = [`Archivo: ${file.name} | Pestañas: ${wb.SheetNames.join(', ')}`];
           let seq = 1;
 
@@ -2831,7 +2951,7 @@
             return pref ? pref[1] : '';
           };
 
-          // 1) DIRECTORIO DE TIENDAS (Extrae No. Sucursal, Nombre Oficial de Tienda y Nombre Real de Zona/UEN)
+          // 1) DIRECTORIO DE TIENDAS (Extrae No. Sucursal, Nombre Oficial de Tienda y Nombre Real de Zona)
           const storeDirById = new Map();
           const storeDirByName = new Map();
           const uenIdToZoneName = new Map();
@@ -2849,27 +2969,54 @@
             rows.forEach(rr => {
               const keys = Object.keys(rr);
 
-              // A) Buscar Número de Sucursal (priorizando columnas de ID/Número con valor numérico)
+              // A) Número de Sucursal
               let sId = '';
+              let sIdKey = '';
               const idCandidates = ['no. sucursal', 'no sucursal', 'numero de sucursal', 'num sucursal', 'no. de sucursal', 'no de tienda', 'no tienda', 'no. tienda', 'id sucursal', 'id tienda', 'clave sucursal', 'no.', 'num', 'sucursal', 'almacen'];
               for (const cand of idCandidates) {
                 const k = keys.find(key => normalizeText(key) === cand || normalizeText(key).includes(cand));
                 if (k && !normalizeText(k).includes('uen') && !normalizeText(k).includes('zona')) {
                   const numKey = normalizeStoreKey(rr[k]);
-                  if (numKey) { sId = numKey; break; }
+                  if (numKey) { sId = numKey; sIdKey = k; break; }
                 }
               }
 
-              // B) Buscar Nombre Real de Tienda (debe ser texto NO puramente numérico y distinto de Zona/UEN)
+              // B) Código numérico de UEN y Nombre Real de Zona
+              let uenNum = '';
+              let zoneName = '';
+              let zoneKey = '';
+              const zoneTextCandidates = ['nombre uen', 'nombre de uen', 'descripcion uen', 'zona', 'nombre zona', 'plaza', 'ciudad', 'region', 'territorio', 'estado', 'uen', 'u.e.n.'];
+              for (const cand of zoneTextCandidates) {
+                const matchingKeys = keys.filter(key => {
+                  const kn = normalizeText(key);
+                  return kn === cand || (cand !== 'uen' && kn.includes(cand));
+                });
+                for (const k of matchingKeys) {
+                  const val = String(rr[k] ?? '').trim();
+                  if (!val) continue;
+                  if (isPureNumber(val)) {
+                    if (!uenNum) uenNum = String(Number(val));
+                  } else if (!isNumericLike(val)) {
+                    if (!zoneName) { zoneName = normalizeZoneLabel(val); zoneKey = k; }
+                  }
+                }
+              }
+
+              if (uenNum && zoneName) uenIdToZoneName.set(uenNum, zoneName);
+              const finalZone = zoneName || (uenNum && uenIdToZoneName.get(uenNum)) || '';
+              if (isValidZoneName(finalZone)) validZones.add(finalZone);
+
+              // C) Nombre Real de Tienda (por nombre de columna o respaldo de columna textual no-zona)
               let sName = '';
-              const nameCandidates = ['nombre de tienda', 'nombre tienda', 'nombre sucursal', 'nombre de sucursal', 'nombre oficial', 'tienda', 'descripcion', 'desc sucursal', 'punto de venta', 'pdv', 'nombre', 'sucursal'];
+              const nameCandidates = ['nombre de tienda', 'nombre tienda', 'nombre sucursal', 'nombre de sucursal', 'nombre oficial', 'tienda', 'sucursal', 'descripcion', 'desc sucursal', 'punto de venta', 'pdv', 'nombre', 'alias'];
               for (const cand of nameCandidates) {
                 const matchingKeys = keys.filter(key => normalizeText(key) === cand || normalizeText(key).includes(cand));
                 for (const k of matchingKeys) {
+                  if (k === sIdKey || k === zoneKey) continue;
                   const kn = normalizeText(k);
-                  if (kn.includes('uen') || kn.includes('zona') || kn.includes('plaza') || kn.includes('ciudad') || kn.includes('estado') || kn.includes('cadena') || kn.includes('cliente')) continue;
+                  if (kn.includes('uen') || kn.includes('zona') || kn.includes('plaza') || kn.includes('ciudad') || kn.includes('estado') || kn.includes('cadena') || kn.includes('cliente') || kn.includes('segmento')) continue;
                   const val = String(rr[k] ?? '').trim();
-                  if (val && !isPureNumber(val) && !isLikelySku(val)) {
+                  if (val && !isNumericLike(val) && !isLikelySku(val)) {
                     sName = val;
                     break;
                   }
@@ -2877,66 +3024,58 @@
                 if (sName) break;
               }
 
-              // C) Buscar Código numérico de UEN (ej. 1..8) y Nombre Real de Zona (ej. GUADALAJARA, PUERTO VALLARTA, TEPIC)
-              let uenNum = '';
-              let zoneName = '';
-              const zoneTextCandidates = ['nombre uen', 'nombre de uen', 'descripcion uen', 'zona', 'nombre zona', 'plaza', 'ciudad', 'region', 'territorio', 'estado', 'uen'];
-              for (const cand of zoneTextCandidates) {
-                const matchingKeys = keys.filter(key => normalizeText(key) === cand || normalizeText(key).includes(cand));
-                for (const k of matchingKeys) {
+              // Respaldo: si aún no encontró nombre, tomar la primera columna textual distinta de Zona/ID/Estatus
+              if (!sName && sId) {
+                const skipWords = ['activa', 'activo', 'inactiva', 'inactivo', 'cerrada', 'abierta', 'gnc', 'super colchones', 'cuentas corporativas', 'canal horizontal'];
+                for (const k of keys) {
+                  if (k === sIdKey || k === zoneKey) continue;
                   const val = String(rr[k] ?? '').trim();
-                  if (!val) continue;
-                  if (isPureNumber(val)) {
-                    if (!uenNum) uenNum = String(Number(val));
-                  } else {
-                    if (!zoneName) zoneName = normalizeZoneLabel(val);
+                  const vn = normalizeText(val);
+                  if (val.length >= 2 && !isNumericLike(val) && !isLikelySku(val) && normalizeZoneLabel(val) !== finalZone && !skipWords.includes(vn)) {
+                    sName = val;
+                    break;
                   }
                 }
               }
 
-              if (uenNum && zoneName) {
-                uenIdToZoneName.set(uenNum, zoneName);
-              }
-              const finalZone = zoneName || (uenNum && uenIdToZoneName.get(uenNum)) || '';
-              if (finalZone) validZones.add(finalZone);
-
               if (sId) {
                 const cleanName = sName || `Sucursal ${sId}`;
-                const entry = { storeId: sId, storeName: cleanName, uenNum, zone: finalZone || (uenNum ? `ZONA ${uenNum}` : 'SIN ZONA') };
+                const entry = { storeId: sId, storeName: cleanName, uenNum, zone: isValidZoneName(finalZone) ? finalZone : 'SIN ZONA' };
                 storeDirById.set(sId, entry);
                 storeDirByName.set(normalizeText(cleanName), entry);
                 cnt++;
-              } else if (sName && finalZone) {
+              } else if (sName && isValidZoneName(finalZone)) {
                 storeDirByName.set(normalizeText(sName), { storeId: '', storeName: sName, uenNum, zone: finalZone });
                 cnt++;
               }
             });
 
-            // Segunda pasada para resolver entradas donde uenNum se mapeó después
             storeDirById.forEach(entry => {
               if (entry.uenNum && uenIdToZoneName.has(entry.uenNum)) {
                 entry.zone = uenIdToZoneName.get(entry.uenNum);
               }
             });
 
-            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales | Columnas: ${headers.slice(0, 8).join(', ')}`);
-            if (validZones.size) diagLines.push(`  Zonas detectadas: ${[...validZones].join(', ')}`);
+            const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `${s.storeId}→${s.storeName} (${s.zone})`).join(' | ');
+            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
+            if (validZones.size) diagLines.push(`  Zonas válidas: ${[...validZones].join(', ')}`);
           });
 
-          const resolveZone = (rawUenOrZone, dirMatch) => {
-            if (dirMatch && dirMatch.zone && dirMatch.zone !== 'SIN ZONA' && !isPureNumber(dirMatch.zone)) {
-              return dirMatch.zone;
-            }
+          const resolveZone = (rawUenOrZone, dirMatch, isSellIn = false) => {
+            if (dirMatch && isValidZoneName(dirMatch.zone)) return dirMatch.zone;
             const raw = String(rawUenOrZone ?? '').trim();
-            if (!raw) return 'SIN ZONA';
+            if (!raw) return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
             if (isPureNumber(raw)) {
               const key = String(Number(raw));
-              return uenIdToZoneName.get(key) || `ZONA ${key}`;
+              if (uenIdToZoneName.has(key)) return uenIdToZoneName.get(key);
+              return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
             }
-            return normalizeZoneLabel(raw);
+            if (isNumericLike(raw)) return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
+            const clean = normalizeZoneLabel(raw);
+            return isValidZoneName(clean) ? clean : (isSellIn ? 'CORPORATIVO' : 'SIN ZONA');
           };
 
-          // 2) BD SELL IN / SELL IN (Columnas N [idx 13] y S [idx 18] + Segmento)
+          // 2) BD SELL IN / SELL IN (Columnas N [idx 13] y S [idx 18] + Segmento + Sin falsos positivos de Zona)
           const inSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             return u.includes('sellin') || u === 'sin' || u.includes('facturacion');
@@ -2956,7 +3095,7 @@
               const vals = Object.values(r).map(v => normalizeText(v));
               if (vals.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) return;
 
-              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena'])).trim();
+              const rawC = String(getSmartCell(r, ['Cliente', 'Nombre Cliente', 'Nombre del Cliente', 'Razon Social', 'Razón Social', 'Cadena', 'Nombre de Cadena', 'Grupo'], ['cliente', 'razon social', 'cadena'])).trim();
               if (rawC) lastClient = rawC;
 
               const rawSeg = String(getSmartCell(r, ['Segmento', 'Tipo de Cliente', 'Tipo Cliente', 'Clasificacion', 'Canal Cliente', 'Canal'], ['segmento', 'tipo de cliente', 'tipo cliente'])).trim();
@@ -2990,10 +3129,11 @@
 
               if (units === 0 && amount === 0) return;
 
-              const rawUen = getSmartCell(r, ['Nombre UEN', 'Zona', 'Plaza', 'UEN', 'U.E.N.'], ['zona', 'uen']);
-              const resolvedZ = rawUen ? resolveZone(rawUen, null) : 'CORPORATIVO';
+              // Match estricto para Zona/UEN (evita que "uen" haga match con "Descuento" o "Cuenta")
+              const rawUen = getSmartCell(r, ['Nombre UEN', 'Zona', 'Plaza', 'UEN', 'U.E.N.'], ['zona', 'plaza']);
+              const resolvedZ = resolveZone(rawUen, null, true);
 
-              const cInfo = normalizeClientInfo(lastClient, lastSeg);
+              const cInfo = normalizeClientInfo(rawC || lastClient, rawSeg || lastSeg);
               totPcs += units;
               totAmt += amount;
               parsed.push({
@@ -3029,22 +3169,23 @@
               const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo', 'articulo', 'producto'])).trim();
               if (!model) return;
 
-              const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena'], ['cliente', 'cadena']);
+              const rawClient = getSmartCell(r, ['Cliente', 'Nombre Cliente', 'Nombre de Cadena', 'Cadena', 'Razon Social'], ['cliente', 'cadena']);
               const rawSeg = getSmartCell(r, ['Segmento', 'Tipo de Cliente', 'Tipo Cliente', 'Clasificacion', 'Canal Cliente'], ['segmento', 'tipo de cliente', 'tipo cliente']);
               const cInfo = normalizeClientInfo(rawClient, rawSeg);
 
               const rawStoreId = getSmartCell(r, ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No Tienda', 'ID Sucursal', 'ID Tienda', 'Sucursal', 'Almacen'], ['no sucursal', 'num sucursal', 'no tienda', 'id sucursal', 'sucursal']);
               const rawStoreName = String(getSmartCell(r, ['Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Punto de Venta'], ['tienda', 'nombre sucursal'])).trim();
 
-              const cleanRawName = (isLikelySku(rawStoreName) || isPureNumber(rawStoreName)) ? '' : rawStoreName;
+              const cleanRawName = (isLikelySku(rawStoreName) || isNumericLike(rawStoreName)) ? '' : rawStoreName;
               const normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
               const dirMatch = (normId && storeDirById.get(normId)) || (cleanRawName && storeDirByName.get(normalizeText(cleanRawName))) || null;
 
               const storeId = (dirMatch && dirMatch.storeId) || normId || '';
               const storeName = (dirMatch && dirMatch.storeName) || cleanRawName || (storeId ? `Sucursal ${storeId}` : '');
 
-              const rawUen = getSmartCell(r, ['Nombre UEN', 'Zona', 'Plaza', 'UEN', 'U.E.N.'], ['zona', 'plaza', 'uen']);
-              const zone = resolveZone(rawUen, dirMatch);
+              // Match estricto para Zona/UEN
+              const rawUen = getSmartCell(r, ['Nombre UEN', 'Zona', 'Plaza', 'UEN', 'U.E.N.'], ['zona', 'plaza']);
+              const zone = resolveZone(rawUen, dirMatch, false);
 
               const pDate = parseFlexibleDate(getSmartCell(r, ['Fecha Conclusion', 'Fecha Conclusión', 'Fecha', 'Date'], ['fecha']));
               const yVal = pDate ? pDate.year : (parseInt(String(getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year'])).match(/\d{4}/)?.[0] || '', 10) || new Date().getFullYear());
@@ -3076,9 +3217,26 @@
             diagLines.push(`• SELL OUT [${sn}]: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
+          // 4) NUEVA PESTAÑA SHARE (Detecta y carga meses Enero-Octubre / cierres en automático)
+          const shareSheets = wb.SheetNames.filter(n => {
+            const u = normalizeText(n);
+            return u.includes('share') || u.includes('participacion') || u.includes('mercado');
+          });
+
+          shareSheets.forEach(sn => {
+            const reps = parseShareWorksheet(wb.Sheets[sn]);
+            if (reps.length) {
+              shareParsed.push(...reps);
+              diagLines.push(`• SHARE [${sn}]: ${reps.length} corte(s) mensual(es) listos (${reps.map(x => x.periodLabel).reverse().join(', ')})`);
+            } else {
+              diagLines.push(`• SHARE [${sn}]: Pestaña detectada sin montos de marcas oficiales.`);
+            }
+          });
+
           stagedRecords = parsed;
+          stagedShareReports = shareParsed;
           document.getElementById('excelStatusPanel').classList.remove('hidden');
-          document.getElementById('excelStatusHeadline').textContent = `Listo para aplicar: ${fmtInt.format(parsed.length)} registros válidos`;
+          document.getElementById('excelStatusHeadline').textContent = `Listo para aplicar: ${fmtInt.format(parsed.length)} registros + ${shareParsed.length} cortes Share`;
           document.getElementById('excelStatusSummary').textContent = 'Revisa el diagnóstico y presiona "Aplicar y Actualizar Dashboard".';
           document.getElementById('excelDiagOutput').textContent = diagLines.join('\n');
         } catch (err) {
@@ -3091,17 +3249,26 @@
     }
 
     async function commitStagedExcel() {
-      if (!stagedRecords.length) return showToast('No hay registros preparados para aplicar');
+      if (!stagedRecords.length && !stagedShareReports.length) {
+        return showToast('No hay registros preparados para aplicar');
+      }
       const mode = document.querySelector('input[name="excelImportMode"]:checked')?.value || 'replace';
-      allRecords = mode === 'append' ? [...allRecords, ...stagedRecords] : [...stagedRecords];
-      await saveRecordsToDB(allRecords);
+      if (stagedRecords.length) {
+        allRecords = mode === 'append' ? [...allRecords, ...stagedRecords] : [...stagedRecords];
+        await saveRecordsToDB(allRecords);
+      }
+      if (stagedShareReports.length) {
+        mergeShareReportsIntoHistory(stagedShareReports);
+      }
 
+      const shareCount = stagedShareReports.length;
       stagedRecords = [];
+      stagedShareReports = [];
       document.getElementById('excelStatusPanel').classList.add('hidden');
       populateFilterDropdowns();
       document.getElementById('filterMonth').value = 'ALL';
       switchModule('resumen');
-      showToast(`Dashboard actualizado con ${fmtInt.format(allRecords.length)} registros reales`);
+      showToast(`Dashboard actualizado (${fmtInt.format(allRecords.length)} reg.${shareCount ? ` + ${shareCount} cortes Share` : ''})`);
     }
 
     // ---------------------------------------------------------
