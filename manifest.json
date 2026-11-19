@@ -1,0 +1,28 @@
+{
+  "name": "ColchoBoard - Colchones América",
+  "short_name": "ColchoBoard",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F1419",
+  "theme_color": "#0B1117",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%230F1419'/%3E%3Crect x='26' y='22' width='68' height='54' rx='14' fill='none' stroke='%23E2E8F0' stroke-width='3.5'/%3E%3Crect x='36' y='54' width='9' height='18' rx='2' fill='%23E2E8F0'/%3E%3Crect x='49' y='47' width='9' height='25' rx='2' fill='%23E2E8F0'/%3E%3Crect x='62' y='41' width='9' height='31' rx='2' fill='%23E2E8F0'/%3E%3Crect x='75' y='35' width='9' height='37' rx='2' fill='%23E2E8F0'/%3E%3Cpath d='M36 50 L53 40 L67 43 L82 30' fill='none' stroke='%2314B8A6' stroke-width='3.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 74 L36 63 L84 63 L98 74 Q102 77 102 82 L102 90 Q102 96 94 96 L26 96 Q18 96 18 90 L18 82 Q18 77 22 74 Z' fill='%23FFFFFF'/%3E%3Crect x='18' y='78' width='84' height='16' rx='6' fill='%231E293B' stroke='%23FFFFFF' stroke-width='2.5'/%3E%3Crect x='20' y='84' width='80' height='4' fill='%2314B8A6'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
