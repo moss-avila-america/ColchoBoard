@@ -6,8 +6,13 @@
   <meta name="theme-color" content="#0F1E3C" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Colchones América BI" />
-  <title>Colchones América | App Ejecutiva Comercial</title>
+  <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
+  <title>ColchoBoard | Colchones América</title>
+
+  <!-- Iconos PWA para Android, iOS y pestaña del navegador -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon.png" />
+  <link rel="icon" type="image/png" href="./icon.png" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='56' fill='%230F1E3C' stroke='%23334155' stroke-width='4'/%3E%3Cpath d='M25 65 L58 84 Q61 86 64 84 L95 65 L95 75 Q95 78 92 80 L64 96 Q60 98 56 96 L28 80 Q25 78 25 75 Z' fill='%232563EB' stroke='%2338BDF8' stroke-width='2.5'/%3E%3Cpath d='M28 63 L58 46 L92 63 L60 81 Z' fill='%23FFFFFF'/%3E%3Crect x='46' y='45' width='11' height='22' rx='2' fill='%2338BDF8'/%3E%3Crect x='61' y='34' width='11' height='31' rx='2' fill='%231E3A8A' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Crect x='76' y='24' width='11' height='38' rx='2' fill='%2310B981'/%3E%3Cpath d='M44 72 Q65 54 94 46 Q88 64 70 72 Q58 76 44 72 Z' fill='%230284C7'/%3E%3Cpath d='M72 62 L92 63 L80 73 Z' fill='%2334D399'/%3E%3C/svg%3E" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,10 +44,14 @@
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: #f8fafc; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
     .tab-active {
       background: linear-gradient(90deg, rgba(37, 99, 235, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%);
       border-left: 3px solid #38bdf8;
       color: #ffffff;
+    }
+    .pivot-cell-bar {
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.12) 0%, rgba(37, 99, 235, 0.04) 100%);
     }
     /* Estilo especial para modo captura limpia WhatsApp */
     body.whatsapp-snapshot-mode #sidebar,
@@ -67,13 +76,22 @@
   <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-navy-950 via-navy-900 to-slate-900 p-4">
     <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden">
       <div class="bg-navy-900 px-7 py-7 text-center relative overflow-hidden">
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center shadow-lg mb-3">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        <div class="w-20 h-20 mx-auto rounded-full bg-navy-950 border-2 border-slate-700/80 flex items-center justify-center shadow-xl mb-3 overflow-hidden">
+          <img src="./icon.png" alt="ColchoBoard Logo" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover rounded-full" />
+          <svg class="hidden w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="58" fill="#0B1730" />
+            <path d="M24 65 L57 84 Q60 86 63 84 L96 65 L96 76 Q96 79 93 81 L64 97 Q60 99 56 97 L27 81 Q24 79 24 76 Z" fill="#2563EB" stroke="#38BDF8" stroke-width="2.5" stroke-linejoin="round" />
+            <path d="M27 72 L58 90 Q60 91 62 90 L93 72" fill="none" stroke="#081226" stroke-width="2.5" stroke-dasharray="5 4" stroke-linecap="round" />
+            <path d="M28 63 L58 46 L92 63 L60 81 Z" fill="#FFFFFF" />
+            <rect x="46" y="46" width="11" height="21" rx="1.5" fill="#38BDF8" />
+            <rect x="61" y="35" width="11" height="30" rx="1.5" fill="#1E3A8A" stroke="#38BDF8" stroke-width="1.2" />
+            <rect x="76" y="24" width="11" height="38" rx="1.5" fill="#10B981" />
+            <path d="M44 72 Q66 54 94 46 Q89 63 72 71 Q58 76 44 72 Z" fill="#0284C7" />
+            <path d="M73 61 L93 63 L81 73 Z" fill="#34D399" />
           </svg>
         </div>
-        <h1 class="text-xl font-extrabold text-white tracking-tight">Colchones América</h1>
-        <p class="text-xs text-sky-300 font-medium mt-0.5">Portal Ejecutivo Sell In & Sell Out • PWA</p>
+        <h1 class="text-xl font-extrabold text-white tracking-tight">ColchoBoard</h1>
+        <p class="text-xs text-sky-300 font-medium mt-0.5">Colchones América • Sell In & Sell Out</p>
       </div>
 
       <form onsubmit="handleLoginSubmit(event)" class="p-7 space-y-4">
@@ -135,14 +153,22 @@
         <!-- Marca -->
         <div class="p-5 border-b border-slate-800 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center shadow">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            <div class="w-10 h-10 rounded-full bg-navy-950 border border-slate-700 flex items-center justify-center shadow overflow-hidden shrink-0">
+              <img src="./icon.png" alt="ColchoBoard" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden');" class="w-full h-full object-cover rounded-full" />
+              <svg class="hidden w-full h-full" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="58" fill="#0B1730" />
+                <path d="M24 65 L57 84 Q60 86 63 84 L96 65 L96 76 Q96 79 93 81 L64 97 Q60 99 56 97 L27 81 Q24 79 24 76 Z" fill="#2563EB" stroke="#38BDF8" stroke-width="2.5" stroke-linejoin="round" />
+                <path d="M28 63 L58 46 L92 63 L60 81 Z" fill="#FFFFFF" />
+                <rect x="46" y="46" width="11" height="21" rx="1.5" fill="#38BDF8" />
+                <rect x="61" y="35" width="11" height="30" rx="1.5" fill="#1E3A8A" stroke="#38BDF8" stroke-width="1.2" />
+                <rect x="76" y="24" width="11" height="38" rx="1.5" fill="#10B981" />
+                <path d="M44 72 Q66 54 94 46 Q89 63 72 71 Q58 76 44 72 Z" fill="#0284C7" />
+                <path d="M73 61 L93 63 L81 73 Z" fill="#34D399" />
               </svg>
             </div>
             <div>
-              <span class="block text-white font-bold text-sm leading-tight">Colchones América</span>
-              <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Consulta Ejecutiva</span>
+              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard</span>
+              <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Colchones América</span>
             </div>
           </div>
           <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1">
@@ -165,6 +191,14 @@
           <button onclick="switchModule('resumen')" data-nav="resumen" class="nav-btn tab-active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
             <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             <span>Carátula Ejecutiva</span>
+          </button>
+
+          <button onclick="switchModule('pivote')" data-nav="pivote" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 hover:bg-navy-800 hover:text-white transition text-left">
+            <span class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M9 4v16M15 4v16M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z" /></svg>
+              <span>Matriz Dinámica</span>
+            </span>
+            <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">BI</span>
           </button>
 
           <button onclick="switchModule('clientes')" data-nav="clientes" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
@@ -219,14 +253,18 @@
               <div>
                 <div class="flex items-center gap-2">
                   <h2 id="moduleTitle" class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">Carátula Ejecutiva</h2>
-                  <span id="periodBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Nov 2026</span>
+                  <span id="periodBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Sin datos cargados</span>
                 </div>
-                <p id="moduleSubtitle" class="text-[11px] text-slate-500">Corte Sell In (Celin) y Sell Out (Celout) • MXN</p>
+                <p id="moduleSubtitle" class="text-[11px] text-slate-500">Consulta Real Sell In y Sell Out • MXN</p>
               </div>
             </div>
 
-            <!-- Botones de Captura / Compartir WhatsApp -->
+            <!-- Botones de Captura / Compartir WhatsApp y Carga Excel -->
             <div class="no-snapshot flex items-center gap-2">
+              <button id="topQuickExcelBtn" onclick="switchModule('excel')" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <span>Cargar Excel</span>
+              </button>
               <button onclick="toggleSnapshotMode(true)" title="Oculta menús para tomar captura limpia de pantalla" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
                 <svg class="w-4 h-4 text-navy-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 <span class="hidden sm:inline">Modo Captura</span>
@@ -238,13 +276,11 @@
             </div>
           </div>
 
-          <!-- Filtros Compactos -->
+          <!-- Filtros Dinámicos (se pueblan únicamente con lo que existe en el Excel cargado) -->
           <div id="filterBarContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
             <div>
               <select id="filterYear" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="ALL">Año: Todos</option>
-                <option value="2026" selected>Año: 2026</option>
-                <option value="2025">Año: 2025</option>
               </select>
             </div>
             <div>
@@ -260,7 +296,7 @@
                 <option value="8">Agosto</option>
                 <option value="9">Septiembre</option>
                 <option value="10">Octubre</option>
-                <option value="11" selected>Noviembre</option>
+                <option value="11">Noviembre</option>
                 <option value="12">Diciembre</option>
               </select>
             </div>
@@ -273,23 +309,12 @@
             </div>
             <div>
               <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="ALL">Cadena: Todas</option>
-                <option value="GNC (Grupo Nacional Colchonero)">GNC (Super Colchones)</option>
-                <option value="El Bodegón">El Bodegón</option>
-                <option value="Bodesa">Bodesa</option>
-                <option value="Mueblería Las Colonias">Mueblería Las Colonias</option>
-                <option value="Mavi">Mavi</option>
-                <option value="Mueblerías Independientes">Canal Horizontal</option>
+                <option value="ALL">Cliente: Todos</option>
               </select>
             </div>
             <div>
               <select id="filterZone" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="ALL">Zona: Todas</option>
-                <option value="Occidente">Zona Occidente</option>
-                <option value="Norte">Zona Norte</option>
-                <option value="Centro">Zona Centro</option>
-                <option value="Bajío">Zona Bajío</option>
-                <option value="Sureste">Zona Sureste</option>
               </select>
             </div>
             <div>
@@ -314,107 +339,278 @@
       <!-- ========================================================= -->
       <main id="captureArea" class="flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-5 bg-slate-50">
 
+        <!-- BANNER ESTADO VACÍO (CUANDO AÚN NO SE SUBE EXCEL REAL) -->
+        <div id="emptyDataStateBanner" class="bg-white rounded-2xl p-8 border-2 border-dashed border-slate-300 text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          </div>
+          <h3 class="text-base font-extrabold text-navy-900">Aún no hay información cargada en el sistema</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">Este portal muestra únicamente datos reales importados desde tu archivo Excel (pestañas <strong>SELL IN</strong> y <strong>SELL OUT</strong>).</p>
+          <div class="pt-1">
+            <button onclick="switchModule('excel')" class="px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold shadow-sm transition">
+              Cargar Archivo Excel Ahora
+            </button>
+          </div>
+        </div>
+
         <!-- ======================================================= -->
-        <!-- 1. CARÁTULA EJECUTIVA (OPTIMIZADA PARA WHATSAPP)        -->
+        <!-- 1. CARÁTULA EJECUTIVA (LISTA PARA CAPTURA WHATSAPP)     -->
         <!-- ======================================================= -->
         <section id="module-resumen" class="module-section space-y-5">
-          <!-- Encabezado de Carátula Ejecutivo (ideal para screenshot) -->
-          <div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-wrap items-center justify-between gap-3">
+          <!-- Encabezado de Carátula -->
+          <div class="bg-navy-900 text-white rounded-2xl px-5 py-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
             <div>
-              <span class="text-[10px] uppercase tracking-widest text-sky-300 font-bold">Reporte Comercial • Colchones América</span>
-              <h3 id="coverHeadline" class="text-base sm:text-lg font-extrabold tracking-tight mt-0.5">Corte Ejecutivo: Noviembre 2026</h3>
+              <h3 id="coverHeadline" class="text-sm sm:text-base font-extrabold tracking-tight">Corte Ejecutivo: Sin información</h3>
+              <p id="coverClientScope" class="text-[11px] text-sky-300 font-medium mt-0.5">Sube un archivo Excel para visualizar resultados reales</p>
             </div>
             <div class="text-right">
-              <span id="coverCutDate" class="block text-xs font-bold text-emerald-300">Corte al día 18</span>
-              <span id="coverClientScope" class="block text-[11px] text-slate-300">Todas las Cadenas y Zonas</span>
+              <span id="coverCutDate" class="block text-xs font-bold text-white">Consulta al --/--/----</span>
+              <span class="block text-[10px] text-slate-300">Colchones América • MXN</span>
             </div>
           </div>
 
-          <!-- BLOQUE KPI: SELL IN (CELIN) & SELL OUT (CELOUT) + MISMO DÍA AÑO ANTERIOR -->
+          <!-- KPIs Principales: Sell In vs Sell Out (con comparativo mismo día año anterior) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Tarjeta Sell In ("Celin") -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-l-4 border-l-blue-600 shadow-xs">
+            <!-- Tarjeta Sell In -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-t-4 border-t-blue-600 shadow-xs space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Facturado Sell In (Celin)</span>
-                <span id="kpiInYoYBadge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700">+0.0%</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Sell In Facturado (Neto)</span>
+                <span id="kpiInYoYBadge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700">N/A</span>
               </div>
-              <div class="mt-2 flex items-baseline justify-between gap-2">
-                <p id="kpiInAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">$0.00</p>
-                <span id="kpiInUnits" class="text-sm font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg">0 pzas</span>
+              <div class="flex items-baseline justify-between gap-2">
+                <p id="kpiInAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tabular-nums">$0</p>
+                <span id="kpiInUnits" class="text-sm font-bold text-blue-700 tabular-nums">0 pzas</span>
               </div>
-              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500">Mismo día año anterior:</span>
-                <span id="kpiInPrevSameDay" class="font-bold text-slate-700">$0.00 (0 pzas)</span>
-              </div>
+              <p class="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
+                Mismo día año anterior: <strong id="kpiInPrevSameDay" class="text-slate-700">$0 (0 pzas)</strong>
+              </p>
             </div>
 
-            <!-- Tarjeta Sell Out ("Celout") -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-l-4 border-l-emerald-500 shadow-xs">
+            <!-- Tarjeta Sell Out -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-t-4 border-t-emerald-500 shadow-xs space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Desplazamiento Sell Out (Celout)</span>
-                <span id="kpiOutYoYBadge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-700">+0.0%</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Sell Out Desplazado (Costo × Pzas)</span>
+                <span id="kpiOutYoYBadge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-700">N/A</span>
               </div>
-              <div class="mt-2 flex items-baseline justify-between gap-2">
-                <p id="kpiOutAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">$0.00</p>
-                <span id="kpiOutUnits" class="text-sm font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">0 pzas</span>
+              <div class="flex items-baseline justify-between gap-2">
+                <p id="kpiOutAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tabular-nums">$0</p>
+                <span id="kpiOutUnits" class="text-sm font-bold text-emerald-700 tabular-nums">0 pzas</span>
               </div>
-              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500">Mismo día año anterior:</span>
-                <span id="kpiOutPrevSameDay" class="font-bold text-slate-700">$0.00 (0 pzas)</span>
-              </div>
+              <p class="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
+                Mismo día año anterior: <strong id="kpiOutPrevSameDay" class="text-slate-700">$0 (0 pzas)</strong>
+              </p>
             </div>
           </div>
 
-          <!-- GRÁFICOS DUALES: POR MODELO (PESOS Y PIEZAS) + POR ZONAS (PESOS Y PIEZAS) -->
+          <!-- Gráficas por Modelo: Barras y Pastel -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- Gráfico por Modelo: Pesos ($) y Piezas -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
               <div class="flex items-center justify-between mb-3">
                 <div>
-                  <h4 class="text-sm font-extrabold text-navy-900">Participación por Modelo ($ y Piezas)</h4>
-                  <p class="text-[11px] text-slate-500">Barras: Importe MXN ($) • Línea: Volumen (pzas)</p>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Venta por Modelo (Barras $)</h4>
+                  <p class="text-[11px] text-slate-500">Comparativo Sell In vs Sell Out en MXN</p>
                 </div>
-                <span id="topModelPill" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700">Top: -</span>
+                <span id="topModelPill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Top: -</span>
               </div>
               <div class="relative h-60 w-full">
-                <canvas id="chartCoverModels"></canvas>
+                <canvas id="chartCoverModelsBar"></canvas>
               </div>
             </div>
 
-            <!-- Gráfico por Zonas: Pesos ($) y Piezas -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
-              <div class="flex items-center justify-between mb-3">
-                <div>
-                  <h4 class="text-sm font-extrabold text-navy-900">Participación por Zonas ($ y Piezas)</h4>
-                  <p class="text-[11px] text-slate-500">Distribución geográfica en importe y unidades</p>
-                </div>
-                <span id="topZonePill" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700">Líder: -</span>
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
+              <div class="mb-3">
+                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Participación por Modelo (Pastel %)</h4>
+                <p class="text-[11px] text-slate-500">Peso porcentual de cada modelo en el periodo</p>
               </div>
               <div class="relative h-60 w-full">
-                <canvas id="chartCoverZones"></canvas>
+                <canvas id="chartCoverModelsPie"></canvas>
               </div>
             </div>
           </div>
 
-          <!-- TABLA COMPACTA DE DESGLOSE POR MODELO DEL MES SEÑALADO (IDEAL PARA CAPTURA) -->
+          <!-- Gráficas por Zona: Barras y Pastel -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Venta por Zona Comercial (Barras $)</h4>
+                  <p class="text-[11px] text-slate-500">Comparativo Sell In vs Sell Out por región</p>
+                </div>
+                <span id="topZonePill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Líder: -</span>
+              </div>
+              <div class="relative h-60 w-full">
+                <canvas id="chartCoverZonesBar"></canvas>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
+              <div class="mb-3">
+                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Distribución por Zona (Pastel %)</h4>
+                <p class="text-[11px] text-slate-500">Participación comercial por zona</p>
+              </div>
+              <div class="relative h-60 w-full">
+                <canvas id="chartCoverZonesPie"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabla Resumen de Modelos del Periodo -->
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between">
-              <h4 class="text-xs sm:text-sm font-extrabold text-navy-900 uppercase tracking-wide">Desglose por Modelo del Periodo Señalado</h4>
-              <span class="text-[11px] font-semibold text-slate-500">Sell In vs Sell Out</span>
+            <div class="px-5 py-3.5 border-b border-slate-100">
+              <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Desglose por Modelo (Piezas y Pesos MXN)</h4>
             </div>
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs">
+              <table class="w-full text-left border-collapse text-xs tabular-nums">
                 <thead>
-                  <tr class="bg-white text-slate-500 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
                     <th class="py-2.5 px-4 font-bold">Modelo</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Celin (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Celin ($)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Celout (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Celout ($)</th>
-                    <th class="py-2.5 px-4 font-bold text-right">% Part. ($)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In (Pzas)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In ($)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out (Pzas)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out ($)</th>
+                    <th class="py-2.5 px-4 font-bold text-right">% Part.</th>
                   </tr>
                 </thead>
                 <tbody id="coverModelTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 1.5 MATRIZ DINÁMICA BI (CRUCES INTERACTIVOS)            -->
+        <!-- ======================================================= -->
+        <section id="module-pivote" class="module-section hidden space-y-5">
+          <!-- Panel Constructor de Matriz Dinámica -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-base font-extrabold text-navy-900">Matriz Dinámica BI</h3>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Análisis Comercial</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Elige una vista rápida o combina filas, columnas y métricas en tiempo real con tus datos reales.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="exportPivotToExcel()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  <span>Exportar Tabla (.xlsx)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Presets de 1 Clic -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mr-1">Vistas Rápidas:</span>
+              <button onclick="applyPivotPreset('model_flow')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Modelo × Sell In / Out
+              </button>
+              <button onclick="applyPivotPreset('model_size')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Modelo × Medida
+              </button>
+              <button onclick="applyPivotPreset('client_month')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Cliente × Mes
+              </button>
+              <button onclick="applyPivotPreset('zone_model')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Zona × Modelo
+              </button>
+              <button onclick="applyPivotPreset('store_month')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Sucursal × Mes (Sell Out)
+              </button>
+              <button onclick="applyPivotPreset('year_month')" class="pivot-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 transition">
+                Año × Mes
+              </button>
+            </div>
+
+            <!-- Controles de Dimensiones y Métricas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Filas (Agrupar por)</label>
+                <select id="pivotRowDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 text-navy-900 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="model" selected>Modelo</option>
+                  <option value="client">Cliente / Cadena</option>
+                  <option value="segment">Segmento (Corp / Horiz)</option>
+                  <option value="zone">Zona Comercial</option>
+                  <option value="store">No. Sucursal / Tienda</option>
+                  <option value="size">Medida (IND-KS)</option>
+                  <option value="month">Mes</option>
+                  <option value="year">Año</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Columnas (Cruzar por)</label>
+                <select id="pivotColDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 text-navy-900 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="channel" selected>Flujo (Sell In / Sell Out)</option>
+                  <option value="month">Mes (Ene - Dic)</option>
+                  <option value="year">Año</option>
+                  <option value="size">Medida (IND, MAT, QS, KS)</option>
+                  <option value="zone">Zona</option>
+                  <option value="model">Modelo</option>
+                  <option value="NONE">Sin cruce (Solo Totales)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Flujo de Datos</label>
+                <select id="pivotFlowFilter" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 text-navy-900 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="ALL" selected>Sell In + Sell Out</option>
+                  <option value="SELL_IN">Solo Sell In</option>
+                  <option value="SELL_OUT">Solo Sell Out</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Mostrar Valores en</label>
+                <select id="pivotMetric" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 text-navy-900 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="amount" selected>Importe ($ MXN)</option>
+                  <option value="units">Piezas (Pzas)</option>
+                  <option value="both">Importe ($) y Piezas</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Filtrar Fila Rápida</label>
+                <input type="text" id="pivotSearchInput" oninput="renderPivotMaster()" placeholder="Buscar en filas..." class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+          </div>
+
+          <!-- KPIs Mini de la Tabla Dinámica Activa -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+              <span class="block text-[10px] font-bold uppercase text-slate-400">Filas Agrupadas</span>
+              <span id="pivotKpiRows" class="text-lg font-extrabold text-navy-900 tabular-nums">0</span>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+              <span class="block text-[10px] font-bold uppercase text-blue-600">Total Importe ($)</span>
+              <span id="pivotKpiAmount" class="text-lg font-extrabold text-navy-900 tabular-nums">$0</span>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+              <span class="block text-[10px] font-bold uppercase text-emerald-600">Total Piezas</span>
+              <span id="pivotKpiUnits" class="text-lg font-extrabold text-navy-900 tabular-nums">0</span>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+              <span class="block text-[10px] font-bold uppercase text-indigo-600">Precio Promedio</span>
+              <span id="pivotKpiAvgPrice" class="text-lg font-extrabold text-navy-900 tabular-nums">$0</span>
+            </div>
+          </div>
+
+          <!-- Contenedor Visual de la Tabla Dinámica -->
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+            <div class="px-5 py-3.5 bg-gradient-to-r from-slate-50 to-white border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h4 id="pivotTableTitle" class="text-xs sm:text-sm font-extrabold text-navy-900 uppercase tracking-wide">Tabla Dinámica</h4>
+                <p class="text-[11px] text-slate-500">Haz clic en cualquier columna para ordenar de mayor a menor</p>
+              </div>
+              <span id="pivotRecordScopeBadge" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 text-[11px] font-bold">0 registros evaluados</span>
+            </div>
+
+            <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+              <table id="pivotMasterTable" class="w-full text-left border-collapse text-xs tabular-nums">
+                <thead id="pivotMasterHead" class="sticky top-0 z-10 bg-slate-100/95 backdrop-blur-xs text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200"></thead>
+                <tbody id="pivotMasterBody" class="divide-y divide-slate-100"></tbody>
+                <tfoot id="pivotMasterFoot" class="sticky bottom-0 z-10 bg-navy-900 text-white font-extrabold border-t-2 border-blue-500"></tfoot>
               </table>
             </div>
           </div>
@@ -519,12 +715,12 @@
                 <label class="block text-[11px] font-bold text-slate-500 mb-1">Flujo</label>
                 <select id="explorerChannelSelect" onchange="renderExplorer()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold">
                   <option value="ALL">Sell In + Sell Out</option>
-                  <option value="SELL_IN">Solo Sell In (Celin)</option>
-                  <option value="SELL_OUT">Solo Sell Out (Celout)</option>
+                  <option value="SELL_IN">Solo Sell In</option>
+                  <option value="SELL_OUT">Solo Sell Out</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[11px] font-bold text-slate-500 mb-1">Buscar (Sucursal, Modelo, Cadena)</label>
+                <label class="block text-[11px] font-bold text-slate-500 mb-1">Buscar (Sucursal, Modelo, Cliente)</label>
                 <input type="text" id="explorerTextSearch" oninput="renderExplorer()" placeholder="Ej. GNC, 954007, Absolut II..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs" />
               </div>
             </div>
@@ -537,7 +733,7 @@
                   <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
                     <th class="py-3 px-4 font-bold">Fecha</th>
                     <th class="py-3 px-4 font-bold">Flujo</th>
-                    <th class="py-3 px-4 font-bold">Cadena</th>
+                    <th class="py-3 px-4 font-bold">Cliente</th>
                     <th class="py-3 px-4 font-bold">Sucursal / Tienda</th>
                     <th class="py-3 px-4 font-bold">Zona</th>
                     <th class="py-3 px-4 font-bold">Modelo / Medida</th>
@@ -552,28 +748,49 @@
         </section>
 
         <!-- ======================================================= -->
-        <!-- 5. MÓDULO CARGA DE EXCEL (MULTI-PESTAÑA SELL IN/OUT)    -->
+        <!-- 5. MÓDULO CARGA DE EXCEL (DATOS REALES MULTI-CLIENTE)   -->
         <!-- ======================================================= -->
         <section id="module-excel" class="module-section hidden space-y-5">
           <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h3 class="text-base font-extrabold text-navy-900">Actualizar Base desde Archivo Excel (.xlsx)</h3>
-                <p class="text-xs text-slate-500">Lee automáticamente las pestañas <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas + No. Sucursal).</p>
+                <h3 class="text-base font-extrabold text-navy-900">Cargar Información Real desde Excel (.xlsx)</h3>
+                <p class="text-xs text-slate-500">Lee las pestañas <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas + No. Sucursal y Zona).</p>
               </div>
-              <button onclick="restoreDemoData()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                Restaurar Datos Demo
+              <button onclick="clearStoredData()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold">
+                Limpiar Base Guardada
               </button>
             </div>
 
+            <!-- Modo de carga: Reemplazar vs Anexar más clientes -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+              <label class="flex items-start gap-2.5 cursor-pointer">
+                <input type="radio" name="excelLoadMode" value="REPLACE" checked class="mt-0.5 text-blue-600" />
+                <div>
+                  <span class="block text-xs font-extrabold text-navy-900">Reemplazar base completa</span>
+                  <span class="block text-[11px] text-slate-500">Sustituye los registros actuales por los del archivo Excel seleccionado.</span>
+                </div>
+              </label>
+              <label class="flex items-start gap-2.5 cursor-pointer">
+                <input type="radio" name="excelLoadMode" value="APPEND" class="mt-0.5 text-blue-600" />
+                <div>
+                  <span class="block text-xs font-extrabold text-navy-900">Anexar / Alimentar nuevo cliente</span>
+                  <span class="block text-[11px] text-slate-500">Suma los datos del Excel a los clientes que ya están cargados en el sistema.</span>
+                </div>
+              </label>
+            </div>
+
             <div onclick="document.getElementById('excelInput').click()" class="cursor-pointer border-2 border-dashed border-slate-300 hover:border-blue-600 bg-slate-50 hover:bg-blue-50/40 rounded-2xl p-8 text-center transition">
-              <p class="text-sm font-bold text-navy-900">Haz clic aquí para seleccionar tu archivo ColchoBoard.xlsx</p>
-              <p class="text-xs text-slate-500 mt-1">Procesa pestañas SELL IN y SELL OUT en un solo paso</p>
+              <p class="text-sm font-bold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_2.xlsx)</p>
+              <p class="text-xs text-slate-500 mt-1">Compatible con pestañas SELL IN, SELL OUT y catálogos de sucursales/zonas</p>
               <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="handleExcelUpload(event)" class="hidden" />
             </div>
 
             <div id="excelStatusPanel" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-3">
-              <span id="excelStatusText" class="font-bold">Archivo listo</span>
+              <div>
+                <p id="excelStatusText" class="font-extrabold">Archivo listo</p>
+                <p id="excelStatusSub" class="text-[11px] text-emerald-700 mt-0.5"></p>
+              </div>
               <button onclick="commitExcelData()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold shadow-xs">
                 Aplicar y Actualizar Dashboard
               </button>
@@ -586,21 +803,28 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- SCRIPTS: PWA MANIFEST + AUTH + MOTOR COMERCIAL            -->
+  <!-- SCRIPTS: PWA MANIFEST + AUTH + MOTOR REAL EXCEL           -->
   <!-- ========================================================= -->
   <script>
-    // 1. REGISTRO DINÁMICO DE MANIFEST PWA (PARA GITHUB PAGES EN 1 SOLO ARCHIVO)
+    // 1. REGISTRO DINÁMICO DE MANIFEST PWA (CON ICONO COLCHOBOARD PARA ANDROID / IOS)
     (function setupPWA() {
+      const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#0B1730" stroke="#334155" stroke-width="4"/><path d="M24 65 L57 84 Q60 86 63 84 L96 65 L96 76 Q96 79 93 81 L64 97 Q60 99 56 97 L27 81 Q24 79 24 76 Z" fill="#2563EB" stroke="#38BDF8" stroke-width="2.5"/><path d="M28 63 L58 46 L92 63 L60 81 Z" fill="#FFFFFF"/><rect x="46" y="46" width="11" height="21" rx="1.5" fill="#38BDF8"/><rect x="61" y="35" width="11" height="30" rx="1.5" fill="#1E3A8A" stroke="#38BDF8" stroke-width="1.2"/><rect x="76" y="24" width="11" height="38" rx="1.5" fill="#10B981"/><path d="M44 72 Q66 54 94 46 Q89 63 72 71 Q58 76 44 72 Z" fill="#0284C7"/><path d="M73 61 L93 63 L81 73 Z" fill="#34D399"/></svg>`;
       const manifest = {
-        name: 'Colchones América - Consulta Ejecutiva',
-        short_name: 'América BI',
+        name: 'ColchoBoard • Colchones América',
+        short_name: 'ColchoBoard',
         start_url: './index.html',
         display: 'standalone',
         background_color: '#081226',
         theme_color: '#0F1E3C',
         icons: [
           {
-            src: 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#0F1E3C"/><path d="M36 80h120M36 112h120M96 80v64M48 48h96a12 12 0 0112 12v72a12 12 0 01-12 12H48a12 12 0 01-12-12V60a12 12 0 0112-12z" stroke="#38BDF8" stroke-width="12" fill="none" stroke-linecap="round"/></svg>'),
+            src: './icon.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: 'data:image/svg+xml;utf8,' + encodeURIComponent(svgIcon),
             sizes: '192x192',
             type: 'image/svg+xml'
           }
@@ -628,7 +852,7 @@
       }
     }
 
-    // 2. DIRECTORIO DE USUARIOS AUTORIZADOS (SEGÚN TABLA PROPORCIONADA)
+    // 2. DIRECTORIO DE USUARIOS AUTORIZADOS
     const AUTHORIZED_USERS = [
       { user: 'VENTAS1.MOSS',  pass: 'America.24$',   perfil: 'Direccion/Ejecutivo', credencial: '3001', nombre: 'MOSSES AVILA' },
       { user: 'ADMIN1.MOSS',   pass: 'America.24$',   perfil: 'Administrador',       credencial: '9999', nombre: 'ADMINISTRADOR' },
@@ -638,8 +862,8 @@
       { user: 'SUPER2.JONA',   pass: 'America.2026$', perfil: 'Supervisor',          credencial: '2001', nombre: 'JONATHAN MORALES' }
     ];
 
-    const SESSION_KEY = 'ca_pwa_session_v1';
-    const DATA_KEY = 'ca_pwa_sales_v1';
+    const SESSION_KEY = 'ca_pwa_session_v2';
+    const DATA_KEY = 'ca_pwa_real_sales_v2';
 
     function handleLoginSubmit(e) {
       e.preventDefault();
@@ -673,15 +897,18 @@
       document.getElementById('userBadgeRole').textContent = account.perfil;
       document.getElementById('userBadgeCred').textContent = `CRED: ${account.credencial}`;
 
-      // Solo Administrador (9999) y Dirección (3001) ven carga Excel
       const adminSec = document.getElementById('adminNavSection');
+      const topExcelBtn = document.getElementById('topQuickExcelBtn');
       if (account.credencial === '2001') {
         adminSec.classList.add('hidden');
+        if (topExcelBtn) topExcelBtn.classList.add('hidden');
       } else {
         adminSec.classList.remove('hidden');
+        if (topExcelBtn) topExcelBtn.classList.remove('hidden');
       }
 
-      initDataset();
+      loadStoredRealData();
+      syncDynamicFilterDropdowns();
       applyFilters();
     }
 
@@ -692,34 +919,9 @@
       document.getElementById('loginPass').value = '';
     }
 
-    // 3. CATÁLOGOS Y BASE DE DATOS DEMO (INCLUYE GNC, ZONAS, MODELOS Y SUCURSALES)
-    const ZONES = ['Occidente', 'Norte', 'Centro', 'Bajío', 'Sureste'];
-    const MODELS_CATALOG = [
-      { name: 'Royal Colchón', priceIn: 4800, priceOut: 6480 },
-      { name: 'Derby',         priceIn: 3650, priceOut: 4820 },
-      { name: 'Gravity',       priceIn: 6200, priceOut: 8550 },
-      { name: 'Ámbar',         priceIn: 6890, priceOut: 9580 },
-      { name: 'Absolut II',    priceIn: 8850, priceOut: 12650 },
-      { name: 'Cloud',         priceIn: 7100, priceOut: 9940 },
-      { name: 'Forum',         priceIn: 5400, priceOut: 7340 },
-      { name: 'Box Royal',     priceIn: 2850, priceOut: 3700 }
-    ];
-
-    const STORES_REF = [
-      { id: '954001', name: 'GNC GUADALAJARA CENTRO', client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Occidente' },
-      { id: '954007', name: 'BODEGON AMARILLAS',      client: 'El Bodegón',                      segment: 'Corporativa', zone: 'Occidente' },
-      { id: '954012', name: 'GNC MONTERREY CUMBRES',  client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Norte' },
-      { id: '454600', name: 'BODESA TEPIC 25',        client: 'Bodesa',                          segment: 'Corporativa', zone: 'Occidente' },
-      { id: '610204', name: 'LAS COLONIAS LEON',      client: 'Mueblería Las Colonias',          segment: 'Corporativa', zone: 'Bajío' },
-      { id: '720110', name: 'MAVI ZAPOPAN',           client: 'Mavi',                            segment: 'Corporativa', zone: 'Occidente' },
-      { id: '810045', name: 'GNC CDMX INSURGENTES',   client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Centro' },
-      { id: '810088', name: 'GNC MERIDA MONTEJO',     client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Sureste' },
-      { id: '300101', name: 'MUEBLERIA DEL CENTRO',   client: 'Mueblerías Independientes',      segment: 'Horizontal',  zone: 'Bajío' },
-      { id: '300205', name: 'COLCHONES DEL SURESTE',  client: 'Mueblerías Independientes',      segment: 'Horizontal',  zone: 'Sureste' }
-    ];
-
+    // 3. ALMACENAMIENTO EXCLUSIVO DE DATOS REALES (SIN DEMO FALSO)
     const MONTH_NAMES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const SIZES = ['IND', 'MAT', 'QS', 'KS'];
+    const CHART_PALETTE = ['#2563EB', '#10B981', '#F59E0B', '#6366F1', '#EC4899', '#06B6D4', '#8B5CF6', '#14B8A6', '#F97316', '#0F1E3C'];
 
     let salesData = [];
     let stagedExcelRecords = [];
@@ -739,105 +941,59 @@
       window.__toastTimer = setTimeout(() => banner.classList.add('hidden'), 3200);
     }
 
-    // 4. INICIALIZACIÓN Y GENERACIÓN DE DATOS DEMO (2025 Y 2026)
-    function generateDemoRecords() {
-      const records = [];
-      let seq = 1000;
-      const years = [2025, 2026];
-
-      years.forEach(yr => {
-        for (let m = 1; m <= 12; m++) {
-          const seasonFactor = (m === 5 || m === 6 || m === 11) ? 1.38 : (m === 12 ? 1.25 : 1.0);
-          const yearGrowth = yr === 2026 ? 1.16 : 1.0;
-
-          STORES_REF.forEach((store, sIdx) => {
-            MODELS_CATALOG.forEach((mod, mIdx) => {
-              if ((m + sIdx + mIdx) % 3 !== 0) return;
-
-              const size = SIZES[(m + sIdx + mIdx) % SIZES.length];
-              const sizeMult = size === 'IND' ? 0.82 : (size === 'MAT' ? 1.0 : (size === 'QS' ? 1.18 : 1.36));
-              const baseUnitsIn = Math.max(4, Math.round((8 + ((seq % 9) * 2)) * seasonFactor * yearGrowth));
-              const unitPriceIn = Math.round(mod.priceIn * sizeMult);
-              const dayIn = Math.min(26, 2 + ((seq * 3) % 24));
-              const dateIn = `${yr}-${String(m).padStart(2, '0')}-${String(dayIn).padStart(2, '0')}`;
-
-              records.push({
-                folio: `SI-${yr}-${seq}`,
-                channel: 'SELL_IN',
-                date: dateIn,
-                year: yr,
-                month: m,
-                day: dayIn,
-                client: store.client,
-                segment: store.segment,
-                storeId: store.id,
-                storeName: store.name,
-                zone: store.zone,
-                model: mod.name,
-                size,
-                units: baseUnitsIn,
-                unitPrice: unitPriceIn,
-                amount: baseUnitsIn * unitPriceIn
-              });
-
-              const unitsOut = Math.max(2, Math.round(baseUnitsIn * (0.78 + ((seq % 4) * 0.04))));
-              const unitPriceOut = Math.round(mod.priceOut * sizeMult);
-              const dayOut = Math.min(28, dayIn + 2);
-              const dateOut = `${yr}-${String(m).padStart(2, '0')}-${String(dayOut).padStart(2, '0')}`;
-
-              records.push({
-                folio: `SO-${yr}-${seq}`,
-                channel: 'SELL_OUT',
-                date: dateOut,
-                year: yr,
-                month: m,
-                day: dayOut,
-                client: store.client,
-                segment: store.segment,
-                storeId: store.id,
-                storeName: store.name,
-                zone: store.zone,
-                model: mod.name,
-                size,
-                units: unitsOut,
-                unitPrice: unitPriceOut,
-                amount: unitsOut * unitPriceOut
-              });
-
-              seq++;
-            });
-          });
-        }
-      });
-
-      return records;
-    }
-
-    function initDataset() {
+    function loadStoredRealData() {
       try {
         const saved = localStorage.getItem(DATA_KEY);
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             salesData = parsed;
             return;
           }
         }
       } catch (e) {
-        console.warn('Error cargando localStorage:', e);
+        console.warn('Error leyendo localStorage:', e);
       }
-      salesData = generateDemoRecords();
+      salesData = [];
     }
 
-    function restoreDemoData() {
+    function clearStoredData() {
       localStorage.removeItem(DATA_KEY);
-      salesData = generateDemoRecords();
+      salesData = [];
+      stagedExcelRecords = [];
       document.getElementById('excelStatusPanel').classList.add('hidden');
+      syncDynamicFilterDropdowns();
       applyFilters();
-      showToast('Base demo restaurada correctamente');
+      showToast('Base de datos limpiada');
     }
 
-    // 5. NAVEGACIÓN Y FILTROS GLOBALES
+    // Actualiza selectores de Año, Cliente y Zona únicamente con los valores reales presentes en el Excel
+    function syncDynamicFilterDropdowns() {
+      const yearSel = document.getElementById('filterYear');
+      const clientSel = document.getElementById('filterClient');
+      const zoneSel = document.getElementById('filterZone');
+
+      const years = [...new Set(salesData.map(r => r.year).filter(Boolean))].sort((a, b) => b - a);
+      const clients = [...new Set(salesData.map(r => r.client).filter(Boolean))].sort();
+      const zones = [...new Set(salesData.map(r => r.zone).filter(Boolean))].sort();
+
+      yearSel.innerHTML = `<option value="ALL">Año: Todos</option>` + years.map(y => `<option value="${y}">Año: ${y}</option>`).join('');
+      if (years.length > 0) yearSel.value = String(years[0]);
+
+      clientSel.innerHTML = `<option value="ALL">Cliente: Todos</option>` + clients.map(c => `<option value="${c}">${c}</option>`).join('');
+      zoneSel.innerHTML = `<option value="ALL">Zona: Todas</option>` + zones.map(z => `<option value="${z}">Zona ${z}</option>`).join('');
+
+      // Si hay datos reales, seleccionar por defecto el mes más reciente disponible en ese año
+      if (salesData.length > 0 && years.length > 0) {
+        const latestYearRows = salesData.filter(r => r.year === years[0]);
+        const latestMonth = Math.max(...latestYearRows.map(r => r.month || 1));
+        document.getElementById('filterMonth').value = String(latestMonth);
+      } else {
+        document.getElementById('filterMonth').value = 'ALL';
+      }
+    }
+
+    // 4. NAVEGACIÓN Y FILTROS
     function toggleSidebar() {
       const sb = document.getElementById('sidebar');
       const ov = document.getElementById('sidebarOverlay');
@@ -860,11 +1016,12 @@
       });
 
       const titles = {
-        resumen: ['Carátula Ejecutiva', 'Corte Sell In (Celin) y Sell Out (Celout) • MXN'],
-        clientes: ['Clientes & Tiendas', 'Desempeño por cadena y ranking por No. de Sucursal'],
-        modelos: ['Modelos & Zonas', 'Distribución detallada por región geográfica y portafolio'],
+        resumen: ['Carátula Ejecutiva', 'Consulta Real Sell In y Sell Out • MXN'],
+        pivote: ['Matriz Dinámica BI', 'Cruces interactivos por Cliente, Modelo, Medida, Zona, Sucursal, Mes y Año'],
+        clientes: ['Clientes & Tiendas', 'Desempeño por cliente y ranking por No. de Sucursal'],
+        modelos: ['Modelos & Zonas', 'Distribución detallada por zona geográfica y portafolio'],
         explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, sucursal o modelo'],
-        excel: ['Cargar Excel', 'Actualización multi-pestaña SELL IN y SELL OUT']
+        excel: ['Cargar Excel', 'Actualización real desde pestañas SELL IN y SELL OUT']
       };
       if (titles[modKey]) {
         document.getElementById('moduleTitle').textContent = titles[modKey][0];
@@ -902,26 +1059,36 @@
     }
 
     function applyFilters() {
-      const f = getFilters();
-      const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
-      const yLabel = f.year === 'ALL' ? '2025-2026' : f.year;
-      document.getElementById('periodBadge').textContent = `${mLabel} ${yLabel}`;
-      document.getElementById('coverHeadline').textContent = `Corte Ejecutivo: ${mLabel} ${yLabel}`;
+      const emptyBanner = document.getElementById('emptyDataStateBanner');
+      if (salesData.length === 0) {
+        emptyBanner.classList.remove('hidden');
+        document.getElementById('periodBadge').textContent = 'Sin datos cargados';
+        document.getElementById('coverHeadline').textContent = 'Corte Ejecutivo: Sin información';
+        document.getElementById('coverClientScope').textContent = 'Sube un archivo Excel para visualizar resultados reales';
+      } else {
+        emptyBanner.classList.add('hidden');
+        const f = getFilters();
+        const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
+        const yLabel = f.year === 'ALL' ? 'Todos los años' : f.year;
+        document.getElementById('periodBadge').textContent = `${mLabel} ${yLabel}`;
+        document.getElementById('coverHeadline').textContent = `Corte Ejecutivo: ${mLabel} ${yLabel}`;
+
+        const scopeParts = [];
+        if (f.segment !== 'ALL') scopeParts.push(`Segmento: ${f.segment}`);
+        if (f.client !== 'ALL') scopeParts.push(`Cliente: ${f.client}`);
+        if (f.zone !== 'ALL') scopeParts.push(`Zona ${f.zone}`);
+        document.getElementById('coverClientScope').textContent = scopeParts.length ? scopeParts.join(' • ') : 'Todos los Clientes y Zonas cargados';
+      }
 
       const today = new Date();
-      document.getElementById('coverCutDate').textContent = `Corte al día ${today.getDate()} (${today.toLocaleDateString('es-MX')})`;
-      const scopeParts = [];
-      if (f.segment !== 'ALL') scopeParts.push(`Segmento: ${f.segment}`);
-      if (f.client !== 'ALL') scopeParts.push(f.client);
-      if (f.zone !== 'ALL') scopeParts.push(`Zona ${f.zone}`);
-      document.getElementById('coverClientScope').textContent = scopeParts.length ? scopeParts.join(' • ') : 'Todas las Cadenas y Zonas';
+      document.getElementById('coverCutDate').textContent = `Consulta al ${today.toLocaleDateString('es-MX')}`;
 
       renderActiveModule();
     }
 
     function resetFilters() {
-      document.getElementById('filterYear').value = '2026';
-      document.getElementById('filterMonth').value = '11';
+      document.getElementById('filterYear').value = 'ALL';
+      document.getElementById('filterMonth').value = 'ALL';
       document.getElementById('filterClientType').value = 'ALL';
       document.getElementById('filterClient').value = 'ALL';
       document.getElementById('filterZone').value = 'ALL';
@@ -931,21 +1098,330 @@
 
     function renderActiveModule() {
       renderCoverModule();
+      if (activeModule === 'pivote') renderPivotMaster();
       if (activeModule === 'clientes') renderClientsModule();
       if (activeModule === 'modelos') renderZonesModule();
       if (activeModule === 'explorador') renderExplorer();
     }
 
+    // ---------------------------------------------------------
+    // 5.5 MOTOR MASTER DE TABLAS DINÁMICAS (PIVOT STUDIO)
+    // ---------------------------------------------------------
+    const PIVOT_DIM_LABELS = {
+      model: 'Modelo',
+      client: 'Cliente / Cadena',
+      segment: 'Segmento',
+      zone: 'Zona',
+      store: 'Sucursal / Tienda',
+      size: 'Medida',
+      month: 'Mes',
+      year: 'Año',
+      channel: 'Flujo (Sell In / Out)',
+      NONE: 'Totales'
+    };
+
+    let pivotSortState = { key: '__TOTAL__', dir: 'desc' };
+    let lastPivotExportMatrix = [];
+
+    function getPivotDimValue(row, dim) {
+      if (dim === 'channel') return row.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out';
+      if (dim === 'month') return `${String(row.month || 1).padStart(2, '0')} - ${MONTH_NAMES[row.month || 1] || 'Mes'}`;
+      if (dim === 'year') return String(row.year || 'S/A');
+      if (dim === 'store') {
+        if (row.storeId && row.storeName) return `${row.storeId} · ${row.storeName}`;
+        return row.storeId || row.storeName || 'Cedis / General';
+      }
+      if (dim === 'size') return row.size || 'S/M';
+      if (dim === 'zone') return row.zone || 'General';
+      if (dim === 'segment') return row.segment || 'Corporativa';
+      if (dim === 'client') return row.client || 'Sin Cliente';
+      if (dim === 'model') return row.model || 'Sin Modelo';
+      return 'Total';
+    }
+
+    function applyPivotPreset(presetId) {
+      const rSel = document.getElementById('pivotRowDim');
+      const cSel = document.getElementById('pivotColDim');
+      const fSel = document.getElementById('pivotFlowFilter');
+      const mSel = document.getElementById('pivotMetric');
+
+      if (presetId === 'model_flow') {
+        rSel.value = 'model'; cSel.value = 'channel'; fSel.value = 'ALL'; mSel.value = 'both';
+      } else if (presetId === 'model_size') {
+        rSel.value = 'model'; cSel.value = 'size'; fSel.value = 'ALL'; mSel.value = 'units';
+      } else if (presetId === 'client_month') {
+        rSel.value = 'client'; cSel.value = 'month'; fSel.value = 'ALL'; mSel.value = 'amount';
+      } else if (presetId === 'zone_model') {
+        rSel.value = 'zone'; cSel.value = 'model'; fSel.value = 'ALL'; mSel.value = 'amount';
+      } else if (presetId === 'store_month') {
+        rSel.value = 'store'; cSel.value = 'month'; fSel.value = 'SELL_OUT'; mSel.value = 'amount';
+      } else if (presetId === 'year_month') {
+        rSel.value = 'year'; cSel.value = 'month'; fSel.value = 'ALL'; mSel.value = 'amount';
+      }
+
+      pivotSortState = { key: '__TOTAL__', dir: 'desc' };
+      renderPivotMaster();
+      showToast('Vista de Tabla Dinámica aplicada');
+    }
+
+    function sortPivotTable(colKey) {
+      if (pivotSortState.key === colKey) {
+        pivotSortState.dir = pivotSortState.dir === 'desc' ? 'asc' : 'desc';
+      } else {
+        pivotSortState = { key: colKey, dir: 'desc' };
+      }
+      renderPivotMaster();
+    }
+
+    function renderPivotMaster() {
+      const rowDim = document.getElementById('pivotRowDim').value;
+      const colDim = document.getElementById('pivotColDim').value;
+      const flowFilter = document.getElementById('pivotFlowFilter').value;
+      const metric = document.getElementById('pivotMetric').value;
+      const searchQ = (document.getElementById('pivotSearchInput').value || '').trim().toLowerCase();
+
+      let rows = getFilteredRecords();
+      if (flowFilter !== 'ALL') {
+        rows = rows.filter(r => r.channel === flowFilter);
+      }
+
+      document.getElementById('pivotTableTitle').textContent =
+        colDim === 'NONE'
+          ? `Resumen Dinámico por ${PIVOT_DIM_LABELS[rowDim]}`
+          : `Tabla Dinámica: ${PIVOT_DIM_LABELS[rowDim]} × ${PIVOT_DIM_LABELS[colDim]}`;
+      document.getElementById('pivotRecordScopeBadge').textContent = `${fmtInt.format(rows.length)} registros evaluados`;
+
+      // Construir mapa de filas y columnas dinámicas
+      const colKeysSet = new Set();
+      const rowMap = new Map();
+
+      let grandAmt = 0;
+      let grandUnits = 0;
+
+      rows.forEach(r => {
+        const rKey = getPivotDimValue(r, rowDim);
+        if (searchQ && !rKey.toLowerCase().includes(searchQ)) return;
+
+        const cKey = colDim === 'NONE' ? 'Total' : getPivotDimValue(r, colDim);
+        colKeysSet.add(cKey);
+
+        if (!rowMap.has(rKey)) {
+          rowMap.set(rKey, { label: rKey, cells: {}, totalAmt: 0, totalUnits: 0 });
+        }
+        const entry = rowMap.get(rKey);
+        if (!entry.cells[cKey]) {
+          entry.cells[cKey] = { amt: 0, units: 0 };
+        }
+        entry.cells[cKey].amt += r.amount;
+        entry.cells[cKey].units += r.units;
+        entry.totalAmt += r.amount;
+        entry.totalUnits += r.units;
+
+        grandAmt += r.amount;
+        grandUnits += r.units;
+      });
+
+      // Ordenar columnas inteligentemente
+      let colKeys = [...colKeysSet];
+      if (colDim === 'size') {
+        const sizeOrder = { IND: 1, MAT: 2, QS: 3, KS: 4 };
+        colKeys.sort((a, b) => (sizeOrder[a] || 99) - (sizeOrder[b] || 99));
+      } else if (colDim === 'channel') {
+        colKeys.sort((a, b) => (a === 'Sell In' ? -1 : 1));
+      } else {
+        colKeys.sort((a, b) => a.localeCompare(b, 'es'));
+      }
+
+      // Actualizar KPIs mini
+      document.getElementById('pivotKpiRows').textContent = fmtInt.format(rowMap.size);
+      document.getElementById('pivotKpiAmount').textContent = fmtMXN.format(grandAmt);
+      document.getElementById('pivotKpiUnits').textContent = fmtInt.format(grandUnits);
+      document.getElementById('pivotKpiAvgPrice').textContent = fmtMXN.format(grandUnits > 0 ? grandAmt / grandUnits : 0);
+
+      // Ordenar filas según pivotSortState
+      const rowEntries = [...rowMap.values()];
+      rowEntries.sort((a, b) => {
+        let valA, valB;
+        if (pivotSortState.key === '__LABEL__') {
+          return pivotSortState.dir === 'asc'
+            ? a.label.localeCompare(b.label, 'es')
+            : b.label.localeCompare(a.label, 'es');
+        } else if (pivotSortState.key === '__TOTAL__') {
+          valA = metric === 'units' ? a.totalUnits : a.totalAmt;
+          valB = metric === 'units' ? b.totalUnits : b.totalAmt;
+        } else {
+          const cellA = a.cells[pivotSortState.key] || { amt: 0, units: 0 };
+          const cellB = b.cells[pivotSortState.key] || { amt: 0, units: 0 };
+          valA = metric === 'units' ? cellA.units : cellA.amt;
+          valB = metric === 'units' ? cellB.units : cellB.amt;
+        }
+        return pivotSortState.dir === 'asc' ? valA - valB : valB - valA;
+      });
+
+      const thead = document.getElementById('pivotMasterHead');
+      const tbody = document.getElementById('pivotMasterBody');
+      const tfoot = document.getElementById('pivotMasterFoot');
+
+      if (rowEntries.length === 0) {
+        thead.innerHTML = '';
+        tfoot.innerHTML = '';
+        tbody.innerHTML = `<tr><td class="py-10 text-center text-slate-400">No hay datos reales cargados para armar la Tabla Dinámica. Sube tu archivo Excel primero.</td></tr>`;
+        lastPivotExportMatrix = [];
+        return;
+      }
+
+      const sortArrow = (k) => pivotSortState.key === k ? (pivotSortState.dir === 'desc' ? ' ▼' : ' ▲') : '';
+      const cleanColHeader = (c) => colDim === 'month' ? c.replace(/^\d{2}\s-\s/, '') : c;
+
+      // Renderizar THEAD
+      let headHtml = `<tr>
+        <th onclick="sortPivotTable('__LABEL__')" class="cursor-pointer py-3 px-4 font-extrabold text-navy-900 hover:bg-slate-200/70 transition whitespace-nowrap">
+          ${PIVOT_DIM_LABELS[rowDim]}${sortArrow('__LABEL__')}
+        </th>`;
+
+      if (colDim !== 'NONE') {
+        colKeys.forEach(ck => {
+          const accent = ck === 'Sell In' ? 'text-blue-700' : (ck === 'Sell Out' ? 'text-emerald-700' : 'text-slate-700');
+          headHtml += `
+            <th onclick="sortPivotTable('${ck.replace(/'/g, "\\'")}')" class="cursor-pointer py-3 px-3.5 text-right font-extrabold ${accent} hover:bg-slate-200/70 transition whitespace-nowrap">
+              ${cleanColHeader(ck)}${sortArrow(ck)}
+            </th>`;
+        });
+      }
+
+      headHtml += `
+        <th onclick="sortPivotTable('__TOTAL__')" class="cursor-pointer py-3 px-4 text-right font-extrabold text-navy-900 bg-blue-50/70 hover:bg-blue-100/70 transition whitespace-nowrap">
+          Total General${sortArrow('__TOTAL__')}
+        </th>
+        <th class="py-3 px-4 text-right font-extrabold text-slate-600 bg-blue-50/40 whitespace-nowrap w-28">% Part.</th>
+      </tr>`;
+      thead.innerHTML = headHtml;
+
+      // Preparar totales por columna y matriz de exportación
+      const colTotals = {};
+      colKeys.forEach(ck => colTotals[ck] = { amt: 0, units: 0 });
+      const exportHeader = [PIVOT_DIM_LABELS[rowDim]];
+      if (colDim !== 'NONE') colKeys.forEach(ck => exportHeader.push(cleanColHeader(ck)));
+      exportHeader.push('Total Importe ($)', 'Total Piezas', '% Participación');
+      lastPivotExportMatrix = [exportHeader];
+
+      const formatCellContent = (cellObj) => {
+        if (!cellObj || (cellObj.amt === 0 && cellObj.units === 0)) {
+          return `<span class="text-slate-300">—</span>`;
+        }
+        if (metric === 'units') {
+          return `<span class="font-semibold text-slate-800">${fmtInt.format(cellObj.units)}</span>`;
+        }
+        if (metric === 'both') {
+          return `
+            <div class="leading-tight">
+              <span class="block font-bold text-navy-900">${fmtMXN.format(cellObj.amt)}</span>
+              <span class="block text-[10px] text-slate-500">${fmtInt.format(cellObj.units)} pzas</span>
+            </div>`;
+        }
+        return `<span class="font-semibold text-slate-800">${fmtMXN.format(cellObj.amt)}</span>`;
+      };
+
+      const maxRowMetric = Math.max(...rowEntries.map(e => metric === 'units' ? e.totalUnits : e.totalAmt), 1);
+
+      // Renderizar TBODY
+      tbody.innerHTML = rowEntries.map((entry, idx) => {
+        const displayLabel = rowDim === 'month' ? entry.label.replace(/^\d{2}\s-\s/, '') : entry.label;
+        const baseTotal = metric === 'units' ? grandUnits : grandAmt;
+        const rowVal = metric === 'units' ? entry.totalUnits : entry.totalAmt;
+        const sharePct = baseTotal > 0 ? (rowVal / baseTotal) * 100 : 0;
+        const barWidth = Math.min(100, Math.round((rowVal / maxRowMetric) * 100));
+
+        const exportRow = [displayLabel];
+        let cellsHtml = '';
+
+        if (colDim !== 'NONE') {
+          colKeys.forEach(ck => {
+            const cObj = entry.cells[ck] || { amt: 0, units: 0 };
+            colTotals[ck].amt += cObj.amt;
+            colTotals[ck].units += cObj.units;
+            exportRow.push(metric === 'units' ? cObj.units : Math.round(cObj.amt));
+            cellsHtml += `<td class="py-2.5 px-3.5 text-right whitespace-nowrap">${formatCellContent(cObj)}</td>`;
+          });
+        }
+
+        exportRow.push(Math.round(entry.totalAmt), entry.totalUnits, Number(sharePct.toFixed(1)));
+        lastPivotExportMatrix.push(exportRow);
+
+        const rowTotalHtml = metric === 'both'
+          ? `<div class="leading-tight"><span class="block font-extrabold text-navy-900">${fmtMXN.format(entry.totalAmt)}</span><span class="block text-[10px] text-blue-700 font-bold">${fmtInt.format(entry.totalUnits)} pzas</span></div>`
+          : `<span class="font-extrabold text-navy-900">${metric === 'units' ? fmtInt.format(entry.totalUnits) : fmtMXN.format(entry.totalAmt)}</span>`;
+
+        return `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} hover:bg-blue-50/40 transition">
+            <td class="py-2.5 px-4 font-bold text-navy-900 whitespace-nowrap">${displayLabel}</td>
+            ${cellsHtml}
+            <td class="py-2.5 px-4 text-right bg-blue-50/30 whitespace-nowrap">${rowTotalHtml}</td>
+            <td class="py-2.5 px-4 text-right bg-blue-50/10 whitespace-nowrap">
+              <div class="flex items-center justify-end gap-2">
+                <div class="w-12 h-1.5 bg-slate-200 rounded-full overflow-hidden hidden sm:block">
+                  <div class="h-full bg-blue-600 rounded-full" style="width:${barWidth}%"></div>
+                </div>
+                <span class="font-bold text-slate-700 w-10 text-right">${sharePct.toFixed(1)}%</span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Renderizar TFOOT (Total General)
+      let footHtml = `<tr>
+        <td class="py-3 px-4 uppercase tracking-wider text-[11px] text-sky-300">TOTAL GENERAL</td>`;
+
+      if (colDim !== 'NONE') {
+        colKeys.forEach(ck => {
+          const ct = colTotals[ck];
+          if (metric === 'both') {
+            footHtml += `<td class="py-3 px-3.5 text-right whitespace-nowrap"><span class="block">${fmtMXN.format(ct.amt)}</span><span class="block text-[10px] text-sky-300">${fmtInt.format(ct.units)} pzas</span></td>`;
+          } else {
+            footHtml += `<td class="py-3 px-3.5 text-right whitespace-nowrap">${metric === 'units' ? fmtInt.format(ct.units) : fmtMXN.format(ct.amt)}</td>`;
+          }
+        });
+      }
+
+      const grandTotalCell = metric === 'both'
+        ? `<span class="block text-emerald-300">${fmtMXN.format(grandAmt)}</span><span class="block text-[10px] text-sky-300">${fmtInt.format(grandUnits)} pzas</span>`
+        : `<span class="text-emerald-300">${metric === 'units' ? fmtInt.format(grandUnits) : fmtMXN.format(grandAmt)}</span>`;
+
+      footHtml += `
+        <td class="py-3 px-4 text-right bg-navy-950 whitespace-nowrap">${grandTotalCell}</td>
+        <td class="py-3 px-4 text-right bg-navy-950 text-sky-300">100.0%</td>
+      </tr>`;
+      tfoot.innerHTML = footHtml;
+    }
+
+    function exportPivotToExcel() {
+      if (!lastPivotExportMatrix || lastPivotExportMatrix.length <= 1) {
+        showToast('No hay datos en la tabla dinámica para exportar');
+        return;
+      }
+      try {
+        const ws = XLSX.utils.aoa_to_sheet(lastPivotExportMatrix);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Matriz_Dinamica');
+        XLSX.writeFile(wb, `ColchoBoard_Matriz_Dinamica_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        showToast('Tabla dinámica exportada a Excel (.xlsx)');
+      } catch (err) {
+        console.error('Error exportando tabla dinámica:', err);
+        showToast('Error al exportar la tabla dinámica');
+      }
+    }
+
     function renderChart(canvasId, config) {
-      const ctx = document.getElementById(canvasId);
-      if (!ctx) return;
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
       if (chartsRegistry[canvasId]) {
         chartsRegistry[canvasId].destroy();
       }
-      chartsRegistry[canvasId] = new Chart(ctx, config);
+      chartsRegistry[canvasId] = new Chart(canvas.getContext('2d'), config);
     }
 
-    // 6. RENDERIZADO DE CARÁTULA EJECUTIVA
+    // 5. CARÁTULA EJECUTIVA (BARRAS Y PASTEL CON DATOS REALES)
     function renderCoverModule() {
       const f = getFilters();
       const rows = getFilteredRecords();
@@ -958,7 +1434,7 @@
       const outPzas = outRows.reduce((s, r) => s + r.units, 0);
 
       // Comparativo mismo día año anterior
-      const currentYearNum = f.year === 'ALL' ? 2026 : parseInt(f.year, 10);
+      const currentYearNum = f.year === 'ALL' ? new Date().getFullYear() : parseInt(f.year, 10);
       const prevYearStr = String(currentYearNum - 1);
       const maxDayCut = new Date().getDate();
 
@@ -976,60 +1452,41 @@
 
       document.getElementById('kpiInAmount').textContent = fmtMXN.format(inAmt);
       document.getElementById('kpiInUnits').textContent = `${fmtInt.format(inPzas)} pzas`;
-      document.getElementById('kpiInYoYBadge').textContent = `${inVar >= 0 ? '+' : ''}${inVar.toFixed(1)}%`;
+      document.getElementById('kpiInYoYBadge').textContent = prevInAmt > 0 ? `${inVar >= 0 ? '+' : ''}${inVar.toFixed(1)}%` : 'N/A';
       document.getElementById('kpiInPrevSameDay').textContent = `${fmtMXN.format(prevInAmt)} (${fmtInt.format(prevInPzas)} pzas)`;
 
       document.getElementById('kpiOutAmount').textContent = fmtMXN.format(outAmt);
       document.getElementById('kpiOutUnits').textContent = `${fmtInt.format(outPzas)} pzas`;
-      document.getElementById('kpiOutYoYBadge').textContent = `${outVar >= 0 ? '+' : ''}${outVar.toFixed(1)}%`;
+      document.getElementById('kpiOutYoYBadge').textContent = prevOutAmt > 0 ? `${outVar >= 0 ? '+' : ''}${outVar.toFixed(1)}%` : 'N/A';
       document.getElementById('kpiOutPrevSameDay').textContent = `${fmtMXN.format(prevOutAmt)} (${fmtInt.format(prevOutPzas)} pzas)`;
 
-      // Agrupación por Modelo
-      const modelNames = [...new Set([...MODELS_CATALOG.map(m => m.name), ...rows.map(r => r.model)])];
+      // Agrupación real por Modelo
+      const modelNames = [...new Set(rows.map(r => r.model).filter(Boolean))];
       const modelStats = modelNames.map(name => {
         const mIn = inRows.filter(r => r.model === name);
         const mOut = outRows.filter(r => r.model === name);
+        const iA = mIn.reduce((s, r) => s + r.amount, 0);
+        const oA = mOut.reduce((s, r) => s + r.amount, 0);
         return {
           name,
           inUnits: mIn.reduce((s, r) => s + r.units, 0),
-          inAmt: mIn.reduce((s, r) => s + r.amount, 0),
+          inAmt: iA,
           outUnits: mOut.reduce((s, r) => s + r.units, 0),
-          outAmt: mOut.reduce((s, r) => s + r.amount, 0)
+          outAmt: oA,
+          totalAmt: iA + oA
         };
-      }).filter(m => m.inAmt > 0 || m.outAmt > 0).sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt));
+      }).sort((a, b) => b.totalAmt - a.totalAmt);
 
       document.getElementById('topModelPill').textContent = modelStats.length ? `Top: ${modelStats[0].name}` : 'Top: -';
 
-      renderChart('chartCoverModels', {
+      // Gráfica 1: Barras por Modelo
+      renderChart('chartCoverModelsBar', {
+        type: 'bar',
         data: {
           labels: modelStats.map(m => m.name),
           datasets: [
-            {
-              type: 'bar',
-              label: 'Sell In ($)',
-              data: modelStats.map(m => m.inAmt),
-              backgroundColor: '#2563EB',
-              borderRadius: 5,
-              yAxisID: 'y'
-            },
-            {
-              type: 'bar',
-              label: 'Sell Out ($)',
-              data: modelStats.map(m => m.outAmt),
-              backgroundColor: '#10B981',
-              borderRadius: 5,
-              yAxisID: 'y'
-            },
-            {
-              type: 'line',
-              label: 'Piezas Totales',
-              data: modelStats.map(m => m.inUnits + m.outUnits),
-              borderColor: '#0F1E3C',
-              backgroundColor: '#0F1E3C',
-              borderWidth: 2,
-              tension: 0.3,
-              yAxisID: 'y1'
-            }
+            { label: 'Sell In ($)', data: modelStats.map(m => m.inAmt), backgroundColor: '#2563EB', borderRadius: 5 },
+            { label: 'Sell Out ($)', data: modelStats.map(m => m.outAmt), backgroundColor: '#10B981', borderRadius: 5 }
           ]
         },
         options: {
@@ -1038,58 +1495,68 @@
           plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
           scales: {
             y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
-            y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
             x: { ticks: { font: { size: 10 } } }
           }
         }
       });
 
-      // Agrupación por Zonas
-      const zoneStats = ZONES.map(z => {
+      // Gráfica 2: Pastel por Modelo
+      renderChart('chartCoverModelsPie', {
+        type: 'pie',
+        data: {
+          labels: modelStats.map(m => m.name),
+          datasets: [{
+            data: modelStats.map(m => m.totalAmt),
+            backgroundColor: modelStats.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : '0.0';
+                  return ` ${ctx.label}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Agrupación real por Zona
+      const zoneNames = [...new Set(rows.map(r => r.zone).filter(Boolean))];
+      const zoneStats = zoneNames.map(z => {
         const zIn = inRows.filter(r => r.zone === z);
         const zOut = outRows.filter(r => r.zone === z);
+        const iA = zIn.reduce((s, r) => s + r.amount, 0);
+        const oA = zOut.reduce((s, r) => s + r.amount, 0);
         return {
           zone: z,
           inUnits: zIn.reduce((s, r) => s + r.units, 0),
-          inAmt: zIn.reduce((s, r) => s + r.amount, 0),
+          inAmt: iA,
           outUnits: zOut.reduce((s, r) => s + r.units, 0),
-          outAmt: zOut.reduce((s, r) => s + r.amount, 0)
+          outAmt: oA,
+          totalAmt: iA + oA
         };
-      });
+      }).sort((a, b) => b.totalAmt - a.totalAmt);
 
-      const topZone = [...zoneStats].sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt))[0];
-      document.getElementById('topZonePill').textContent = topZone ? `Líder: ${topZone.zone}` : 'Líder: -';
+      document.getElementById('topZonePill').textContent = zoneStats.length ? `Líder: ${zoneStats[0].zone}` : 'Líder: -';
 
-      renderChart('chartCoverZones', {
+      // Gráfica 3: Barras por Zona
+      renderChart('chartCoverZonesBar', {
+        type: 'bar',
         data: {
           labels: zoneStats.map(z => z.zone),
           datasets: [
-            {
-              type: 'bar',
-              label: 'Sell In ($)',
-              data: zoneStats.map(z => z.inAmt),
-              backgroundColor: '#1E3A6E',
-              borderRadius: 5,
-              yAxisID: 'y'
-            },
-            {
-              type: 'bar',
-              label: 'Sell Out ($)',
-              data: zoneStats.map(z => z.outAmt),
-              backgroundColor: '#059669',
-              borderRadius: 5,
-              yAxisID: 'y'
-            },
-            {
-              type: 'line',
-              label: 'Piezas',
-              data: zoneStats.map(z => z.inUnits + z.outUnits),
-              borderColor: '#F59E0B',
-              backgroundColor: '#F59E0B',
-              borderWidth: 2,
-              tension: 0.3,
-              yAxisID: 'y1'
-            }
+            { label: 'Sell In ($)', data: zoneStats.map(z => z.inAmt), backgroundColor: '#1E3A6E', borderRadius: 5 },
+            { label: 'Sell Out ($)', data: zoneStats.map(z => z.outAmt), backgroundColor: '#059669', borderRadius: 5 }
           ]
         },
         options: {
@@ -1098,17 +1565,46 @@
           plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
           scales: {
             y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
-            y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
             x: { ticks: { font: { size: 10 } } }
+          }
+        }
+      });
+
+      // Gráfica 4: Pastel por Zona
+      renderChart('chartCoverZonesPie', {
+        type: 'pie',
+        data: {
+          labels: zoneStats.map(z => z.zone),
+          datasets: [{
+            data: zoneStats.map(z => z.totalAmt),
+            backgroundColor: zoneStats.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
+            tooltip: {
+              callbacks: {
+                label: ctx => {
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                  const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : '0.0';
+                  return ` ${ctx.label}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
+                }
+              }
+            }
           }
         }
       });
 
       // Tabla de desglose por modelo en carátula
-      const grandTotalAmt = modelStats.reduce((s, m) => s + m.inAmt + m.outAmt, 0);
+      const grandTotalAmt = modelStats.reduce((s, m) => s + m.totalAmt, 0);
       const tbody = document.getElementById('coverModelTableBody');
       tbody.innerHTML = modelStats.map(m => {
-        const share = grandTotalAmt > 0 ? (((m.inAmt + m.outAmt) / grandTotalAmt) * 100).toFixed(1) : '0.0';
+        const share = grandTotalAmt > 0 ? ((m.totalAmt / grandTotalAmt) * 100).toFixed(1) : '0.0';
         return `
           <tr class="hover:bg-slate-50">
             <td class="py-2.5 px-4 font-bold text-navy-900">${m.name}</td>
@@ -1119,10 +1615,10 @@
             <td class="py-2.5 px-4 text-right font-bold text-slate-600">${share}%</td>
           </tr>
         `;
-      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos para los filtros seleccionados</td></tr>`;
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos reales cargados</td></tr>`;
     }
 
-    // 7. MÓDULO CLIENTES Y TIENDAS (POR NO. SUCURSAL)
+    // 6. MÓDULO CLIENTES Y TIENDAS (POR NO. SUCURSAL)
     function renderClientsModule() {
       const rows = getFilteredRecords();
       const clients = [...new Set(rows.map(r => r.client))];
@@ -1143,9 +1639,8 @@
             <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(outR.reduce((s, r) => s + r.amount, 0))}</td>
           </tr>
         `;
-      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos de cadenas</td></tr>`;
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos de clientes</td></tr>`;
 
-      // Agrupar tiendas Sell Out por número de sucursal
       const outRows = rows.filter(r => r.channel === 'SELL_OUT');
       const storeMap = new Map();
       outRows.forEach(r => {
@@ -1176,11 +1671,12 @@
       `).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos Sell Out por sucursal</td></tr>`;
     }
 
-    // 8. MÓDULO ZONAS DETALLADO
+    // 7. MÓDULO ZONAS DETALLADO
     function renderZonesModule() {
       const rows = getFilteredRecords();
       const totalAll = rows.reduce((s, r) => s + r.amount, 0);
-      document.getElementById('zonesDetailTableBody').innerHTML = ZONES.map(z => {
+      const zones = [...new Set(rows.map(r => r.zone).filter(Boolean))];
+      document.getElementById('zonesDetailTableBody').innerHTML = zones.map(z => {
         const zIn = rows.filter(r => r.zone === z && r.channel === 'SELL_IN');
         const zOut = rows.filter(r => r.zone === z && r.channel === 'SELL_OUT');
         const inA = zIn.reduce((s, r) => s + r.amount, 0);
@@ -1196,10 +1692,10 @@
             <td class="py-3 px-4 text-right font-bold text-slate-700">${share}%</td>
           </tr>
         `;
-      }).join('');
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos por zona</td></tr>`;
     }
 
-    // 9. EXPLORADOR POR FECHA PUNTUAL
+    // 8. EXPLORADOR POR FECHA PUNTUAL
     function renderExplorer() {
       let rows = getFilteredRecords();
       const exactDate = document.getElementById('exactDateFilter').value;
@@ -1217,10 +1713,10 @@
         );
       }
 
-      document.getElementById('explorerBody').innerHTML = rows.slice(0, 120).map(r => `
+      document.getElementById('explorerBody').innerHTML = rows.slice(0, 150).map(r => `
         <tr class="hover:bg-slate-50">
           <td class="py-2.5 px-4 font-mono text-slate-600">${r.date}</td>
-          <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.channel === 'SELL_IN' ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'}">${r.channel === 'SELL_IN' ? 'SELL IN' : 'SELL OUT'}</span></td>
+          <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.channel === 'SELL_IN' ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'}">${r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out'}</span></td>
           <td class="py-2.5 px-4 font-bold text-navy-900">${r.client}</td>
           <td class="py-2.5 px-4 text-slate-600">${r.storeId ? `${r.storeId} - ${r.storeName}` : 'Cedis / Cadena'}</td>
           <td class="py-2.5 px-4 text-slate-600">${r.zone}</td>
@@ -1228,25 +1724,25 @@
           <td class="py-2.5 px-4 text-right font-bold">${fmtInt.format(r.units)}</td>
           <td class="py-2.5 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(r.amount)}</td>
         </tr>
-      `).join('') || `<tr><td colspan="8" class="py-8 text-center text-slate-400">No se encontraron registros con esa búsqueda</td></tr>`;
+      `).join('') || `<tr><td colspan="8" class="py-8 text-center text-slate-400">No se encontraron registros reales con esa búsqueda</td></tr>`;
     }
 
     function exportExplorerCSV() {
       const rows = getFilteredRecords();
-      const headers = ['Fecha', 'Flujo', 'Cadena', 'Segmento', 'NoSucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
+      const headers = ['Fecha', 'Flujo', 'Cliente', 'Segmento', 'NoSucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
       const csvLines = [headers.join(',')];
       rows.forEach(r => {
-        csvLines.push([r.date, r.channel, `"${r.client}"`, r.segment, r.storeId || '', `"${r.storeName || ''}"`, r.zone, `"${r.model}"`, r.size, r.units, r.amount].join(','));
+        csvLines.push([r.date, r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out', `"${r.client}"`, r.segment, r.storeId || '', `"${r.storeName || ''}"`, r.zone, `"${r.model}"`, r.size, r.units, r.amount].join(','));
       });
       const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `Colchones_America_Consulta_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.download = `Colchones_America_Real_${new Date().toISOString().slice(0, 10)}.csv`;
       a.click();
       showToast('CSV exportado');
     }
 
-    // 10. MODO CAPTURA Y COMPARTIR EN WHATSAPP
+    // 9. MODO CAPTURA Y COMPARTIR EN WHATSAPP
     function toggleSnapshotMode(active) {
       if (active) {
         switchModule('resumen');
@@ -1267,7 +1763,7 @@
       const outPzas = rows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
 
       const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
-      const summaryText = `*COLCHONES AMÉRICA • RESUMEN EJECUTIVO*\nPeriodo: ${mLabel} ${f.year === 'ALL' ? '2025-2026' : f.year}\n• *Sell In (Celin):* ${fmtMXN.format(inAmt)} (${fmtInt.format(inPzas)} pzas)\n• *Sell Out (Celout):* ${fmtMXN.format(outAmt)} (${fmtInt.format(outPzas)} pzas)`;
+      const summaryText = `*COLCHONES AMÉRICA • RESUMEN EJECUTIVO*\nPeriodo: ${mLabel} ${f.year === 'ALL' ? 'Todos los años' : f.year}\n• *Sell In:* ${fmtMXN.format(inAmt)} (${fmtInt.format(inPzas)} pzas)\n• *Sell Out:* ${fmtMXN.format(outAmt)} (${fmtInt.format(outPzas)} pzas)`;
 
       try {
         const ta = document.createElement('textarea');
@@ -1295,7 +1791,7 @@
       showToast('Resumen ejecutivo copiado para pegar en WhatsApp');
     }
 
-    // 11. LECTURA DE EXCEL MULTI-PESTAÑA (SELL IN + SELL OUT)
+    // 10. LECTOR REAL DE EXCEL MULTI-PESTAÑA (COLCHOBOARD_2.XLSX)
     const MONTH_MAP_ES = {
       ene: 1, enero: 1, feb: 2, febrero: 2, mar: 3, marzo: 3, abr: 4, abril: 4,
       may: 5, mayo: 5, jun: 6, junio: 6, jul: 7, julio: 7, ago: 8, agosto: 8,
@@ -1310,16 +1806,23 @@
       return (num >= 1 && num <= 12) ? num : 1;
     }
 
-    function normalizeClientInfo(rawName) {
-      const upper = String(rawName || '').trim().toUpperCase();
-      if (upper.includes('GNC') || upper.includes('SUPER COLCHON')) {
-        return { client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa' };
+    function normalizeClientSegment(rawName) {
+      const clean = String(rawName || '').trim();
+      const upper = clean.toUpperCase();
+      if (!clean) return { client: 'Sin Cliente', segment: 'Corporativa' };
+      if (upper.includes('HORIZONTAL') || upper.includes('INDEPENDIENTE') || upper.includes('MUEBLERIA')) {
+        return { client: clean, segment: 'Horizontal' };
       }
-      if (upper.includes('BODEGON')) return { client: 'El Bodegón', segment: 'Corporativa' };
-      if (upper.includes('BODESA')) return { client: 'Bodesa', segment: 'Corporativa' };
-      if (upper.includes('COLONIA')) return { client: 'Mueblería Las Colonias', segment: 'Corporativa' };
-      if (upper.includes('MAVI')) return { client: 'Mavi', segment: 'Corporativa' };
-      return { client: rawName ? String(rawName).trim() : 'Mueblerías Independientes', segment: 'Horizontal' };
+      return { client: clean, segment: 'Corporativa' };
+    }
+
+    function getCellCI(row, keys) {
+      const rowKeys = Object.keys(row);
+      for (const k of keys) {
+        const found = rowKeys.find(rk => rk.trim().toLowerCase() === k.toLowerCase());
+        if (found !== undefined && row[found] !== '') return row[found];
+      }
+      return '';
     }
 
     function handleExcelUpload(event) {
@@ -1333,34 +1836,54 @@
           const parsed = [];
           let seq = 1;
 
+          // Mapa auxiliar de sucursales/zonas si existe pestaña catálogo de tiendas
+          const storeZoneLookup = new Map();
+          const storeSheetName = wb.SheetNames.find(n => {
+            const u = n.toUpperCase();
+            return u.includes('TIENDA') || u.includes('SUCURSAL') || u.includes('ZONA') || u.includes('CATALOGO');
+          });
+          if (storeSheetName) {
+            const refRows = XLSX.utils.sheet_to_json(wb.Sheets[storeSheetName], { defval: '' });
+            refRows.forEach(rr => {
+              const sId = String(getCellCI(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'Sucursal', 'ID'])).trim();
+              const sName = String(getCellCI(rr, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Sucursal Nombre'])).trim();
+              const sZone = String(getCellCI(rr, ['Zona', 'Region', 'Plaza'])).trim();
+              if (sId && sZone) storeZoneLookup.set(sId, sZone);
+              if (sName && sZone) storeZoneLookup.set(sName.toUpperCase(), sZone);
+            });
+          }
+
           // A) Pestaña SELL IN (Unidades Netas y Suma de Neto)
-          const sellInSheetName = wb.SheetNames.find(n => n.toUpperCase().includes('SELL IN') || n.toUpperCase().includes('SELL_IN'));
+          const sellInSheetName = wb.SheetNames.find(n => n.toUpperCase().replace('_', ' ').includes('SELL IN'));
           if (sellInSheetName) {
             const rowsIn = XLSX.utils.sheet_to_json(wb.Sheets[sellInSheetName], { defval: '' });
-            let lastClient = '', lastYear = 2026, lastMonth = 1;
+            let lastClient = '', lastYear = 2026, lastMonth = 1, lastZone = 'General';
 
             rowsIn.forEach(r => {
-              const rawC = String(r['Cliente'] || r['CLIENTE'] || '').trim();
+              const rawC = String(getCellCI(r, ['Cliente'])).trim();
               if (rawC.toLowerCase().startsWith('total')) return;
               if (rawC) lastClient = rawC;
 
-              const rawY = r['Año'] || r['AÑO'] || r['Year'];
+              const rawZ = String(getCellCI(r, ['Zona', 'Region'])).trim();
+              if (rawZ && !rawZ.toLowerCase().startsWith('total')) lastZone = rawZ;
+
+              const rawY = getCellCI(r, ['Año', 'Year']);
               if (String(rawY).toLowerCase().startsWith('total')) return;
               if (rawY) lastYear = parseInt(rawY, 10) || lastYear;
 
-              const rawM = r['Mes'] || r['MES'] || r['Month'];
+              const rawM = getCellCI(r, ['Mes', 'Month']);
               if (String(rawM).toLowerCase().startsWith('total')) return;
               if (rawM) lastMonth = parseMonthNum(rawM);
 
-              const model = String(r['Modelo'] || r['MODELO'] || '').trim();
+              const model = String(getCellCI(r, ['Modelo'])).trim();
               if (!model || model.toLowerCase().startsWith('total')) return;
 
-              const size = String(r['Medida'] || r['MEDIDA'] || 'MAT').trim().split(' ').pop();
-              const units = Number(r['Unidades Netas'] ?? r['Suma de Piezas'] ?? r['Piezas'] ?? 0) || 0;
-              const amount = Number(r['Suma de Neto'] ?? r['Neto'] ?? r['Suma de Total'] ?? 0) || 0;
+              const size = String(getCellCI(r, ['Medida']) || 'MAT').trim().split(' ').pop();
+              const units = Number(getCellCI(r, ['Unidades Netas', 'Suma de Piezas', 'Piezas'])) || 0;
+              const amount = Number(getCellCI(r, ['Suma de Neto', 'Neto', 'Suma de Total'])) || 0;
               if (units === 0 && amount === 0) return;
 
-              const cInfo = normalizeClientInfo(lastClient);
+              const cInfo = normalizeClientSegment(lastClient);
               parsed.push({
                 folio: `SI-XL-${seq++}`,
                 channel: 'SELL_IN',
@@ -1372,7 +1895,7 @@
                 segment: cInfo.segment,
                 storeId: '',
                 storeName: '',
-                zone: ZONES[seq % ZONES.length],
+                zone: lastZone,
                 model,
                 size,
                 units,
@@ -1382,27 +1905,33 @@
             });
           }
 
-          // B) Pestaña SELL OUT (Costo x Piezas + Referencia por No. Sucursal)
-          const sellOutSheetName = wb.SheetNames.find(n => n.toUpperCase().includes('SELL OUT') || n.toUpperCase().includes('SELL_OUT'));
+          // B) Pestaña SELL OUT (Costo x Piezas + Referencia No. Sucursal y Zona)
+          const sellOutSheetName = wb.SheetNames.find(n => n.toUpperCase().replace('_', ' ').includes('SELL OUT'));
           if (sellOutSheetName) {
             const rowsOut = XLSX.utils.sheet_to_json(wb.Sheets[sellOutSheetName], { defval: '' });
             rowsOut.forEach(r => {
-              const model = String(r['Modelo'] || r['MODELO'] || '').trim();
-              if (!model) return;
+              const model = String(getCellCI(r, ['Modelo'])).trim();
+              if (!model || model.toLowerCase().startsWith('total')) return;
 
-              const cInfo = normalizeClientInfo(r['Cliente'] || r['Nombre de Cadena']);
-              const storeId = String(r['Clave'] || r['No. Sucursal'] || r['Sucursal'] || '').trim();
-              const storeName = String(r['Tienda'] || r['Nombre Tienda'] || '').trim();
-              const size = String(r['Medida'] || 'MAT').trim().split(' ').pop();
-              const units = Number(r['Piezas'] || r['Unidades'] || 0) || 0;
-              const unitCost = Number(r['Costo'] || r['Precio'] || 0) || 0;
+              const rawClient = getCellCI(r, ['Cliente', 'Nombre de Cadena']);
+              const cInfo = normalizeClientSegment(rawClient);
+              const storeId = String(getCellCI(r, ['Clave', 'No. Sucursal', 'No de Tienda', 'Sucursal'])).trim();
+              const storeName = String(getCellCI(r, ['Tienda', 'Nombre Tienda'])).trim();
+              const size = String(getCellCI(r, ['Medida']) || 'MAT').trim().split(' ').pop();
+              const units = Number(getCellCI(r, ['Piezas', 'Unidades'])) || 0;
+              const unitCost = Number(getCellCI(r, ['Costo', 'Precio'])) || 0;
               const amount = Math.round(unitCost * units * 100) / 100;
 
-              const yr = parseInt(r['Año'] || r['AÑO'], 10) || 2026;
-              const mo = parseMonthNum(r['Mes'] || r['MES']);
-              const dy = Math.min(28, Math.max(1, parseInt(r['Dia'] || r['Día'], 10) || 15));
+              const yr = parseInt(getCellCI(r, ['Año']), 10) || 2026;
+              const mo = parseMonthNum(getCellCI(r, ['Mes']));
+              const dy = Math.min(28, Math.max(1, parseInt(getCellCI(r, ['Dia', 'Día']), 10) || 15));
 
               if (units === 0 && amount === 0) return;
+
+              const detectedZone = String(getCellCI(r, ['Zona', 'Region'])).trim()
+                || storeZoneLookup.get(storeId)
+                || storeZoneLookup.get(storeName.toUpperCase())
+                || 'General';
 
               parsed.push({
                 folio: `SO-XL-${seq++}`,
@@ -1415,7 +1944,7 @@
                 segment: cInfo.segment,
                 storeId,
                 storeName,
-                zone: String(r['Zona'] || ZONES[seq % ZONES.length]),
+                zone: detectedZone,
                 model,
                 size,
                 units,
@@ -1426,16 +1955,18 @@
           }
 
           if (parsed.length === 0) {
-            showToast('No se encontraron registros válidos en SELL IN / SELL OUT');
+            showToast('No se encontraron registros válidos en SELL IN o SELL OUT');
             return;
           }
 
           stagedExcelRecords = parsed;
-          document.getElementById('excelStatusText').textContent = `Listo: ${fmtInt.format(parsed.length)} registros detectados en "${file.name}"`;
+          const uniqueClients = [...new Set(parsed.map(p => p.client))].join(', ');
+          document.getElementById('excelStatusText').textContent = `Listo: ${fmtInt.format(parsed.length)} registros reales detectados en "${file.name}"`;
+          document.getElementById('excelStatusSub').textContent = `Clientes detectados: ${uniqueClients} • Pestañas leídas: ${wb.SheetNames.join(', ')}`;
           document.getElementById('excelStatusPanel').classList.remove('hidden');
         } catch (err) {
           console.error(err);
-          showToast('Error al leer el archivo Excel');
+          showToast('Error al procesar el archivo Excel');
         }
       };
       reader.readAsArrayBuffer(file);
@@ -1443,17 +1974,28 @@
 
     function commitExcelData() {
       if (!stagedExcelRecords.length) return;
-      salesData = [...stagedExcelRecords];
+      const mode = document.querySelector('input[name="excelLoadMode"]:checked')?.value || 'REPLACE';
+
+      if (mode === 'APPEND') {
+        salesData = [...salesData, ...stagedExcelRecords];
+      } else {
+        salesData = [...stagedExcelRecords];
+      }
+
       try {
         localStorage.setItem(DATA_KEY, JSON.stringify(salesData));
-      } catch (e) {}
+      } catch (e) {
+        console.warn('No se pudo guardar en localStorage:', e);
+      }
+
       document.getElementById('excelStatusPanel').classList.add('hidden');
+      syncDynamicFilterDropdowns();
       switchModule('resumen');
       applyFilters();
-      showToast(`Dashboard actualizado con ${fmtInt.format(salesData.length)} registros`);
+      showToast(`Dashboard actualizado con ${fmtInt.format(salesData.length)} registros reales`);
     }
 
-    // 12. ARRANQUE AUTOMÁTICO SI YA HAY SESIÓN ACTIVA
+    // 11. ARRANQUE AUTOMÁTICO SI YA HAY SESIÓN ACTIVA
     window.addEventListener('DOMContentLoaded', () => {
       try {
         const activeSession = sessionStorage.getItem(SESSION_KEY);
