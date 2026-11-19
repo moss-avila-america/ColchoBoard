@@ -1,15 +1,199 @@
-<!-- ... existing code ... -->
-            <div>
-              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard <span class="text-[10px] font-mono text-emerald-400">v3.1</span></span>
-              <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Colchones América</span>
-            </div>
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0B1117" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
+  <title>ColchoBoard v3.2 | Colchones América</title>
+
+  <!-- Manifiesto PWA y Favicon -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" href="./icon.png" />
+  <link rel="apple-touch-icon" href="./icon.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <!-- html2canvas para exportar filmina 16:9 y capturas en PNG HD -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            navy: {
+              800: '#16284C',
+              900: '#0F1E3C',
+              950: '#081226'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .tab-active {
+      background: linear-gradient(90deg, rgba(20, 184, 166, 0.22), rgba(37, 99, 235, 0.14));
+      color: #FFFFFF !important;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+    }
+    .sellin-card {
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 55%, #0D9488 100%);
+    }
+    .sellout-card {
+      background: linear-gradient(135deg, #1E3A5F 0%, #0F1E3C 65%, #081226 100%);
+    }
+    .yoy-card-teal {
+      background: linear-gradient(135deg, #0D9488 0%, #0891B2 100%);
+    }
+    .yoy-card-navy {
+      background: linear-gradient(135deg, #16284C 0%, #0B162C 100%);
+    }
+    /* Modo Captura WhatsApp */
+    body.snapshot-mode #sidebar,
+    body.snapshot-mode #sidebarOverlay,
+    body.snapshot-mode #filtersBar,
+    body.snapshot-mode .no-snapshot {
+      display: none !important;
+    }
+    body.snapshot-mode #snapshotExitBar {
+      display: flex !important;
+    }
+    body.snapshot-mode main {
+      max-width: 1200px !important;
+      padding: 1rem !important;
+    }
+    /* Filmina 16:9 Share x Marca */
+    .share-slide-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .share-slide-canvas {
+      min-width: 920px;
+      aspect-ratio: 16 / 9;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    /* Scrollbars limpios */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased selection:bg-teal-500 selection:text-white">
+
+  <!-- ========================================================= -->
+  <!-- PANTALLA DE LOGIN CORPORATIVO                             -->
+  <!-- ========================================================= -->
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#070E1A] via-[#0F1E3C] to-[#0B2A3D] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-auto">
+      <div class="bg-[#0B1117] px-7 pt-8 pb-6 text-center">
+        <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
+          <img src="./icon.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); };" />
+        </div>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.2</span></h1>
+        <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
+      </div>
+
+      <form onsubmit="handleLoginSubmit(event)" class="p-7 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Usuario Corporativo</label>
+          <input type="text" id="loginUsername" autocomplete="username" placeholder="Ej. ADMIN1.MOSS" required
+                 class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-navy-900 uppercase focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Contraseña</label>
+          <div class="relative">
+            <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••••••" required
+                   class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3 text-xs font-bold text-slate-400 hover:text-navy-900">Ver</button>
+          </div>
+        </div>
+
+        <div id="loginErrorBox" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold">
+          Usuario o contraseña incorrectos. Verifica tus credenciales.
+        </div>
+
+        <button type="submit" class="w-full py-3.5 px-4 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-sm font-extrabold tracking-wide shadow-lg transition">
+          Ingresar a ColchoBoard
+        </button>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+          <span>Acceso restringido • PWA</span>
+          <button type="button" id="btnInstallPwaLogin" onclick="triggerPwaInstall()" class="hidden text-teal-600 font-bold hover:underline">+ Instalar App</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Barra de salida en Modo Captura WhatsApp -->
+  <div id="snapshotExitBar" class="hidden sticky top-0 z-50 bg-emerald-600 text-white px-4 py-2.5 items-center justify-between shadow-md">
+    <span class="text-xs font-bold">Vista limpia activa para captura de pantalla (WhatsApp)</span>
+    <div class="flex items-center gap-2">
+      <button onclick="copyWhatsAppExecutiveText()" class="px-3 py-1.5 rounded-lg bg-white text-emerald-800 text-xs font-extrabold hover:bg-emerald-50">Copiar Texto</button>
+      <button onclick="toggleSnapshotMode(false)" class="px-3 py-1.5 rounded-lg bg-emerald-900 text-white text-xs font-bold hover:bg-emerald-950">Salir</button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- CONTENEDOR PRINCIPAL DE LA APLICACIÓN                     -->
+  <!-- ========================================================= -->
+  <div id="appShell" class="hidden min-h-screen flex-col lg:flex-row">
+
+    <!-- Overlay móvil -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-[#0B1117] text-slate-300 flex flex-col justify-between border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shrink-0">
+      <div class="flex flex-col min-h-0">
+        <!-- Marca -->
+        <div class="px-4 py-4 border-b border-slate-800/80 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl overflow-hidden bg-[#0F1419] ring-1 ring-teal-400/40 shrink-0 flex items-center justify-center">
+            <img src="./icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); };" />
+          </div>
+          <div class="min-w-0">
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.2</span></span>
+            <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
+          </div>
+        </div>
+
+        <!-- Perfil Usuario -->
+        <div class="px-4 py-3 border-b border-slate-800/80 bg-white/[0.02]">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <span id="sidebarUserBadge" class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-blue-500/20 text-sky-300 border border-sky-500/30">PERFIL</span>
+            <span id="sidebarUserCred" class="text-[10px] text-slate-400 font-mono">CRED: ----</span>
+          </div>
+          <p id="sidebarUserName" class="text-xs font-extrabold text-white truncate">USUARIO</p>
+          <p id="sidebarUserLogin" class="text-[10px] text-slate-400 font-mono truncate">---</p>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="p-3 space-y-1 overflow-y-auto flex-1">
           <button onclick="switchModule('resumen')" data-nav="resumen" class="nav-btn tab-active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
             <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             <span>Carátula Ejecutiva</span>
           </button>
 
-          <button onclick="switchModule('scorecard')" data-nav="scorecard" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 hover:bg-navy-800 hover:text-white transition text-left">
+          <button onclick="switchModule('scorecard')" data-nav="scorecard" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
             <span class="flex items-center gap-3">
               <svg class="w-4 h-4 text-lime-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
               <span>Scorecard</span>
@@ -17,8 +201,283 @@
             <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-lime-500/20 text-lime-300 border border-lime-500/30">YTD</span>
           </button>
 
-          <button onclick="switchModule('pivote')" data-nav="pivote" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 hover:bg-navy-800 hover:text-white transition text-left">
-<!-- ... existing code ... -->
+          <button onclick="switchModule('share')" data-nav="share" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <span class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
+              <span>Share</span>
+            </span>
+            <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">16:9</span>
+          </button>
+
+          <button onclick="switchModule('pivote')" data-nav="pivote" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <span class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-teal-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+              <span>Matriz Dinámica</span>
+            </span>
+            <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">BI</span>
+          </button>
+
+          <button onclick="switchModule('clientes')" data-nav="clientes" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+            <span>Clientes & Tiendas</span>
+          </button>
+
+          <button onclick="switchModule('modelos')" data-nav="modelos" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+            <span>Modelos & Zonas</span>
+          </button>
+
+          <button onclick="switchModule('explorador')" data-nav="explorador" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-amber-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <span>Consulta por Fecha</span>
+          </button>
+
+          <div id="adminNavBlock" class="pt-3 mt-2 border-t border-slate-800/80 space-y-1">
+            <p class="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Administración</p>
+            <button onclick="switchModule('excel')" data-nav="excel" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+              <span class="flex items-center gap-3">
+                <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <span>Cargar Excel</span>
+              </span>
+              <span class="px-1.5 py-0.5 text-[9px] font-extrabold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">.XLSX</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Pie Sidebar -->
+      <div class="p-3 border-t border-slate-800/80 space-y-2 bg-black/20">
+        <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
+          <span>Registros reales:</span>
+          <span id="sidebarRecordCount" class="font-extrabold text-teal-400 tabular-nums">0</span>
+        </div>
+        <button id="btnInstallPwaSidebar" onclick="triggerPwaInstall()" class="hidden w-full py-2 px-3 rounded-xl bg-teal-600/20 hover:bg-teal-600/30 border border-teal-500/40 text-teal-300 text-xs font-bold transition">
+          Instalar App (PWA)
+        </button>
+        <button onclick="logoutUser()" class="w-full py-2 px-3 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-200 border border-slate-700/70 text-xs font-bold flex items-center justify-center gap-2 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- HEADER -->
+      <header class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+        <div class="px-4 sm:px-6 py-3 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <button onclick="toggleSidebar()" class="no-snapshot lg:hidden p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <h1 id="moduleTitle" class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">Carátula Ejecutiva</h1>
+                  <span id="headerPeriodPill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Sin datos cargados</span>
+                </div>
+                <p id="moduleSubtitle" class="text-[11px] text-slate-500">Consulta Real Sell In y Sell Out • MXN</p>
+              </div>
+            </div>
+
+            <div class="no-snapshot flex flex-wrap items-center gap-2">
+              <button id="headerExcelBtn" onclick="switchModule('excel')" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <span>Cargar Excel</span>
+              </button>
+              <button onclick="toggleSnapshotMode(true)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1.5 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <span>Modo Captura</span>
+              </button>
+              <button onclick="copyWhatsAppExecutiveText()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition">
+                <span>Compartir WhatsApp</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filtros Globales (Ocultos en módulo Share para limpieza) -->
+          <div id="filtersBar" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
+            <select id="filterYear" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Año: Todos</option>
+            </select>
+            <select id="filterMonth" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Mes: Todos</option>
+              <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+              <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+              <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+              <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+            </select>
+            <select id="filterSegment" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Segmento: Todos</option>
+              <option value="Cuentas Corporativas">Cuentas Corporativas</option>
+              <option value="Canal Horizontal">Canal Horizontal</option>
+            </select>
+            <select id="filterClient" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Cliente: Todos</option>
+            </select>
+            <select id="filterZone" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Zona (UEN): Todas</option>
+            </select>
+            <button onclick="resetGlobalFilters()" class="py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition">
+              Limpiar Filtros
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO DE MÓDULOS -->
+      <main class="flex-1 p-4 sm:p-6 max-w-[1600px] w-full mx-auto space-y-5">
+
+        <!-- Aviso si no hay Excel cargado (solo visible fuera de Excel y Share) -->
+        <div id="emptyDataBanner" class="hidden bg-white rounded-2xl border-2 border-dashed border-slate-300 p-8 text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          </div>
+          <h3 class="text-sm font-extrabold text-navy-900">Aún no hay información cargada en el sistema</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">Este portal muestra exclusivamente datos reales importados desde tu archivo Excel (pestañas <strong>SELL IN</strong>, <strong>SELL OUT</strong> y <strong>Directorio de tiendas</strong>).</p>
+          <button onclick="switchModule('excel')" class="px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold transition">
+            Cargar Archivo Excel Ahora
+          </button>
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 1: CARÁTULA EJECUTIVA DUAL                       -->
+        <!-- ======================================================= -->
+        <section id="module-resumen" class="module-section space-y-5">
+          <!-- Banner Ejecutivo -->
+          <div class="bg-[#081226] text-white rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+            <div>
+              <h2 id="coverBannerTitle" class="text-base sm:text-lg font-black tracking-tight">Reporte de Ventas Sell In | Sell Out</h2>
+              <p id="coverBannerSub" class="text-xs text-teal-300 font-medium">Carga tu archivo Excel para visualizar resultados reales</p>
+            </div>
+            <div class="text-right">
+              <span id="coverLastDateBadge" class="block text-xs font-bold text-white">Último corte: --</span>
+              <span class="block text-[10px] text-slate-400">Colchones América • Cifras en MXN</span>
+            </div>
+          </div>
+
+          <!-- Grid 3 Columnas: Sell In (Turquesa) | Sell Out (Navy) | YoY & Zonas -->
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+            <!-- COLUMNA SELL IN -->
+            <div class="xl:col-span-4 space-y-4">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="sellin-card text-navy-950 rounded-2xl p-4 shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider opacity-80">Ventas Totales Sell In MXN</span>
+                  <p id="kpiSellInMxn" class="text-xl sm:text-2xl font-black mt-1 tabular-nums">$0</p>
+                </div>
+                <div class="sellin-card text-navy-950 rounded-2xl p-4 shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider opacity-80">Ventas Totales Piezas</span>
+                  <p id="kpiSellInPcs" class="text-xl sm:text-2xl font-black mt-1 tabular-nums">0</p>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In × Modelo ($)</h3>
+                <div class="relative h-48 w-full"><canvas id="chartSellInBars"></canvas></div>
+              </div>
+
+              <div class="bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In Share × Modelo (Dona %)</h3>
+                <div class="relative h-56 w-full"><canvas id="chartSellInDonut"></canvas></div>
+              </div>
+            </div>
+
+            <!-- COLUMNA SELL OUT -->
+            <div class="xl:col-span-4 space-y-4">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Ventas Totales Sell Out MXN</span>
+                  <p id="kpiSellOutMxn" class="text-xl sm:text-2xl font-black mt-1 tabular-nums">$0</p>
+                </div>
+                <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Ventas Totales Piezas</span>
+                  <p id="kpiSellOutPcs" class="text-xl sm:text-2xl font-black mt-1 tabular-nums">0</p>
+                </div>
+              </div>
+
+              <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">Sell Out × Modelo ($)</h3>
+                <div class="relative h-48 w-full"><canvas id="chartSellOutBars"></canvas></div>
+              </div>
+
+              <div class="sellout-card text-white rounded-2xl p-4 shadow-sm">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">Sell Out Share × Modelo (Dona %)</h3>
+                <div class="relative h-56 w-full"><canvas id="chartSellOutDonut"></canvas></div>
+              </div>
+            </div>
+
+            <!-- COLUMNA YOY + ZONAS (UEN) -->
+            <div class="xl:col-span-4 space-y-4">
+              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-xs font-extrabold uppercase tracking-wider text-navy-900">Acumulados Anuales YoY</h3>
+                  <span id="yoyYearsPill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">-- vs --</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div class="yoy-card-teal text-white rounded-xl p-3">
+                    <span id="lblAcumInPrevMxn" class="block text-[10px] font-semibold opacity-90">Acum. Sell In MXN Ant.</span>
+                    <p id="valAcumInPrevMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                  </div>
+                  <div class="yoy-card-teal text-white rounded-xl p-3">
+                    <span id="lblAcumInCurrMxn" class="block text-[10px] font-semibold opacity-90">Acum. Sell In MXN Act.</span>
+                    <p id="valAcumInCurrMxn" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">$0</p>
+                  </div>
+                  <div class="yoy-card-navy text-white rounded-xl p-3">
+                    <span id="lblAcumInPrevPcs" class="block text-[10px] font-semibold text-sky-300">Acum. Sell In PCS Ant.</span>
+                    <p id="valAcumInPrevPcs" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">0</p>
+                  </div>
+                  <div class="yoy-card-navy text-white rounded-xl p-3">
+                    <span id="lblAcumInCurrPcs" class="block text-[10px] font-semibold text-sky-300">Acum. Sell In PCS Act.</span>
+                    <p id="valAcumInCurrPcs" class="text-base sm:text-lg font-black mt-0.5 tabular-nums">0</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2.5 text-center">
+                  <div class="rounded-xl p-2.5 bg-slate-50 border border-slate-200">
+                    <span class="block text-[10px] font-bold uppercase text-slate-500">Crec. Sell In MXN</span>
+                    <p id="valGrowthInMxn" class="text-lg font-black text-navy-900 tabular-nums">0%</p>
+                    <span id="valGrowthInPcs" class="text-[10px] font-bold text-slate-500">PCS: 0%</span>
+                  </div>
+                  <div class="rounded-xl p-2.5 bg-slate-50 border border-slate-200">
+                    <span class="block text-[10px] font-bold uppercase text-slate-500">Crec. Sell Out MXN</span>
+                    <p id="valGrowthOutMxn" class="text-lg font-black text-navy-900 tabular-nums">0%</p>
+                    <span id="valGrowthOutPcs" class="text-[10px] font-bold text-slate-500">PCS: 0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-xs font-extrabold uppercase tracking-wider text-navy-900">Desempeño por Zona (UEN)</h3>
+                  <span id="topZonePill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-700">Líder: --</span>
+                </div>
+                <div class="relative h-56 w-full"><canvas id="chartZonesBar"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COMPARATIVO SELL OUT MISMO DÍA AÑO ANTERIOR POR MODELO -->
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="px-5 py-3.5 bg-[#081226] text-white flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-black tracking-tight">Comparativo Sell Out Mismo Día Año Anterior por Modelo</h3>
+                <p id="sameDaySubtitle" class="text-[11px] text-teal-300">Basado en la última fecha de carga de Sell Out</p>
+              </div>
+              <span id="sameDayPeriodTag" class="px-3 py-1 rounded-lg bg-amber-400 text-navy-950 text-xs font-black uppercase tracking-wide">--</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs tabular-nums">
+                <thead>
+                  <tr class="bg-slate-900 text-white text-[10px] uppercase tracking-wider">
+                    <th class="py-2.5 px-4 font-bold">Modelo</th>
+                    <th id="thPrevPcs" class="py-2.5 px-3 text-right font-bold">Pzas Ant.</th>
+                    <th id="thCurrPcs" class="py-2.5 px-3 text-right font-bold">Pzas Act.</th>
+                    <th class="py-2.5 px-3 text-right font-bold">Crec. Pzas</th>
+                    <th id="thPrevAmt" class="py-2.5 px-3 text-right font-bold">Importe Ant.</th>
+                    <th id="thCurrAmt" class="py-2.5 px-3 text-right font-bold">Importe Act.</th>
+                    <th class="py-2.5 px-4 text-right font-bold">Crec. $</th>
+                  </tr>
+                </thead>
                 <tbody id="sameDayComparisonBody" class="divide-y divide-slate-100"></tbody>
                 <tfoot id="sameDayComparisonFoot" class="bg-navy-900 text-white font-extrabold border-t-2 border-teal-400"></tfoot>
               </table>
@@ -27,10 +486,9 @@
         </section>
 
         <!-- ======================================================= -->
-        <!-- 1.2 MÓDULO SCORECARD COMERCIAL (HISTÓRICO 2022 - ACTUAL)-->
+        <!-- MÓDULO 2: SCORECARD COMERCIAL (2022 - ACTUAL)           -->
         <!-- ======================================================= -->
         <section id="module-scorecard" class="module-section hidden space-y-4">
-          <!-- Barra Superior de Objetivos y Avance (Editable % Crecimiento) -->
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
             <div class="px-4 py-3 bg-[#081226] text-white flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
@@ -44,16 +502,14 @@
                   <span>%</span>
                 </label>
                 <button onclick="exportScorecardToExcel()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                   <span>Exportar (.xlsx)</span>
                 </button>
               </div>
             </div>
 
-            <!-- KPIs de Objetivo MXN y PCS -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 text-center tabular-nums">
               <div class="p-3 bg-lime-400/90 text-navy-950">
-                <span id="scLblObjMxn" class="block text-[10px] font-black uppercase tracking-wider">OBJETIVO 2026 MXN</span>
+                <span id="scLblObjMxn" class="block text-[10px] font-black uppercase tracking-wider">OBJETIVO MXN</span>
                 <span id="scValObjMxn" class="block text-base sm:text-lg font-black mt-0.5">$0</span>
               </div>
               <div class="p-3 bg-lime-50">
@@ -65,7 +521,7 @@
                 <span id="scValDifMxn" class="block text-base sm:text-lg font-black text-navy-900 mt-0.5">$0</span>
               </div>
               <div class="p-3 bg-emerald-500 text-white">
-                <span id="scLblObjPcs" class="block text-[10px] font-black uppercase tracking-wider">OBJETIVO 2026 PCS</span>
+                <span id="scLblObjPcs" class="block text-[10px] font-black uppercase tracking-wider">OBJETIVO PCS</span>
                 <span id="scValObjPcs" class="block text-base sm:text-lg font-black mt-0.5">0</span>
               </div>
               <div class="p-3 bg-emerald-50">
@@ -79,64 +535,1166 @@
             </div>
           </div>
 
-          <!-- Contenedor de las 4 Matrices Scorecard (Sell In Pzas, Sell In $, Sell Out Pzas, Sell Out $) -->
           <div id="scorecardTablesContainer" class="space-y-4"></div>
         </section>
 
         <!-- ======================================================= -->
-        <!-- 1.5 MATRIZ DINÁMICA BI (CRUCES INTERACTIVOS)            -->
-<!-- ... existing code ... -->
-      const titles = {
-        resumen: ['Carátula Ejecutiva', 'Consulta Real Sell In y Sell Out • MXN'],
-        scorecard: ['Scorecard Comercial', 'Histórico mensual 2022 - Actual • 1H, 2H, Total, Acumulado YTD y Ticket Promedio'],
-        pivote: ['Matriz Dinámica BI', 'Cruces interactivos por Cliente, Modelo, Medida, Zona, Sucursal, Mes y Año'],
-        clientes: ['Clientes & Tiendas', 'Desempeño por cliente y ranking por No. de Sucursal'],
-        modelos: ['Modelos & Zonas', 'Distribución detallada por zona geográfica y portafolio'],
-        explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, sucursal o modelo'],
-        excel: ['Cargar Excel', 'Actualización real desde pestañas SELL IN y SELL OUT']
-      };
-<!-- ... existing code ... -->
-    function renderActiveModule() {
-      renderCoverModule();
-      if (activeModule === 'scorecard') renderScorecardModule();
-      if (activeModule === 'pivote') renderPivotMaster();
-      if (activeModule === 'clientes') renderClientsModule();
-      if (activeModule === 'modelos') renderZonesModule();
-      if (activeModule === 'explorador') renderExplorer();
+        <!-- MÓDULO 3: SHARE X MARCA (PLANTILLA EJECUTIVA 16:9)      -->
+        <!-- ======================================================= -->
+        <section id="module-share" class="module-section hidden space-y-5">
+          <!-- Barra de Controles de Share x Marca -->
+          <div class="no-snapshot bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-sm font-black text-navy-900 uppercase tracking-wide">Configuración & Captura • Share x Marca</h2>
+                <p class="text-[11px] text-slate-500">Captura manual o importa desde Excel. La plantilla 16:9 conserva siempre su identidad oficial.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="toggleShareEditorPanel()" id="btnToggleShareEditor" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition">
+                  Ocultar Captura
+                </button>
+                <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs font-bold transition">
+                  <span>Importar Excel Share</span>
+                  <input type="file" id="shareExcelInput" accept=".xlsx,.xls,.csv" onchange="handleShareExcelUpload(event)" class="hidden" />
+                </label>
+                <button onclick="downloadShareSlidePng()" class="px-3.5 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold shadow-xs transition">
+                  Descargar PNG 16:9
+                </button>
+                <button onclick="copyShareWhatsAppSummary()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                  Copiar WhatsApp
+                </button>
+              </div>
+            </div>
+
+            <!-- Panel de Captura / Importación / Periodos Guardados -->
+            <div id="shareEditorPanel" class="pt-3 border-t border-slate-100 grid grid-cols-1 lg:grid-cols-12 gap-4">
+              <!-- Metadatos del Periodo -->
+              <div class="lg:col-span-4 space-y-3 bg-slate-50 rounded-xl p-3.5 border border-slate-200/80">
+                <h4 class="text-xs font-extrabold uppercase text-navy-900">1. Datos del Corte</h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Fecha Inicial</label>
+                    <input type="date" id="shareStartDate" value="2026-11-01" onchange="syncSharePeriodLabels()" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold" />
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Fecha Final (Corte)</label>
+                    <input type="date" id="shareEndDate" value="2026-11-17" onchange="syncSharePeriodLabels()" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Etiqueta de Periodo (Editable)</label>
+                  <input type="text" id="sharePeriodLabel" value="1-17 NOV 2026" oninput="renderShareSlide()" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-bold text-blue-700 uppercase" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Tipo de Reporte</label>
+                  <select id="shareReportType" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold">
+                    <option value="parcial">Corte Parcial</option>
+                    <option value="mensual">Cierre Mensual Definitivo</option>
+                    <option value="acumulado">Acumulado de Varios Meses</option>
+                  </select>
+                </div>
+
+                <!-- Periodos Guardados y Acumulado -->
+                <div class="pt-2 border-t border-slate-200 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-extrabold uppercase text-slate-500">Historial / Acumulados</span>
+                    <button onclick="saveCurrentShareReport()" class="px-2.5 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-[10px] font-bold">Guardar Corte</button>
+                  </div>
+                  <select id="shareSavedSelect" onchange="loadSavedShareReport(this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold">
+                    <option value="">— Seleccionar corte guardado —</option>
+                  </select>
+                  <button onclick="buildMonthlyAccumulatedShare()" class="w-full py-1.5 px-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-[11px] font-bold transition">
+                    Generar Acumulado (Solo Cierres Mensuales)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Captura Manual de las 7 Marcas Oficiales -->
+              <div class="lg:col-span-8 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs font-extrabold uppercase text-navy-900">2. Ventas por Marca (Pesos MXN sin IVA)</h4>
+                  <div class="flex items-center gap-2">
+                    <button onclick="clearShareAmounts()" class="text-[11px] font-bold text-rose-600 hover:underline">Limpiar montos</button>
+                    <button onclick="renderShareSlide()" class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold">Generar Share x Marca</button>
+                  </div>
+                </div>
+                <div id="shareBrandInputsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                <div id="shareValidationAlert" class="hidden p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ======================================================= -->
+          <!-- FILMINA OFICIAL 16:9: SHARE X MARCA                     -->
+          <!-- ======================================================= -->
+          <div class="share-slide-wrapper">
+            <div id="shareSlideExportArea" class="share-slide-canvas rounded-2xl shadow-lg border border-slate-200/90 p-7 sm:p-9 mx-auto max-w-[1280px]">
+
+              <!-- 1. ENCABEZADO SUPERIOR -->
+              <div>
+                <div class="flex items-start justify-between gap-4 pb-3 border-b-[3px] border-[#0866CC]">
+                  <div>
+                    <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-[#0B1E40] leading-none">SHARE X MARCA</h2>
+                    <p id="slidePeriodSubtitle" class="text-lg sm:text-xl font-extrabold text-[#0866CC] mt-1.5 tracking-tight">1-17 NOV 2026</p>
+                  </div>
+                  <div class="flex items-center gap-3 pl-5 border-l border-slate-200">
+                    <svg class="w-10 h-10 text-[#0B1E40] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <rect x="3" y="4" width="18" height="17" rx="2" />
+                      <path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+                    </svg>
+                    <div class="text-left">
+                      <span class="block text-xs font-extrabold uppercase tracking-wider text-[#0B1E40]">CORTE</span>
+                      <span id="slideCutDateText" class="block text-xl sm:text-2xl font-black text-[#0B1E40] leading-tight">17 NOV 2026</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. CONTENIDO CENTRAL (50% DONA CIRCULAR | 50% RANKING EJECUTIVO) -->
+              <div class="grid grid-cols-12 gap-6 items-center my-auto py-3">
+                <!-- Mitad Izquierda: Dona perfectamente circular -->
+                <div class="col-span-5 flex items-center justify-center">
+                  <div class="relative w-[340px] h-[340px] sm:w-[390px] sm:h-[390px]">
+                    <canvas id="chartShareBrandDonut"></canvas>
+                  </div>
+                </div>
+
+                <!-- Mitad Derecha: Ranking Lateral -->
+                <div class="col-span-7">
+                  <div class="overflow-hidden">
+                    <table class="w-full border-collapse tabular-nums">
+                      <thead>
+                        <tr class="bg-[#0B1E40] text-white text-xs sm:text-sm uppercase tracking-wider">
+                          <th class="py-2.5 pl-4 pr-2 text-left font-extrabold rounded-l-lg">MARCA</th>
+                          <th class="py-2.5 px-3 text-right font-extrabold">VENTAS ($)</th>
+                          <th class="py-2.5 pl-2 pr-4 text-right font-extrabold rounded-r-lg">SHARE (%)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="shareRankingTableBody" class="divide-y divide-slate-200/90"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. FRANJA INFORMATIVA INFERIOR -->
+              <div class="bg-[#F8FAFC] border border-slate-200/90 rounded-xl px-5 py-3 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-9 h-9 rounded-full bg-[#0B1E40] text-white flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H9M17 7v8" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p id="slideLeaderHeadline" class="text-sm sm:text-base font-black text-[#0B1E40] uppercase tracking-tight leading-tight">SPRING AIR LIDERA EL MERCADO</p>
+                    <p id="slideLeaderSubline" class="text-xs text-slate-600 font-medium mt-0.5">con el 52% de participación en ventas al 17 de noviembre de 2026.</p>
+                  </div>
+                </div>
+                <span class="text-[11px] font-medium text-slate-500 whitespace-nowrap self-end">Sell out en precios público sin IVA</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Panel Complementario: Evolución Colchones América & Variación pp (No altera la filmina) -->
+          <div id="shareAnalyticsExtras" class="no-snapshot grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Posición Colchones América</span>
+              <p id="shareAmericaPos" class="text-2xl font-black text-navy-900 mt-1">#2 • 13.46%</p>
+              <p id="shareAmericaGap" class="text-xs text-slate-500 mt-1">Distancia vs líder: --</p>
+            </div>
+            <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Validación Matemática Exacta</span>
+              <p id="shareMathCheck" class="text-sm font-extrabold text-emerald-700 mt-1">Suma exacta: 100.00%</p>
+              <p id="shareRoundedSumNote" class="text-xs text-slate-500 mt-1">Suma visual redondeada: 99%</p>
+            </div>
+            <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comparativo vs Corte Anterior</span>
+              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Guarda al menos 2 cortes para ver variación en puntos porcentuales (pp).</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 4: MATRIZ DINÁMICA BI                            -->
+        <!-- ======================================================= -->
+        <section id="module-pivote" class="module-section hidden space-y-4">
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[11px] font-extrabold uppercase text-slate-400 mr-1">Vistas Rápidas:</span>
+                <button onclick="applyPivotPreset('model_channel')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Modelo × Flujo</button>
+                <button onclick="applyPivotPreset('model_size')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Modelo × Medida</button>
+                <button onclick="applyPivotPreset('client_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Cliente × Mes</button>
+                <button onclick="applyPivotPreset('zone_model')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Zona × Modelo</button>
+                <button onclick="applyPivotPreset('store_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Sucursal × Mes</button>
+              </div>
+              <button onclick="exportPivotToExcel()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Exportar Matriz (.xlsx)</button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 border-t border-slate-100">
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Filas</label>
+                <select id="pivotRowDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                  <option value="model">Modelo</option>
+                  <option value="client">Cliente</option>
+                  <option value="zone">Zona (UEN)</option>
+                  <option value="store">Sucursal / Tienda</option>
+                  <option value="size">Medida</option>
+                  <option value="month">Mes</option>
+                  <option value="year">Año</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Columnas</label>
+                <select id="pivotColDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                  <option value="channel">Sell In / Sell Out</option>
+                  <option value="month">Mes</option>
+                  <option value="year">Año</option>
+                  <option value="size">Medida</option>
+                  <option value="zone">Zona (UEN)</option>
+                  <option value="client">Cliente</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Flujo</label>
+                <select id="pivotFlow" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                  <option value="ALL">Sell In + Sell Out</option>
+                  <option value="SELL_IN">Solo Sell In</option>
+                  <option value="SELL_OUT">Solo Sell Out</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Métrica</label>
+                <select id="pivotMetric" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                  <option value="amount">Importe ($ MXN)</option>
+                  <option value="units">Piezas (Pzas)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Buscar Fila</label>
+                <input type="text" id="pivotSearch" oninput="renderPivotMaster()" placeholder="Filtrar..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold" />
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="overflow-x-auto max-h-[65vh]">
+              <table class="w-full text-left border-collapse text-xs tabular-nums">
+                <thead id="pivotTableHead" class="bg-navy-900 text-white sticky top-0 z-10 text-[10px] uppercase tracking-wider"></thead>
+                <tbody id="pivotTableBody" class="divide-y divide-slate-100"></tbody>
+                <tfoot id="pivotTableFoot" class="bg-slate-100 font-black text-navy-900 sticky bottom-0 border-t-2 border-navy-900"></tfoot>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 5: CLIENTES & TIENDAS                            -->
+        <!-- ======================================================= -->
+        <section id="module-clientes" class="module-section hidden space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+              <div class="px-5 py-3.5 border-b border-slate-100">
+                <h3 class="text-sm font-extrabold text-navy-900">Resumen por Cliente / Cadena</h3>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs tabular-nums">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200">
+                      <th class="py-2.5 px-4">Cliente</th>
+                      <th class="py-2.5 px-3">Segmento</th>
+                      <th class="py-2.5 px-3 text-right text-teal-700">Sell In ($)</th>
+                      <th class="py-2.5 px-3 text-right text-navy-900">Sell Out ($)</th>
+                      <th class="py-2.5 px-4 text-right">Sell-Through</th>
+                    </tr>
+                  </thead>
+                  <tbody id="clientsSummaryBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+              <div class="px-5 py-3.5 border-b border-slate-100">
+                <h3 class="text-sm font-extrabold text-navy-900">Top Sucursales (Sell Out por No. Sucursal)</h3>
+              </div>
+              <div class="overflow-x-auto max-h-[500px]">
+                <table class="w-full text-left border-collapse text-xs tabular-nums">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200 sticky top-0">
+                      <th class="py-2.5 px-4">No. Sucursal · Tienda Oficial</th>
+                      <th class="py-2.5 px-3">Zona (UEN)</th>
+                      <th class="py-2.5 px-3 text-right">Piezas</th>
+                      <th class="py-2.5 px-4 text-right">Importe ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="storesRankingBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 6: MODELOS & ZONAS                               -->
+        <!-- ======================================================= -->
+        <section id="module-modelos" class="module-section hidden space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+              <div class="px-5 py-3.5 border-b border-slate-100">
+                <h3 class="text-sm font-extrabold text-navy-900">Desglose Completo por Modelo</h3>
+              </div>
+              <div class="overflow-x-auto max-h-[540px]">
+                <table class="w-full text-left border-collapse text-xs tabular-nums">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200 sticky top-0">
+                      <th class="py-2.5 px-4">Modelo</th>
+                      <th class="py-2.5 px-3 text-right text-teal-700">In Pzas</th>
+                      <th class="py-2.5 px-3 text-right text-teal-700">In ($)</th>
+                      <th class="py-2.5 px-3 text-right text-navy-900">Out Pzas</th>
+                      <th class="py-2.5 px-4 text-right text-navy-900">Out ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="modelsFullBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+              <div class="px-5 py-3.5 border-b border-slate-100">
+                <h3 class="text-sm font-extrabold text-navy-900">Desglose por Zona Comercial (UEN)</h3>
+              </div>
+              <div class="overflow-x-auto max-h-[540px]">
+                <table class="w-full text-left border-collapse text-xs tabular-nums">
+                  <thead>
+                    <tr class="bg-slate-50 text-slate-600 text-[10px] uppercase border-b border-slate-200 sticky top-0">
+                      <th class="py-2.5 px-4">Zona / UEN</th>
+                      <th class="py-2.5 px-3 text-right">Sell In ($)</th>
+                      <th class="py-2.5 px-3 text-right">Sell Out Pzas</th>
+                      <th class="py-2.5 px-4 text-right">Sell Out ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="zonesFullBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 7: CONSULTA POR FECHA                            -->
+        <!-- ======================================================= -->
+        <section id="module-explorador" class="module-section hidden space-y-4">
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-extrabold text-navy-900">Búsqueda Puntual por Fecha, Sucursal o Modelo</h3>
+                <p class="text-[11px] text-slate-500">Filtra por fecha exacta o palabra clave para consultar operaciones específicas</p>
+              </div>
+              <button onclick="exportExplorerCSV()" class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">Exportar CSV</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Fecha Específica</label>
+                <input type="date" id="explorerDate" onchange="renderExplorer()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Flujo</label>
+                <select id="explorerFlow" onchange="renderExplorer()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                  <option value="ALL">Todos (Sell In y Sell Out)</option>
+                  <option value="SELL_IN">Solo Sell In</option>
+                  <option value="SELL_OUT">Solo Sell Out</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Buscar (Sucursal, Modelo, Cliente)</label>
+                <input type="text" id="explorerSearch" oninput="renderExplorer()" placeholder="Ej. GNC, Guadalajara, Derby..." class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold" />
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="overflow-x-auto max-h-[60vh]">
+              <table class="w-full text-left border-collapse text-xs tabular-nums">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase border-b border-slate-200 sticky top-0">
+                    <th class="py-2.5 px-4">Fecha</th>
+                    <th class="py-2.5 px-3">Flujo</th>
+                    <th class="py-2.5 px-3">Cliente</th>
+                    <th class="py-2.5 px-3">Sucursal / Tienda</th>
+                    <th class="py-2.5 px-3">Zona (UEN)</th>
+                    <th class="py-2.5 px-3">Modelo / Medida</th>
+                    <th class="py-2.5 px-3 text-right">Piezas</th>
+                    <th class="py-2.5 px-4 text-right">Importe ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="explorerTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+            <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between">
+              <span id="explorerCountInfo">0 registros mostrados</span>
+              <span>Máximo 300 filas en vista previa (usa Exportar CSV para el total)</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- MÓDULO 8: CARGAR EXCEL (.XLSX)                          -->
+        <!-- ======================================================= -->
+        <section id="module-excel" class="module-section hidden space-y-4">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="text-base font-black text-navy-900">Cargar Información Real desde Excel (.xlsx)</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (No. Sucursal + UEN), <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas).</p>
+              </div>
+              <button onclick="clearSavedDatabase()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
+                Limpiar Base Guardada
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+              <label class="flex items-start gap-2.5 cursor-pointer">
+                <input type="radio" name="excelImportMode" value="replace" checked class="mt-1 accent-teal-600" />
+                <div>
+                  <span class="block text-xs font-extrabold text-navy-900">Reemplazar base completa</span>
+                  <span class="block text-[11px] text-slate-500">Sustituye los registros actuales por los del Excel seleccionado.</span>
+                </div>
+              </label>
+              <label class="flex items-start gap-2.5 cursor-pointer">
+                <input type="radio" name="excelImportMode" value="append" class="mt-1 accent-teal-600" />
+                <div>
+                  <span class="block text-xs font-extrabold text-navy-900">Anexar / Alimentar nuevo cliente</span>
+                  <span class="block text-[11px] text-slate-500">Suma los datos del Excel a los clientes que ya están cargados.</span>
+                </div>
+              </label>
+            </div>
+
+            <label class="block border-2 border-dashed border-slate-300 hover:border-teal-500 hover:bg-teal-50/30 rounded-2xl p-8 text-center cursor-pointer transition">
+              <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" onchange="handleMainExcelFile(event)" class="hidden" />
+              <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_4.xlsx)</p>
+              <p class="text-xs text-slate-500 mt-1">Procesa automáticamente todas las pestañas de Sell In, Sell Out y Directorio de tiendas</p>
+            </label>
+
+            <!-- Panel de Diagnóstico y Botón de Aplicar -->
+            <div id="excelStatusPanel" class="hidden rounded-2xl bg-slate-900 text-white p-5 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p id="excelStatusHeadline" class="text-sm font-extrabold text-teal-300">Archivo analizado</p>
+                  <p id="excelStatusSummary" class="text-xs text-slate-300 mt-0.5"></p>
+                </div>
+                <button onclick="commitStagedExcel()" class="px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-navy-950 text-xs font-black shadow-md transition">
+                  Aplicar y Actualizar Dashboard
+                </button>
+              </div>
+              <pre id="excelDiagOutput" class="bg-black/40 border border-slate-700 rounded-xl p-3 text-[11px] text-slate-200 whitespace-pre-wrap font-mono overflow-x-auto"></pre>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast de Notificaciones -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
+
+  <!-- ========================================================= -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.2)              -->
+  <!-- ========================================================= -->
+  <script>
+    // ---------------------------------------------------------
+    // 1. USUARIOS AUTORIZADOS Y SESIÓN
+    // ---------------------------------------------------------
+    const AUTHORIZED_USERS = [
+      { user: 'VENTAS1.MOSS',  pass: 'America.24$',   role: 'Direccion/Ejecutivo', cred: '3001', name: 'MOSSES AVILA',     canEdit: true },
+      { user: 'ADMIN1.MOSS',   pass: 'America.24$',   role: 'Administrador',       cred: '9999', name: 'ADMINISTRADOR',    canEdit: true },
+      { user: 'GERENTE1.DANY', pass: 'America.2026$', role: 'Direccion/Ejecutivo', cred: '3001', name: 'DANIEL OCHOA',     canEdit: true },
+      { user: 'DIREC1.TEMOC',  pass: 'America.2026$', role: 'Direccion/Ejecutivo', cred: '3001', name: 'CUAUTEMOC GARCÍA', canEdit: true },
+      { user: 'SUPER1.ISRAEL', pass: 'America.2026$', role: 'Supervisor',          cred: '2001', name: 'ISRAEL SOLANO',    canEdit: false },
+      { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',          cred: '2001', name: 'JONATHAN MORALES', canEdit: false }
+    ];
+
+    const SESSION_KEY = 'colchoboard_session_v32';
+    const SHARE_STORAGE_KEY = 'colchoboard_share_history_v1';
+    let currentUser = null;
+    let activeModule = 'resumen';
+    let allRecords = [];
+    let stagedRecords = [];
+    let chartInstances = {};
+    let deferredInstallPrompt = null;
+
+    const fmtMXN = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+    const fmtInt = new Intl.NumberFormat('es-MX', { maximumFractionDigits: 0 });
+    const MONTH_NAMES_ES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const MONTH_SHORT_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+    function getFallbackAppIconSvg(sizeCls = 'w-10 h-10') {
+      return `<svg class="${sizeCls}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" rx="28" fill="#0F1419"/><rect x="26" y="22" width="68" height="54" rx="14" fill="none" stroke="#E2E8F0" stroke-width="3.5"/><rect x="36" y="54" width="9" height="18" rx="2" fill="#E2E8F0"/><rect x="49" y="47" width="9" height="25" rx="2" fill="#E2E8F0"/><rect x="62" y="41" width="9" height="31" rx="2" fill="#E2E8F0"/><rect x="75" y="35" width="9" height="37" rx="2" fill="#E2E8F0"/><path d="M36 50 L53 40 L67 43 L82 30" fill="none" stroke="#14B8A6" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 74 L36 63 L84 63 L98 74 Q102 77 102 82 L102 90 Q102 96 94 96 L26 96 Q18 96 18 90 L18 82 Q18 77 22 74 Z" fill="#FFFFFF"/><rect x="18" y="78" width="84" height="16" rx="6" fill="#1E293B" stroke="#FFFFFF" stroke-width="2.5"/><rect x="20" y="84" width="80" height="4" fill="#14B8A6"/></svg>`;
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      if (!box) return;
+      box.textContent = msg;
+      box.classList.remove('hidden');
+      clearTimeout(box._timer);
+      box._timer = setTimeout(() => box.classList.add('hidden'), 3600);
     }
 
     // ---------------------------------------------------------
-    // 5.2 MÓDULO SCORECARD COMERCIAL (2022 - AÑO ACTUAL)
+    // 2. INDEXEDDB PARA ALMACENAR HISTÓRICOS GRANDES SIN LÍMITE
     // ---------------------------------------------------------
-    const MONTH_SHORT_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const IDB_NAME = 'ColchoBoardDB';
+    const IDB_STORE = 'datasets';
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveRecordsToDB(records) {
+      try {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(records, 'main_records');
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (e) {
+        console.warn('Error guardando en IndexedDB:', e);
+      }
+    }
+
+    async function loadRecordsFromDB() {
+      try {
+        const db = await openDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get('main_records');
+          req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : []);
+          req.onerror = () => resolve([]);
+        });
+      } catch (e) {
+        return [];
+      }
+    }
+
+    async function clearSavedDatabase() {
+      allRecords = [];
+      stagedRecords = [];
+      await saveRecordsToDB([]);
+      populateFilterDropdowns();
+      renderActiveModule();
+      showToast('Base de datos limpiada correctamente');
+    }
+
+    // ---------------------------------------------------------
+    // 3. AUTENTICACIÓN Y NAVEGACIÓN
+    // ---------------------------------------------------------
+    function togglePasswordVisibility() {
+      const inp = document.getElementById('loginPassword');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUsername').value.trim().toUpperCase();
+      const p = document.getElementById('loginPassword').value.trim();
+      const found = AUTHORIZED_USERS.find(acc => acc.user.toUpperCase() === u && acc.pass === p);
+      const errBox = document.getElementById('loginErrorBox');
+      if (!found) {
+        errBox.classList.remove('hidden');
+        return;
+      }
+      errBox.classList.add('hidden');
+      currentUser = found;
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(found));
+      enterAppSession(found);
+    }
+
+    function enterAppSession(user) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      const shell = document.getElementById('appShell');
+      shell.classList.remove('hidden');
+      shell.classList.add('flex');
+
+      document.getElementById('sidebarUserBadge').textContent = user.role;
+      document.getElementById('sidebarUserCred').textContent = `CRED: ${user.cred}`;
+      document.getElementById('sidebarUserName').textContent = user.name;
+      document.getElementById('sidebarUserLogin').textContent = user.user;
+
+      const adminBlock = document.getElementById('adminNavBlock');
+      const headerExcel = document.getElementById('headerExcelBtn');
+      if (!user.canEdit) {
+        adminBlock.classList.add('hidden');
+        headerExcel.classList.add('hidden');
+      } else {
+        adminBlock.classList.remove('hidden');
+        headerExcel.classList.remove('hidden');
+      }
+
+      populateFilterDropdowns();
+      initShareModuleUI();
+      renderActiveModule();
+    }
+
+    function logoutUser() {
+      sessionStorage.removeItem(SESSION_KEY);
+      currentUser = null;
+      toggleSnapshotMode(false);
+      document.getElementById('appShell').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('flex');
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebarOverlay');
+      sb.classList.toggle('-translate-x-full');
+      ov.classList.toggle('hidden');
+    }
+
+    function toggleSnapshotMode(enable) {
+      if (enable) {
+        document.body.classList.add('snapshot-mode');
+        showToast('Modo Captura activo: toma screenshot limpio para WhatsApp');
+      } else {
+        document.body.classList.remove('snapshot-mode');
+      }
+    }
+
+    function switchModule(mod) {
+      activeModule = mod;
+      document.querySelectorAll('.module-section').forEach(s => s.classList.add('hidden'));
+      const target = document.getElementById(`module-${mod}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        if (b.dataset.nav === mod) b.classList.add('tab-active');
+        else b.classList.remove('tab-active');
+      });
+
+      const titles = {
+        resumen: ['Carátula Ejecutiva', 'Consulta Real Sell In y Sell Out • MXN'],
+        scorecard: ['Scorecard Comercial', 'Histórico mensual 2022 - Actual • 1H, 2H, Total, Acumulado YTD y Ticket Promedio'],
+        share: ['Share x Marca', 'Participación de mercado por marca • Plantilla Ejecutiva 16:9'],
+        pivote: ['Matriz Dinámica BI', 'Cruces interactivos por Cliente, Modelo, Medida, Zona, Sucursal, Mes y Año'],
+        clientes: ['Clientes & Tiendas', 'Desempeño por cliente y ranking por No. de Sucursal'],
+        modelos: ['Modelos & Zonas', 'Distribución detallada por zona geográfica (UEN) y portafolio'],
+        explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, sucursal o modelo'],
+        excel: ['Cargar Excel', 'Actualización real desde pestañas SELL IN, SELL OUT y Directorio de tiendas']
+      };
+      const meta = titles[mod] || titles.resumen;
+      document.getElementById('moduleTitle').textContent = meta[0];
+      document.getElementById('moduleSubtitle').textContent = meta[1];
+
+      // Ocultar barra de filtros globales en Share y Excel para mayor limpieza
+      const filtersBar = document.getElementById('filtersBar');
+      if (mod === 'share' || mod === 'excel') filtersBar.classList.add('hidden');
+      else filtersBar.classList.remove('hidden');
+
+      if (window.innerWidth < 1024) {
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+        document.getElementById('sidebarOverlay').classList.add('hidden');
+      }
+
+      renderActiveModule();
+    }
+
+    // ---------------------------------------------------------
+    // 4. FILTROS GLOBALES Y UTILIDADES
+    // ---------------------------------------------------------
+    function normalizeText(str) {
+      return String(str ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
+    function populateFilterDropdowns() {
+      document.getElementById('sidebarRecordCount').textContent = fmtInt.format(allRecords.length);
+
+      const years = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => b - a);
+      const clients = [...new Set(allRecords.map(r => r.client).filter(Boolean))].sort();
+      const zones = [...new Set(allRecords.map(r => r.zone).filter(Boolean))].sort();
+
+      const selY = document.getElementById('filterYear');
+      const prevY = selY.value;
+      selY.innerHTML = `<option value="ALL">Año: Todos</option>` + years.map(y => `<option value="${y}">Año: ${y}</option>`).join('');
+      if (years.includes(Number(prevY))) selY.value = prevY;
+      else if (years.length) selY.value = String(years[0]);
+
+      const selC = document.getElementById('filterClient');
+      const prevC = selC.value;
+      selC.innerHTML = `<option value="ALL">Cliente: Todos</option>` + clients.map(c => `<option value="${c}">${c}</option>`).join('');
+      if (clients.includes(prevC)) selC.value = prevC;
+
+      const selZ = document.getElementById('filterZone');
+      const prevZ = selZ.value;
+      selZ.innerHTML = `<option value="ALL">Zona (UEN): Todas</option>` + zones.map(z => `<option value="${z}">${z}</option>`).join('');
+      if (zones.includes(prevZ)) selZ.value = prevZ;
+    }
+
+    function getGlobalFilters() {
+      return {
+        year: document.getElementById('filterYear').value,
+        month: document.getElementById('filterMonth').value,
+        segment: document.getElementById('filterSegment').value,
+        client: document.getElementById('filterClient').value,
+        zone: document.getElementById('filterZone').value
+      };
+    }
+
+    function getFilteredRecords(overrides = {}) {
+      const f = { ...getGlobalFilters(), ...overrides };
+      return allRecords.filter(r => {
+        if (f.year !== 'ALL' && String(r.year) !== String(f.year)) return false;
+        if (f.month !== 'ALL' && String(r.month) !== String(f.month)) return false;
+        if (f.segment !== 'ALL' && r.segment !== f.segment) return false;
+        if (f.client !== 'ALL' && r.client !== f.client) return false;
+        if (f.zone !== 'ALL' && r.zone !== f.zone) return false;
+        return true;
+      });
+    }
+
+    function applyGlobalFilters() {
+      renderActiveModule();
+    }
+
+    function resetGlobalFilters() {
+      const years = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018))].sort((a, b) => b - a);
+      document.getElementById('filterYear').value = years.length ? String(years[0]) : 'ALL';
+      document.getElementById('filterMonth').value = 'ALL';
+      document.getElementById('filterSegment').value = 'ALL';
+      document.getElementById('filterClient').value = 'ALL';
+      document.getElementById('filterZone').value = 'ALL';
+      renderActiveModule();
+      showToast('Filtros restablecidos');
+    }
+
+    function renderActiveModule() {
+      const emptyBanner = document.getElementById('emptyDataBanner');
+      if (allRecords.length === 0 && activeModule !== 'excel' && activeModule !== 'share') {
+        emptyBanner.classList.remove('hidden');
+      } else {
+        emptyBanner.classList.add('hidden');
+      }
+
+      const f = getGlobalFilters();
+      const pill = document.getElementById('headerPeriodPill');
+      if (allRecords.length === 0) {
+        pill.textContent = 'Sin datos cargados';
+      } else {
+        const yTxt = f.year === 'ALL' ? 'Histórico' : f.year;
+        const mTxt = f.month === 'ALL' ? 'Todo el año' : MONTH_NAMES_ES[Number(f.month)];
+        pill.textContent = `${mTxt} ${yTxt}`;
+      }
+
+      if (activeModule === 'resumen') renderCoverModule();
+      else if (activeModule === 'scorecard') renderScorecardModule();
+      else if (activeModule === 'share') renderShareSlide();
+      else if (activeModule === 'pivote') renderPivotMaster();
+      else if (activeModule === 'clientes') renderClientsModule();
+      else if (activeModule === 'modelos') renderZonesModule();
+      else if (activeModule === 'explorador') renderExplorer();
+    }
+
+    // ---------------------------------------------------------
+    // 5. PLUGIN DE GRÁFICAS DE DONA CON PORCENTAJES VISIBLES
+    // ---------------------------------------------------------
+    const donutPercentPlugin = {
+      id: 'donutPercentPlugin',
+      afterDatasetsDraw(chart) {
+        const opts = chart.options.plugins?.donutPercentPlugin;
+        if (!opts || !opts.enabled) return;
+        const { ctx } = chart;
+        const ds = chart.data.datasets[0];
+        const meta = chart.getDatasetMeta(0);
+        if (!ds || !meta || !meta.data.length) return;
+
+        const total = ds.data.reduce((a, b) => a + Math.max(0, Number(b) || 0), 0);
+        if (total <= 0) return;
+
+        ctx.save();
+        meta.data.forEach((arc, i) => {
+          const val = Math.max(0, Number(ds.data[i]) || 0);
+          if (val <= 0) return;
+          const pct = (val / total) * 100;
+          const rounded = Math.round(pct);
+          const angle = (arc.startAngle + arc.endAngle) / 2;
+
+          if (opts.mode === 'share') {
+            // Reglas estrictas para Share x Marca
+            const brandMeta = opts.brandMeta ? opts.brandMeta[i] : null;
+            if (pct >= 3.2) {
+              const r = (arc.innerRadius + arc.outerRadius) / 2;
+              const x = arc.x + Math.cos(angle) * r;
+              const y = arc.y + Math.sin(angle) * r;
+              ctx.font = '800 16px Inter, sans-serif';
+              ctx.fillStyle = brandMeta && brandMeta.darkText ? '#0B1E40' : '#FFFFFF';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(`${rounded}%`, x, y);
+            } else {
+              // Porcentaje pequeño fuera de la dona
+              const rOut = arc.outerRadius + 16;
+              const x = arc.x + Math.cos(angle) * rOut;
+              const y = arc.y + Math.sin(angle) * rOut;
+              ctx.font = '800 14px Inter, sans-serif';
+              ctx.fillStyle = brandMeta ? brandMeta.color : '#0B1E40';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(`${rounded}%`, x, y);
+            }
+          } else {
+            // Donas de Carátula Ejecutiva
+            if (pct >= 5) {
+              const r = (arc.innerRadius + arc.outerRadius) / 2;
+              const x = arc.x + Math.cos(angle) * r;
+              const y = arc.y + Math.sin(angle) * r;
+              ctx.font = '800 11px Inter, sans-serif';
+              ctx.fillStyle = '#FFFFFF';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(`${rounded}%`, x, y);
+            }
+          }
+        });
+
+        // Texto al centro de la dona
+        const cx = meta.data[0].x;
+        const cy = meta.data[0].y;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        if (opts.mode === 'share') {
+          ctx.font = '800 13px Inter, sans-serif';
+          ctx.fillStyle = '#0B1E40';
+          ctx.fillText('TOTAL MERCADO', cx, cy - 28);
+
+          ctx.font = '900 22px Inter, sans-serif';
+          ctx.fillStyle = '#0866CC';
+          ctx.fillText(fmtMXN.format(total), cx, cy + 2);
+
+          ctx.font = '800 16px Inter, sans-serif';
+          ctx.fillStyle = '#64748B';
+          ctx.fillText('100%', cx, cy + 32);
+        } else {
+          ctx.font = '700 10px Inter, sans-serif';
+          ctx.fillStyle = opts.dark ? '#94A3B8' : '#64748B';
+          ctx.fillText('TOTAL', cx, cy - 10);
+
+          ctx.font = '900 13px Inter, sans-serif';
+          ctx.fillStyle = opts.dark ? '#FFFFFF' : '#0F1E3C';
+          ctx.fillText(fmtMXN.format(total), cx, cy + 8);
+        }
+        ctx.restore();
+      }
+    };
+    Chart.register(donutPercentPlugin);
+
+    function renderChart(canvasId, config) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      if (chartInstances[canvasId]) {
+        chartInstances[canvasId].destroy();
+      }
+      chartInstances[canvasId] = new Chart(canvas.getContext('2d'), config);
+    }
+
+    // ---------------------------------------------------------
+    // 6. MÓDULO 1: CARÁTULA EJECUTIVA
+    // ---------------------------------------------------------
+    function renderCoverModule() {
+      const rows = getFilteredRecords();
+      const inRows = rows.filter(r => r.channel === 'SELL_IN');
+      const outRows = rows.filter(r => r.channel === 'SELL_OUT');
+
+      const inMxn = inRows.reduce((s, r) => s + r.amount, 0);
+      const inPcs = inRows.reduce((s, r) => s + r.units, 0);
+      const outMxn = outRows.reduce((s, r) => s + r.amount, 0);
+      const outPcs = outRows.reduce((s, r) => s + r.units, 0);
+
+      document.getElementById('kpiSellInMxn').textContent = fmtMXN.format(inMxn);
+      document.getElementById('kpiSellInPcs').textContent = fmtInt.format(inPcs);
+      document.getElementById('kpiSellOutMxn').textContent = fmtMXN.format(outMxn);
+      document.getElementById('kpiSellOutPcs').textContent = fmtInt.format(outPcs);
+
+      // Fecha de último corte
+      const sortedDates = allRecords.map(r => r.date).filter(Boolean).sort();
+      const lastDate = sortedDates.length ? sortedDates[sortedDates.length - 1] : '--';
+      document.getElementById('coverLastDateBadge').textContent = `Último corte: ${lastDate}`;
+
+      const f = getGlobalFilters();
+      document.getElementById('coverBannerSub').textContent = allRecords.length
+        ? `Cliente: ${f.client === 'ALL' ? 'Todos' : f.client} • Zona: ${f.zone === 'ALL' ? 'Todas' : f.zone} • ${f.month === 'ALL' ? 'Todo el año' : MONTH_NAMES_ES[Number(f.month)]} ${f.year === 'ALL' ? '' : f.year}`
+        : 'Carga tu archivo Excel para visualizar resultados reales';
+
+      // Agrupar por modelo (Sell In y Sell Out)
+      const groupByModel = (arr) => {
+        const map = new Map();
+        arr.forEach(r => {
+          const cur = map.get(r.model) || { amount: 0, units: 0 };
+          cur.amount += r.amount;
+          cur.units += r.units;
+          map.set(r.model, cur);
+        });
+        return [...map.entries()].map(([model, v]) => ({ model, ...v })).sort((a, b) => b.amount - a.amount);
+      };
+
+      const inModels = groupByModel(inRows).slice(0, 9);
+      const outModels = groupByModel(outRows).slice(0, 9);
+      const paletteTeal = ['#0F766E', '#14B8A6', '#0284C7', '#0EA5E9', '#1E3A8A', '#6366F1', '#F59E0B', '#64748B', '#94A3B8'];
+      const paletteNavy = ['#38BDF8', '#2DD4BF', '#60A5FA', '#818CF8', '#FBBF24', '#34D399', '#A78BFA', '#FB7185', '#94A3B8'];
+
+      renderChart('chartSellInBars', {
+        type: 'bar',
+        data: {
+          labels: inModels.map(m => m.model),
+          datasets: [{ label: 'Sell In ($)', data: inModels.map(m => m.amount), backgroundColor: '#0D9488', borderRadius: 6 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMXN.format(c.raw) } } },
+          scales: {
+            y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => `$${Math.round(v / 1000)}k` } },
+            x: { grid: { display: false }, ticks: { font: { size: 9, weight: '700' } } }
+          }
+        }
+      });
+
+      renderChart('chartSellInDonut', {
+        type: 'doughnut',
+        data: {
+          labels: inModels.filter(m => m.amount > 0).map(m => m.model),
+          datasets: [{ data: inModels.filter(m => m.amount > 0).map(m => m.amount), backgroundColor: paletteTeal, borderColor: '#FFFFFF', borderWidth: 2 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '58%',
+          plugins: {
+            donutPercentPlugin: { enabled: true, dark: false },
+            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10, weight: '600' } } },
+            tooltip: { callbacks: { label: c => ` ${c.label}: ${fmtMXN.format(c.raw)}` } }
+          }
+        }
+      });
+
+      renderChart('chartSellOutBars', {
+        type: 'bar',
+        data: {
+          labels: outModels.map(m => m.model),
+          datasets: [{ label: 'Sell Out ($)', data: outModels.map(m => m.amount), backgroundColor: '#38BDF8', borderRadius: 6 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMXN.format(c.raw) } } },
+          scales: {
+            y: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#CBD5E1', font: { size: 10 }, callback: v => `$${Math.round(v / 1000)}k` } },
+            x: { grid: { display: false }, ticks: { color: '#E2E8F0', font: { size: 9, weight: '700' } } }
+          }
+        }
+      });
+
+      renderChart('chartSellOutDonut', {
+        type: 'doughnut',
+        data: {
+          labels: outModels.filter(m => m.amount > 0).map(m => m.model),
+          datasets: [{ data: outModels.filter(m => m.amount > 0).map(m => m.amount), backgroundColor: paletteNavy, borderColor: '#0F1E3C', borderWidth: 2 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '58%',
+          plugins: {
+            donutPercentPlugin: { enabled: true, dark: true },
+            legend: { position: 'right', labels: { color: '#E2E8F0', boxWidth: 10, font: { size: 10, weight: '600' } } },
+            tooltip: { callbacks: { label: c => ` ${c.label}: ${fmtMXN.format(c.raw)}` } }
+          }
+        }
+      });
+
+      // Acumulados YoY
+      const years = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018))].sort((a, b) => a - b);
+      const currY = f.year !== 'ALL' ? Number(f.year) : (years[years.length - 1] || new Date().getFullYear());
+      const prevY = currY - 1;
+      document.getElementById('yoyYearsPill').textContent = `${prevY} vs ${currY}`;
+
+      const prevAll = getFilteredRecords({ year: String(prevY), month: 'ALL' });
+      const currAll = getFilteredRecords({ year: String(currY), month: 'ALL' });
+
+      const prevInM = prevAll.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const currInM = currAll.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const prevInP = prevAll.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
+      const currInP = currAll.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
+
+      const prevOutM = prevAll.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
+      const currOutM = currAll.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
+      const prevOutP = prevAll.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+      const currOutP = currAll.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+
+      document.getElementById('lblAcumInPrevMxn').textContent = `Acum. Sell In MXN ${prevY}`;
+      document.getElementById('lblAcumInCurrMxn').textContent = `Acum. Sell In MXN ${currY}`;
+      document.getElementById('lblAcumInPrevPcs').textContent = `Acum. Sell In PCS ${prevY}`;
+      document.getElementById('lblAcumInCurrPcs').textContent = `Acum. Sell In PCS ${currY}`;
+
+      document.getElementById('valAcumInPrevMxn').textContent = fmtMXN.format(prevInM);
+      document.getElementById('valAcumInCurrMxn').textContent = fmtMXN.format(currInM);
+      document.getElementById('valAcumInPrevPcs').textContent = fmtInt.format(prevInP);
+      document.getElementById('valAcumInCurrPcs').textContent = fmtInt.format(currInP);
+
+      const pctCalc = (c, p) => p > 0 ? `${(((c - p) / Math.abs(p)) * 100).toFixed(0)}%` : (c > 0 ? '+100%' : '0%');
+      const gInM = prevInM > 0 ? ((currInM - prevInM) / Math.abs(prevInM)) * 100 : 0;
+      const gOutM = prevOutM > 0 ? ((currOutM - prevOutM) / Math.abs(prevOutM)) * 100 : 0;
+
+      const elGIn = document.getElementById('valGrowthInMxn');
+      elGIn.textContent = pctCalc(currInM, prevInM);
+      elGIn.className = `text-lg font-black tabular-nums ${gInM >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('valGrowthInPcs').textContent = `PCS: ${pctCalc(currInP, prevInP)}`;
+
+      const elGOut = document.getElementById('valGrowthOutMxn');
+      elGOut.textContent = pctCalc(currOutM, prevOutM);
+      elGOut.className = `text-lg font-black tabular-nums ${gOutM >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('valGrowthOutPcs').textContent = `PCS: ${pctCalc(currOutP, prevOutP)}`;
+
+      // Desempeño por Zona (UEN)
+      const zoneMap = new Map();
+      (outRows.length ? outRows : rows).forEach(r => {
+        const z = r.zone || 'General';
+        zoneMap.set(z, (zoneMap.get(z) || 0) + r.amount);
+      });
+      const zoneArr = [...zoneMap.entries()].map(([z, a]) => ({ z, a })).sort((a, b) => b.a - a.a).slice(0, 8);
+      document.getElementById('topZonePill').textContent = zoneArr.length ? `Líder: ${zoneArr[0].z}` : 'Líder: --';
+
+      renderChart('chartZonesBar', {
+        type: 'bar',
+        data: {
+          labels: zoneArr.map(x => x.z),
+          datasets: [{ label: 'Venta ($)', data: zoneArr.map(x => x.a), backgroundColor: '#0F1E3C', borderRadius: 6 }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMXN.format(c.raw) } } },
+          scales: {
+            x: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 9 }, callback: v => `$${Math.round(v / 1000)}k` } },
+            y: { grid: { display: false }, ticks: { font: { size: 10, weight: '700' } } }
+          }
+        }
+      });
+
+      // Comparativo Sell Out Mismo Día Año Anterior por Modelo
+      renderSameDaySellOutTable();
+    }
+
+    function renderSameDaySellOutTable() {
+      const tbody = document.getElementById('sameDayComparisonBody');
+      const tfoot = document.getElementById('sameDayComparisonFoot');
+      const outAll = getFilteredRecords({ year: 'ALL', month: 'ALL' }).filter(r => r.channel === 'SELL_OUT');
+
+      if (!outAll.length) {
+        document.getElementById('sameDayPeriodTag').textContent = 'Sin Sell Out';
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400">Carga registros de SELL OUT para ver el comparativo mismo día año anterior.</td></tr>`;
+        tfoot.innerHTML = '';
+        return;
+      }
+
+      const maxDate = outAll.map(r => r.date).sort().pop();
+      const [yStr, mStr, dStr] = maxDate.split('-');
+      const cy = Number(yStr), cm = Number(mStr), cd = Number(dStr);
+      const py = cy - 1;
+
+      document.getElementById('sameDayPeriodTag').textContent = `1-${cd} ${MONTH_NAMES_ES[cm].toUpperCase()} (${py} vs ${cy})`;
+      document.getElementById('sameDaySubtitle').textContent = `Corte automático al ${cd} de ${MONTH_NAMES_ES[cm]} de ${cy} contra mismo periodo de ${py}`;
+      document.getElementById('thPrevPcs').textContent = `Pzas ${py}`;
+      document.getElementById('thCurrPcs').textContent = `Pzas ${cy}`;
+      document.getElementById('thPrevAmt').textContent = `Importe ${py}`;
+      document.getElementById('thCurrAmt').textContent = `Importe ${cy}`;
+
+      const map = new Map();
+      outAll.forEach(r => {
+        if (r.month !== cm || r.day > cd) return;
+        if (r.year !== cy && r.year !== py) return;
+        const entry = map.get(r.model) || { pPcs: 0, cPcs: 0, pAmt: 0, cAmt: 0 };
+        if (r.year === py) { entry.pPcs += r.units; entry.pAmt += r.amount; }
+        else { entry.cPcs += r.units; entry.cAmt += r.amount; }
+        map.set(r.model, entry);
+      });
+
+      const list = [...map.entries()].map(([model, v]) => ({ model, ...v })).sort((a, b) => b.cAmt - a.cAmt || b.pAmt - a.pAmt);
+      let tPP = 0, tCP = 0, tPA = 0, tCA = 0;
+
+      const fmtTrend = (c, p) => {
+        if (p === 0 && c === 0) return '<span class="text-slate-400">0%</span>';
+        if (p === 0) return '<span class="text-emerald-700 font-extrabold">▲ +100%</span>';
+        const pct = ((c - p) / Math.abs(p)) * 100;
+        return pct >= 0
+          ? `<span class="text-emerald-700 font-extrabold">▲ ${pct.toFixed(0)}%</span>`
+          : `<span class="text-rose-600 font-extrabold">▼ ${pct.toFixed(0)}%</span>`;
+      };
+
+      tbody.innerHTML = list.map(r => {
+        tPP += r.pPcs; tCP += r.cPcs; tPA += r.pAmt; tCA += r.cAmt;
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-extrabold text-navy-900">${r.model}</td>
+            <td class="py-2 px-3 text-right text-slate-600">${r.pPcs ? fmtInt.format(r.pPcs) : '—'}</td>
+            <td class="py-2 px-3 text-right font-bold text-navy-900">${r.cPcs ? fmtInt.format(r.cPcs) : '—'}</td>
+            <td class="py-2 px-3 text-right">${fmtTrend(r.cPcs, r.pPcs)}</td>
+            <td class="py-2 px-3 text-right text-slate-600">${r.pAmt ? fmtMXN.format(r.pAmt) : '—'}</td>
+            <td class="py-2 px-3 text-right font-bold text-navy-900">${r.cAmt ? fmtMXN.format(r.cAmt) : '—'}</td>
+            <td class="py-2 px-4 text-right">${fmtTrend(r.cAmt, r.pAmt)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      tfoot.innerHTML = `
+        <tr>
+          <td class="py-2.5 px-4 uppercase">Total General</td>
+          <td class="py-2.5 px-3 text-right">${fmtInt.format(tPP)}</td>
+          <td class="py-2.5 px-3 text-right">${fmtInt.format(tCP)}</td>
+          <td class="py-2.5 px-3 text-right text-teal-300">${tPP > 0 ? `${(((tCP - tPP) / tPP) * 100).toFixed(0)}%` : '100%'}</td>
+          <td class="py-2.5 px-3 text-right">${fmtMXN.format(tPA)}</td>
+          <td class="py-2.5 px-3 text-right">${fmtMXN.format(tCA)}</td>
+          <td class="py-2.5 px-4 text-right text-teal-300">${tPA > 0 ? `${(((tCA - tPA) / tPA) * 100).toFixed(0)}%` : '100%'}</td>
+        </tr>
+      `;
+    }
+
+    // ---------------------------------------------------------
+    // 7. MÓDULO 2: SCORECARD COMERCIAL
+    // ---------------------------------------------------------
     let lastScorecardExportRows = [];
 
     function renderScorecardModule() {
       const container = document.getElementById('scorecardTablesContainer');
       if (!container) return;
 
-      // Filtramos respetando Cliente, Segmento y Zona (pero incluyendo TODOS los años y meses para la película completa)
-      const allRows = getFilteredRecords({ year: 'ALL', month: 'ALL' });
-      if (!allRows.length) {
+      const rows = getFilteredRecords({ year: 'ALL', month: 'ALL' });
+      if (!rows.length) {
         container.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center text-xs text-slate-400 border border-slate-200">Carga tu archivo Excel para generar automáticamente el Scorecard comercial.</div>`;
         lastScorecardExportRows = [];
         return;
       }
 
-      const years = [...new Set(allRows.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => a - b);
+      const years = [...new Set(rows.map(r => r.year).filter(y => y >= 2018 && y <= 2100))].sort((a, b) => a - b);
       const currYear = years[years.length - 1];
       const prevYear = years.includes(currYear - 1) ? currYear - 1 : (years.length > 1 ? years[years.length - 2] : currYear - 1);
-
       document.getElementById('scYearRangeBadge').textContent = `${years[0]} - ${currYear}`;
 
-      // Construir agregados por [canal][año][mes]
       const agg = { SELL_IN: {}, SELL_OUT: {} };
       years.forEach(y => {
         agg.SELL_IN[y] = Array.from({ length: 13 }, () => ({ units: 0, amount: 0 }));
         agg.SELL_OUT[y] = Array.from({ length: 13 }, () => ({ units: 0, amount: 0 }));
       });
 
-      allRows.forEach(r => {
+      rows.forEach(r => {
         const ch = r.channel === 'SELL_IN' ? 'SELL_IN' : 'SELL_OUT';
         if (!agg[ch][r.year]) return;
         const m = r.month >= 1 && r.month <= 12 ? r.month : 1;
@@ -144,8 +1702,7 @@
         agg[ch][r.year][m].amount += r.amount;
       });
 
-      // Detectar último mes con dato del año actual por canal para el cálculo de "Acumulado" (YTD comparable)
-      const getLastActiveMonth = (ch) => {
+      const getLastMonth = (ch) => {
         const arr = agg[ch][currYear] || [];
         let lastM = 0;
         for (let m = 1; m <= 12; m++) {
@@ -153,178 +1710,128 @@
         }
         return lastM || 12;
       };
+      const lastIn = getLastMonth('SELL_IN');
+      const lastOut = getLastMonth('SELL_OUT');
 
-      const lastMonthIn = getLastActiveMonth('SELL_IN');
-      const lastMonthOut = getLastActiveMonth('SELL_OUT');
-
-      // Calcular Objetivos Superiores (Base: Sell In Año Anterior * (1 + Meta %))
       const targetPct = parseFloat(document.getElementById('scGrowthTargetPct')?.value || '25') || 25;
-      const sumYear = (ch, yr, field, maxM = 12) => {
+      const sumYr = (ch, yr, f) => {
         const arr = agg[ch][yr];
         if (!arr) return 0;
         let s = 0;
-        for (let m = 1; m <= maxM; m++) s += arr[m][field];
+        for (let m = 1; m <= 12; m++) s += arr[m][f];
         return s;
       };
 
-      const prevInAmtTotal = sumYear('SELL_IN', prevYear, 'amount', 12);
-      const currInAmtTotal = sumYear('SELL_IN', currYear, 'amount', 12);
-      const prevInPcsTotal = sumYear('SELL_IN', prevYear, 'units', 12);
-      const currInPcsTotal = sumYear('SELL_IN', currYear, 'units', 12);
+      const prevInAmt = sumYr('SELL_IN', prevYear, 'amount');
+      const currInAmt = sumYr('SELL_IN', currYear, 'amount');
+      const prevInPcs = sumYr('SELL_IN', prevYear, 'units');
+      const currInPcs = sumYr('SELL_IN', currYear, 'units');
 
-      const objMxn = prevInAmtTotal * (1 + targetPct / 100);
-      const objPcs = Math.round(prevInPcsTotal * (1 + targetPct / 100));
-      const avanceMxn = objMxn > 0 ? (currInAmtTotal / objMxn) * 100 : 0;
-      const avancePcs = objPcs > 0 ? (currInPcsTotal / objPcs) * 100 : 0;
-      const difMxn = Math.max(0, objMxn - currInAmtTotal);
-      const difPcs = Math.max(0, objPcs - currInPcsTotal);
+      const objMxn = prevInAmt * (1 + targetPct / 100);
+      const objPcs = Math.round(prevInPcs * (1 + targetPct / 100));
+      const avMxn = objMxn > 0 ? (currInAmt / objMxn) * 100 : 0;
+      const avPcs = objPcs > 0 ? (currInPcs / objPcs) * 100 : 0;
 
       document.getElementById('scLblObjMxn').textContent = `OBJETIVO ${currYear} MXN (+${targetPct}%)`;
       document.getElementById('scValObjMxn').textContent = fmtMXN.format(objMxn);
-      document.getElementById('scValAvanceMxn').textContent = `${avanceMxn.toFixed(0)}%`;
-      document.getElementById('scValDifMxn').textContent = fmtMXN.format(difMxn);
+      document.getElementById('scValAvanceMxn').textContent = `${avMxn.toFixed(0)}%`;
+      document.getElementById('scValDifMxn').textContent = fmtMXN.format(Math.max(0, objMxn - currInAmt));
 
       document.getElementById('scLblObjPcs').textContent = `OBJETIVO ${currYear} PCS (+${targetPct}%)`;
       document.getElementById('scValObjPcs').textContent = fmtInt.format(objPcs);
-      document.getElementById('scValAvancePcs').textContent = `${avancePcs.toFixed(0)}%`;
-      document.getElementById('scValDifPcs').textContent = fmtInt.format(difPcs);
+      document.getElementById('scValAvancePcs').textContent = `${avPcs.toFixed(0)}%`;
+      document.getElementById('scValDifPcs').textContent = fmtInt.format(Math.max(0, objPcs - currInPcs));
 
       lastScorecardExportRows = [
-        [`SCORECARD COMERCIAL COLCHONES AMÉRICA (${years[0]}-${currYear})`, `Meta Crecimiento: ${targetPct}%`],
-        ['Objetivo MXN', Math.round(objMxn), 'Avance MXN', `${avanceMxn.toFixed(1)}%`, 'Objetivo PCS', objPcs, 'Avance PCS', `${avancePcs.toFixed(1)}%`],
+        [`SCORECARD COMERCIAL (${years[0]}-${currYear})`, `Meta: +${targetPct}%`],
         []
       ];
 
-      const fmtDifHtml = (curr, prev, darkBg = false) => {
-        if (prev === 0 && curr === 0) return `<span class="text-slate-400">—</span>`;
-        if (prev === 0) return `<span class="${darkBg ? 'text-emerald-300' : 'text-emerald-700'} font-extrabold">+100%</span>`;
-        const pct = ((curr - prev) / Math.abs(prev)) * 100;
-        const colorCls = pct >= 0
-          ? (darkBg ? 'text-emerald-300' : 'text-teal-700')
-          : (darkBg ? 'text-rose-300' : 'text-rose-600');
-        return `<span class="${colorCls} font-extrabold">${pct > 0 ? '+' : ''}${pct.toFixed(0)}%</span>`;
+      const fmtDif = (c, p, dark = false) => {
+        if (p === 0 && c === 0) return '<span class="text-slate-400">—</span>';
+        if (p === 0) return `<span class="${dark ? 'text-emerald-300' : 'text-emerald-700'} font-extrabold">+100%</span>`;
+        const pct = ((c - p) / Math.abs(p)) * 100;
+        const cls = pct >= 0 ? (dark ? 'text-emerald-300' : 'text-teal-700') : (dark ? 'text-rose-300' : 'text-rose-600');
+        return `<span class="${cls} font-extrabold">${pct > 0 ? '+' : ''}${pct.toFixed(0)}%</span>`;
       };
 
-      const buildScorecardBlock = ({ title, channel, field, isCurrency, headerBg, includeTicket, lastActiveMonth }) => {
-        const formatVal = (v) => {
-          if (v === 0) return '<span class="text-slate-300">—</span>';
-          return isCurrency ? fmtMXN.format(v) : fmtInt.format(v);
-        };
+      const buildBlock = ({ title, channel, field, isCur, headerBg, withTicket, lastM }) => {
+        const fv = v => v === 0 ? '<span class="text-slate-300">—</span>' : (isCur ? fmtMXN.format(v) : fmtInt.format(v));
+        lastScorecardExportRows.push([title, ...MONTH_SHORT_ES.slice(1), '1H', '2H', 'Total', `Acumulado (Ene-${MONTH_SHORT_ES[lastM]})`]);
 
-        lastScorecardExportRows.push([title, ...MONTH_SHORT_ES.slice(1), '1H', '2H', 'Total', `Acumulado (Ene-${MONTH_SHORT_ES[lastActiveMonth]})`]);
-
-        const rowsHtml = years.map(yr => {
+        const bodyHtml = years.map(yr => {
           const arr = agg[channel][yr];
           let h1 = 0, h2 = 0, ytd = 0;
           const cells = [];
-          const expRow = [yr];
-
+          const exp = [yr];
           for (let m = 1; m <= 12; m++) {
-            const val = arr[m][field];
-            if (m <= 6) h1 += val; else h2 += val;
-            if (m <= lastActiveMonth) ytd += val;
-            expRow.push(isCurrency ? Math.round(val) : val);
-
-            const isCurrentHighlight = (yr === currYear && m === lastActiveMonth);
-            const cellCls = isCurrentHighlight
-              ? 'bg-[#0F1E3C] text-amber-300 font-black'
-              : (yr === currYear ? 'bg-sky-50/70 font-bold text-navy-900' : 'bg-sky-50/25 text-slate-700');
-            cells.push(`<td class="py-1.5 px-2 text-right whitespace-nowrap ${cellCls}">${formatVal(val)}</td>`);
+            const v = arr[m][field];
+            if (m <= 6) h1 += v; else h2 += v;
+            if (m <= lastM) ytd += v;
+            exp.push(isCur ? Math.round(v) : v);
+            const hl = (yr === currYear && m === lastM) ? 'bg-[#0F1E3C] text-amber-300 font-black' : (yr === currYear ? 'bg-sky-50/70 font-bold text-navy-900' : 'bg-sky-50/20 text-slate-700');
+            cells.push(`<td class="py-1.5 px-2 text-right whitespace-nowrap ${hl}">${fv(v)}</td>`);
           }
-
-          const total = h1 + h2;
-          expRow.push(
-            isCurrency ? Math.round(h1) : h1,
-            isCurrency ? Math.round(h2) : h2,
-            isCurrency ? Math.round(total) : total,
-            isCurrency ? Math.round(ytd) : ytd
-          );
-          lastScorecardExportRows.push(expRow);
+          const tot = h1 + h2;
+          exp.push(isCur ? Math.round(h1) : h1, isCur ? Math.round(h2) : h2, isCur ? Math.round(tot) : tot, isCur ? Math.round(ytd) : ytd);
+          lastScorecardExportRows.push(exp);
 
           return `
-            <tr class="hover:bg-blue-50/50 transition border-b border-slate-200/70">
+            <tr class="hover:bg-blue-50/50 border-b border-slate-200/70">
               <td class="py-1.5 px-3 font-extrabold text-navy-900 bg-white sticky left-0 z-10 border-r border-slate-200">${yr}</td>
               ${cells.join('')}
-              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100/70 text-navy-900 whitespace-nowrap">${formatVal(h1)}</td>
-              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100/70 text-navy-900 whitespace-nowrap">${formatVal(h2)}</td>
-              <td class="py-1.5 px-2.5 text-right font-extrabold bg-sky-200/80 text-navy-950 whitespace-nowrap">${formatVal(total)}</td>
-              <td class="py-1.5 px-2.5 text-right font-extrabold bg-lime-200/85 text-navy-950 whitespace-nowrap">${formatVal(ytd)}</td>
+              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100/70 text-navy-900">${fv(h1)}</td>
+              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100/70 text-navy-900">${fv(h2)}</td>
+              <td class="py-1.5 px-2.5 text-right font-extrabold bg-sky-200/80 text-navy-950">${fv(tot)}</td>
+              <td class="py-1.5 px-2.5 text-right font-extrabold bg-lime-200/85 text-navy-950">${fv(ytd)}</td>
             </tr>
           `;
         }).join('');
 
-        // Fila DIF (Año Actual vs Año Anterior)
-        const currArr = agg[channel][currYear];
-        const prevArr = agg[channel][prevYear] || Array.from({ length: 13 }, () => ({ units: 0, amount: 0 }));
+        const cArr = agg[channel][currYear];
+        const pArr = agg[channel][prevYear] || Array.from({ length: 13 }, () => ({ units: 0, amount: 0 }));
         let cH1 = 0, pH1 = 0, cH2 = 0, pH2 = 0, cYtd = 0, pYtd = 0;
         const difCells = [];
-        const expDifRow = [`DIF ${currYear} vs ${prevYear}`];
-
         for (let m = 1; m <= 12; m++) {
-          const cv = currArr[m][field];
-          const pv = prevArr[m][field];
+          const cv = cArr[m][field], pv = pArr[m][field];
           if (m <= 6) { cH1 += cv; pH1 += pv; } else { cH2 += cv; pH2 += pv; }
-          if (m <= lastActiveMonth) { cYtd += cv; pYtd += pv; }
-          const pctStr = pv > 0 ? `${(((cv - pv) / Math.abs(pv)) * 100).toFixed(0)}%` : (cv > 0 ? '+100%' : '0%');
-          expDifRow.push(pctStr);
-          difCells.push(`<td class="py-1.5 px-2 text-right bg-white whitespace-nowrap">${fmtDifHtml(cv, pv, false)}</td>`);
+          if (m <= lastM) { cYtd += cv; pYtd += pv; }
+          difCells.push(`<td class="py-1.5 px-2 text-right bg-white">${fmtDif(cv, pv, false)}</td>`);
         }
 
-        const cTot = cH1 + cH2, pTot = pH1 + pH2;
-        expDifRow.push(
-          pH1 > 0 ? `${(((cH1 - pH1) / Math.abs(pH1)) * 100).toFixed(0)}%` : '0%',
-          pH2 > 0 ? `${(((cH2 - pH2) / Math.abs(pH2)) * 100).toFixed(0)}%` : '0%',
-          pTot > 0 ? `${(((cTot - pTot) / Math.abs(pTot)) * 100).toFixed(0)}%` : '0%',
-          pYtd > 0 ? `${(((cYtd - pYtd) / Math.abs(pYtd)) * 100).toFixed(0)}%` : '0%'
-        );
-        lastScorecardExportRows.push(expDifRow);
-
-        const difRowHtml = `
+        const difHtml = `
           <tr class="border-t border-slate-300 text-[11px]">
             <td class="py-1.5 px-3 font-black text-slate-600 bg-slate-50 sticky left-0 z-10 border-r border-slate-200">DIF</td>
             ${difCells.join('')}
-            <td class="py-1.5 px-2.5 text-right bg-[#081226] whitespace-nowrap">${fmtDifHtml(cH1, pH1, true)}</td>
-            <td class="py-1.5 px-2.5 text-right bg-[#081226] whitespace-nowrap">${fmtDifHtml(cH2, pH2, true)}</td>
-            <td class="py-1.5 px-2.5 text-right bg-[#0F1E3C] whitespace-nowrap">${fmtDifHtml(cTot, pTot, true)}</td>
-            <td class="py-1.5 px-2.5 text-right bg-sky-300/80 whitespace-nowrap">${fmtDifHtml(cYtd, pYtd, false)}</td>
+            <td class="py-1.5 px-2.5 text-right bg-[#081226]">${fmtDif(cH1, pH1, true)}</td>
+            <td class="py-1.5 px-2.5 text-right bg-[#081226]">${fmtDif(cH2, pH2, true)}</td>
+            <td class="py-1.5 px-2.5 text-right bg-[#0F1E3C]">${fmtDif(cH1 + cH2, pH1 + pH2, true)}</td>
+            <td class="py-1.5 px-2.5 text-right bg-sky-300/80">${fmtDif(cYtd, pYtd, false)}</td>
           </tr>
         `;
 
-        // Fila Ticket Promedio (solo para tablas de Importes)
-        let ticketRowHtml = '';
-        if (includeTicket) {
-          let tH1A = 0, tH1U = 0, tH2A = 0, tH2U = 0, tYtdA = 0, tYtdU = 0;
+        let ticketHtml = '';
+        if (withTicket) {
+          let t1A = 0, t1U = 0, t2A = 0, t2U = 0, tyA = 0, tyU = 0;
           const tCells = [];
-          const expTicketRow = [`Ticket Promedio ${currYear}`];
-
           for (let m = 1; m <= 12; m++) {
-            const a = currArr[m].amount;
-            const u = currArr[m].units;
-            if (m <= 6) { tH1A += a; tH1U += u; } else { tH2A += a; tH2U += u; }
-            if (m <= lastActiveMonth) { tYtdA += a; tYtdU += u; }
+            const a = cArr[m].amount, u = cArr[m].units;
+            if (m <= 6) { t1A += a; t1U += u; } else { t2A += a; t2U += u; }
+            if (m <= lastM) { tyA += a; tyU += u; }
             const tk = u > 0 ? a / u : 0;
-            expTicketRow.push(Math.round(tk));
-            tCells.push(`<td class="py-1.5 px-2 text-right font-semibold text-navy-900 bg-slate-100/90 whitespace-nowrap">${tk > 0 ? fmtMXN.format(tk) : '—'}</td>`);
+            tCells.push(`<td class="py-1.5 px-2 text-right font-semibold text-navy-900 bg-slate-100/90">${tk > 0 ? fmtMXN.format(tk) : '—'}</td>`);
           }
-          const tkH1 = tH1U > 0 ? tH1A / tH1U : 0;
-          const tkH2 = tH2U > 0 ? tH2A / tH2U : 0;
-          const tkTot = (tH1U + tH2U) > 0 ? (tH1A + tH2A) / (tH1U + tH2U) : 0;
-          const tkYtd = tYtdU > 0 ? tYtdA / tYtdU : 0;
-          expTicketRow.push(Math.round(tkH1), Math.round(tkH2), Math.round(tkTot), Math.round(tkYtd));
-          lastScorecardExportRows.push(expTicketRow);
-
-          ticketRowHtml = `
+          ticketHtml = `
             <tr class="border-t border-slate-200 text-[11px]">
               <td class="py-1.5 px-3 font-bold text-slate-700 bg-slate-200/80 sticky left-0 z-10 border-r border-slate-300 whitespace-nowrap">Ticket Promedio</td>
               ${tCells.join('')}
-              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100 text-navy-900 whitespace-nowrap">${tkH1 > 0 ? fmtMXN.format(tkH1) : '—'}</td>
-              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100 text-navy-900 whitespace-nowrap">${tkH2 > 0 ? fmtMXN.format(tkH2) : '—'}</td>
-              <td class="py-1.5 px-2.5 text-right font-extrabold bg-sky-300/80 text-navy-950 whitespace-nowrap">${tkTot > 0 ? fmtMXN.format(tkTot) : '—'}</td>
-              <td class="py-1.5 px-2.5 text-right font-extrabold bg-slate-200 text-navy-950 whitespace-nowrap">${tkYtd > 0 ? fmtMXN.format(tkYtd) : '—'}</td>
+              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100 text-navy-900">${t1U > 0 ? fmtMXN.format(t1A / t1U) : '—'}</td>
+              <td class="py-1.5 px-2.5 text-right font-bold bg-sky-100 text-navy-900">${t2U > 0 ? fmtMXN.format(t2A / t2U) : '—'}</td>
+              <td class="py-1.5 px-2.5 text-right font-extrabold bg-sky-300/80 text-navy-950">${(t1U + t2U) > 0 ? fmtMXN.format((t1A + t2A) / (t1U + t2U)) : '—'}</td>
+              <td class="py-1.5 px-2.5 text-right font-extrabold bg-slate-200 text-navy-950">${tyU > 0 ? fmtMXN.format(tyA / tyU) : '—'}</td>
             </tr>
           `;
         }
-
         lastScorecardExportRows.push([]);
 
         return `
@@ -338,14 +1845,10 @@
                     <th class="py-2 px-2.5 font-extrabold text-right bg-slate-300 text-navy-900">1H</th>
                     <th class="py-2 px-2.5 font-extrabold text-right bg-slate-300 text-navy-900">2H</th>
                     <th class="py-2 px-2.5 font-black text-right bg-sky-600 text-white">Total</th>
-                    <th class="py-2 px-2.5 font-black text-right bg-sky-800 text-white whitespace-nowrap" title="Acumulado Ene-${MONTH_SHORT_ES[lastActiveMonth]}">Acumulado</th>
+                    <th class="py-2 px-2.5 font-black text-right bg-sky-800 text-white whitespace-nowrap">Acumulado</th>
                   </tr>
                 </thead>
-                <tbody>
-                  ${rowsHtml}
-                  ${difRowHtml}
-                  ${ticketRowHtml}
-                </tbody>
+                <tbody>${bodyHtml}${difHtml}${ticketHtml}</tbody>
               </table>
             </div>
           </div>
@@ -353,257 +1856,1113 @@
       };
 
       container.innerHTML = [
-        buildScorecardBlock({
-          title: 'Sell In Piezas',
-          channel: 'SELL_IN',
-          field: 'units',
-          isCurrency: false,
-          headerBg: 'bg-teal-800',
-          includeTicket: false,
-          lastActiveMonth: lastMonthIn
-        }),
-        buildScorecardBlock({
-          title: 'Sell In Importes',
-          channel: 'SELL_IN',
-          field: 'amount',
-          isCurrency: true,
-          headerBg: 'bg-teal-700',
-          includeTicket: true,
-          lastActiveMonth: lastMonthIn
-        }),
-        buildScorecardBlock({
-          title: 'Sell Out Piezas',
-          channel: 'SELL_OUT',
-          field: 'units',
-          isCurrency: false,
-          headerBg: 'bg-emerald-700',
-          includeTicket: false,
-          lastActiveMonth: lastMonthOut
-        }),
-        buildScorecardBlock({
-          title: 'Sell Out Importes',
-          channel: 'SELL_OUT',
-          field: 'amount',
-          isCurrency: true,
-          headerBg: 'bg-emerald-600',
-          includeTicket: true,
-          lastActiveMonth: lastMonthOut
-        })
+        buildBlock({ title: 'Sell In Piezas', channel: 'SELL_IN', field: 'units', isCur: false, headerBg: 'bg-teal-800', withTicket: false, lastM: lastIn }),
+        buildBlock({ title: 'Sell In Importes', channel: 'SELL_IN', field: 'amount', isCur: true, headerBg: 'bg-teal-700', withTicket: true, lastM: lastIn }),
+        buildBlock({ title: 'Sell Out Piezas', channel: 'SELL_OUT', field: 'units', isCur: false, headerBg: 'bg-emerald-700', withTicket: false, lastM: lastOut }),
+        buildBlock({ title: 'Sell Out Importes', channel: 'SELL_OUT', field: 'amount', isCur: true, headerBg: 'bg-emerald-600', withTicket: true, lastM: lastOut })
       ].join('');
     }
 
     function exportScorecardToExcel() {
-      if (!lastScorecardExportRows || lastScorecardExportRows.length <= 3) {
-        showToast('No hay datos en el Scorecard para exportar');
+      if (!lastScorecardExportRows.length) return showToast('No hay datos en Scorecard para exportar');
+      const ws = XLSX.utils.aoa_to_sheet(lastScorecardExportRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Scorecard');
+      XLSX.writeFile(wb, `ColchoBoard_Scorecard_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast('Scorecard exportado a Excel');
+    }
+
+    // ---------------------------------------------------------
+    // 8. MÓDULO 3: SHARE X MARCA (PLANTILLA FIJA 16:9 OFICIAL)
+    // ---------------------------------------------------------
+    const OFFICIAL_SHARE_BRANDS = [
+      {
+        id: 'spring_air',
+        name: 'SPRING AIR',
+        color: '#0866CC',
+        textColorOnWhite: '#0866CC',
+        darkText: false,
+        aliases: ['spring air', 'spring', 'springair'],
+        logoFile: 'LOGO_SPRING AIR.png',
+        defaultVal: 16097738,
+        fallbackSvg: `<svg viewBox="0 0 100 50" class="h-8 w-auto"><path d="M50 45 L15 24 Q10 14 25 12 L75 12 Q90 14 85 24 Z" fill="#0B2D63"/><text x="50" y="25" text-anchor="middle" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="11">SPRING</text><text x="50" y="36" text-anchor="middle" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="11">AIR</text></svg>`
+      },
+      {
+        id: 'colchones_america',
+        name: 'COLCHONES AMÉRICA',
+        color: '#FFC400',
+        textColorOnWhite: '#C49000',
+        darkText: true,
+        aliases: ['colchones america', 'america', 'américa', 'colchones américa'],
+        logoFile: 'LOGO_AMERICA.png',
+        defaultVal: 4147219,
+        fallbackSvg: `<svg viewBox="0 0 110 72" class="h-9 w-auto"><rect x="4" y="4" width="102" height="64" rx="14" fill="#18181B"/><text x="55" y="22" text-anchor="middle" fill="#FFFFFF" font-family="Arial,sans-serif" font-style="italic" font-weight="900" font-size="13">Colchones</text><ellipse cx="55" cy="45" rx="41" ry="16" fill="none" stroke="#FFFFFF" stroke-width="3"/><text x="55" y="50" text-anchor="middle" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="900" font-size="13" letter-spacing="1">AMERICA</text></svg>`
+      },
+      {
+        id: 'sealy',
+        name: 'SEALY',
+        color: '#0B2D63',
+        textColorOnWhite: '#0B2D63',
+        darkText: false,
+        aliases: ['sealy'],
+        logoFile: 'LOGO_SEALY.png',
+        defaultVal: 4088459,
+        fallbackSvg: `<svg viewBox="0 0 100 60" class="h-8 w-auto"><rect x="8" y="6" width="84" height="48" rx="10" fill="#0B4F9C"/><ellipse cx="50" cy="30" rx="34" ry="18" fill="#FFFFFF"/><text x="50" y="36" text-anchor="middle" fill="#111827" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="20">Sealy</text></svg>`
+      },
+      {
+        id: 'restonic',
+        name: 'RESTONIC',
+        color: '#00A878',
+        textColorOnWhite: '#00A878',
+        darkText: false,
+        aliases: ['restonic', 'regiomontana', 'regiomontana / restonic'],
+        logoFile: 'LOGO_RESTONIC.png',
+        defaultVal: 3416247,
+        fallbackSvg: `<svg viewBox="0 0 120 40" class="h-6 w-auto"><text x="60" y="27" text-anchor="middle" fill="#0B3B66" font-family="Georgia,serif" font-weight="bold" font-size="21" letter-spacing="1">resTONIC</text></svg>`
+      },
+      {
+        id: 'therapedic',
+        name: 'THERAPEDIC',
+        color: '#793BAE',
+        textColorOnWhite: '#793BAE',
+        darkText: false,
+        aliases: ['therapedic', 'thera'],
+        logoFile: 'LOGO_THERAPEDIC.png',
+        defaultVal: 1575507,
+        fallbackSvg: `<svg viewBox="0 0 130 42" class="h-6 w-auto"><path d="M12 16 Q65 6 118 16" fill="none" stroke="#60A5FA" stroke-width="2.5"/><circle cx="98" cy="11" r="4" fill="#FACC15"/><text x="65" y="32" text-anchor="middle" fill="#0F294A" font-family="Arial,sans-serif" font-weight="900" font-size="14">THERA<tspan fill="#60A5FA">PEDIC</tspan></text></svg>`
+      },
+      {
+        id: 'blancos_milenium',
+        name: 'BLANCOS MILENIUM',
+        color: '#08BBD0',
+        textColorOnWhite: '#0891B2',
+        darkText: false,
+        aliases: ['blancos milenium', 'milenium', 'millenium'],
+        logoFile: 'LOGO_MILENIUM.png',
+        defaultVal: 1156587,
+        fallbackSvg: `<svg viewBox="0 0 120 44" class="h-7 w-auto"><path d="M22 14 Q42 5 60 14" fill="none" stroke="#38BDF8" stroke-width="3"/><path d="M60 32 Q80 40 98 32" fill="none" stroke="#0891B2" stroke-width="3"/><text x="60" y="27" text-anchor="middle" fill="#1E1B4B" font-family="Arial,sans-serif" font-weight="900" font-size="14" letter-spacing="1.5">MILENIUM</text></svg>`
+      },
+      {
+        id: 'atlas_descanso',
+        name: 'ATLAS DEL DESCANSO',
+        color: '#EF2845',
+        textColorOnWhite: '#EF2845',
+        darkText: false,
+        aliases: ['atlas del descanso', 'atlas'],
+        logoFile: 'LOGO_ATLAS DEL DESCANSO.png',
+        defaultVal: 346448,
+        fallbackSvg: `<svg viewBox="0 0 120 50" class="h-8 w-auto"><text x="60" y="26" text-anchor="middle" fill="#C8102E" font-family="Georgia,serif" font-weight="bold" font-size="22" letter-spacing="2">ATLAS</text><text x="60" y="42" text-anchor="middle" fill="#C8102E" font-family="Arial,sans-serif" font-weight="700" font-size="8" letter-spacing="1.5">— DEL DESCANSO —</text></svg>`
+      }
+    ];
+
+    let shareHistory = [];
+    let shareUiInitialized = false;
+
+    function initShareModuleUI() {
+      if (shareUiInitialized) return;
+      shareUiInitialized = true;
+
+      try {
+        const saved = localStorage.getItem(SHARE_STORAGE_KEY);
+        shareHistory = saved ? JSON.parse(saved) : [];
+      } catch (e) { shareHistory = []; }
+
+      const grid = document.getElementById('shareBrandInputsGrid');
+      grid.innerHTML = OFFICIAL_SHARE_BRANDS.map(b => `
+        <div class="flex items-center gap-2.5 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+          <span class="w-3.5 h-3.5 rounded shrink-0" style="background:${b.color}"></span>
+          <label for="shareInput_${b.id}" class="text-xs font-extrabold text-navy-900 flex-1 truncate">${b.name}</label>
+          <div class="relative w-36">
+            <span class="absolute left-2.5 top-1.5 text-xs font-bold text-slate-400">$</span>
+            <input type="number" id="shareInput_${b.id}" value="${b.defaultVal}" min="0" step="1" oninput="renderShareSlide()"
+                   class="w-full pl-6 pr-2 py-1 rounded-lg bg-white border border-slate-200 text-xs font-extrabold text-right text-navy-900 tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+      `).join('');
+
+      refreshSavedShareDropdown();
+      syncSharePeriodLabels();
+    }
+
+    function toggleShareEditorPanel() {
+      const panel = document.getElementById('shareEditorPanel');
+      const btn = document.getElementById('btnToggleShareEditor');
+      const isHidden = panel.classList.toggle('hidden');
+      btn.textContent = isHidden ? 'Mostrar Captura' : 'Ocultar Captura';
+    }
+
+    function clearShareAmounts() {
+      OFFICIAL_SHARE_BRANDS.forEach(b => {
+        const inp = document.getElementById(`shareInput_${b.id}`);
+        if (inp) inp.value = 0;
+      });
+      renderShareSlide();
+      showToast('Montos de Share reiniciados');
+    }
+
+    function formatSpanishDateParts(isoDate) {
+      if (!isoDate || !isoDate.includes('-')) return { short: '--', long: '--' };
+      const [y, m, d] = isoDate.split('-').map(Number);
+      const mShort = (MONTH_SHORT_ES[m] || '').toUpperCase();
+      const mLong = (MONTH_NAMES_ES[m] || '').toLowerCase();
+      return {
+        short: `${d} ${mShort} ${y}`,
+        long: `${d} de ${mLong} de ${y}`,
+        d, m, y, mShort
+      };
+    }
+
+    function syncSharePeriodLabels() {
+      const sIso = document.getElementById('shareStartDate').value;
+      const eIso = document.getElementById('shareEndDate').value;
+      if (sIso && eIso) {
+        const s = formatSpanishDateParts(sIso);
+        const e = formatSpanishDateParts(eIso);
+        if (s.m === e.m && s.y === e.y) {
+          document.getElementById('sharePeriodLabel').value = `${s.d}-${e.d} ${e.mShort} ${e.y}`;
+        } else {
+          document.getElementById('sharePeriodLabel').value = `${s.mShort} - ${e.mShort} ${e.y}`;
+        }
+      }
+      renderShareSlide();
+    }
+
+    function getCurrentShareEntries() {
+      return OFFICIAL_SHARE_BRANDS.map(b => {
+        const inp = document.getElementById(`shareInput_${b.id}`);
+        const val = parseFloat(inp ? inp.value : 0);
+        return { ...b, sales: isNaN(val) || val < 0 ? 0 : val };
+      });
+    }
+
+    function buildBrandLogoHtml(b) {
+      const encodedFile = encodeURIComponent(b.logoFile);
+      const fallbackEscaped = b.fallbackSvg.replace(/"/g, '&quot;');
+      return `
+        <div class="w-16 h-9 flex items-center justify-center shrink-0">
+          <img src="./${encodedFile}" alt="${b.name}" class="max-h-8 max-w-16 object-contain"
+               onerror="this.onerror=null; this.src='./logos/${encodedFile}'; this.onerror=function(){ this.outerHTML='${fallbackEscaped}'; };" />
+        </div>
+      `;
+    }
+
+    function renderShareSlide() {
+      if (!shareUiInitialized) initShareModuleUI();
+
+      const rawEntries = getCurrentShareEntries();
+      const activeEntries = rawEntries.filter(e => e.sales > 0).sort((a, b) => b.sales - a.sales);
+      const totalMarket = activeEntries.reduce((s, e) => s + e.sales, 0);
+
+      const periodLabel = (document.getElementById('sharePeriodLabel').value || 'PERIODO').trim().toUpperCase();
+      const endIso = document.getElementById('shareEndDate').value;
+      const endFmt = formatSpanishDateParts(endIso);
+
+      document.getElementById('slidePeriodSubtitle').textContent = periodLabel;
+      document.getElementById('slideCutDateText').textContent = endFmt.short;
+
+      const alertBox = document.getElementById('shareValidationAlert');
+      if (totalMarket <= 0) {
+        alertBox.textContent = 'Captura al menos un importe mayor a $0 para generar el gráfico Share x Marca.';
+        alertBox.classList.remove('hidden');
+        document.getElementById('shareRankingTableBody').innerHTML = `<tr><td colspan="3" class="py-8 text-center text-slate-400 text-xs">Sin importes capturados</td></tr>`;
         return;
       }
+      alertBox.classList.add('hidden');
+
+      const computed = activeEntries.map((e, idx) => {
+        const exactPct = (e.sales / totalMarket) * 100;
+        const visualPct = Math.round(exactPct);
+        return { ...e, rank: idx + 1, exactPct, visualPct };
+      });
+
+      // Render Dona perfectamente circular
+      renderChart('chartShareBrandDonut', {
+        type: 'doughnut',
+        data: {
+          labels: computed.map(c => c.name),
+          datasets: [{
+            data: computed.map(c => c.sales),
+            backgroundColor: computed.map(c => c.color),
+            borderColor: '#FFFFFF',
+            borderWidth: 3,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1,
+          cutout: '50%',
+          layout: { padding: 24 },
+          plugins: {
+            legend: { display: false },
+            donutPercentPlugin: { enabled: true, mode: 'share', brandMeta: computed },
+            tooltip: {
+              callbacks: {
+                label: ctx => {
+                  const item = computed[ctx.dataIndex];
+                  return ` ${item.name}: ${fmtMXN.format(item.sales)} (${item.exactPct.toFixed(2)}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Render Ranking Lateral
+      document.getElementById('shareRankingTableBody').innerHTML = computed.map(item => `
+        <tr class="hover:bg-slate-50/70 transition">
+          <td class="py-2 pl-2 pr-2">
+            <div class="flex items-center gap-3">
+              <span class="w-4 h-4 rounded-sm shrink-0" style="background:${item.color}"></span>
+              ${buildBrandLogoHtml(item)}
+              <span class="text-xs sm:text-sm font-black text-[#0B1E40] tracking-tight whitespace-nowrap">${item.name}</span>
+            </div>
+          </td>
+          <td class="py-2 px-3 text-right text-xs sm:text-sm font-extrabold text-[#0B1E40] whitespace-nowrap">${fmtMXN.format(item.sales)}</td>
+          <td class="py-2 pl-2 pr-4 text-right text-base sm:text-lg font-black whitespace-nowrap" style="color:${item.textColorOnWhite}" title="Exacto: ${item.exactPct.toFixed(2)}%">${item.visualPct}%</td>
+        </tr>
+      `).join('');
+
+      // Franja informativa inferior
+      const leader = computed[0];
+      document.getElementById('slideLeaderHeadline').textContent = `${leader.name} LIDERA EL MERCADO`;
+      document.getElementById('slideLeaderSubline').textContent = `con el ${leader.visualPct}% de participación en ventas al ${endFmt.long}.`;
+
+      // Panel analítico complementario (Colchones América + Validación + Variación pp)
+      const america = computed.find(c => c.id === 'colchones_america');
+      if (america) {
+        document.getElementById('shareAmericaPos').textContent = `#${america.rank} • ${america.exactPct.toFixed(2)}%`;
+        const gapMxn = leader.sales - america.sales;
+        document.getElementById('shareAmericaGap').textContent = america.rank === 1
+          ? 'Colchones América lidera este periodo.'
+          : `A ${fmtMXN.format(gapMxn)} (${(leader.exactPct - america.exactPct).toFixed(1)} pp) de ${leader.name}.`;
+      } else {
+        document.getElementById('shareAmericaPos').textContent = 'Sin captura';
+        document.getElementById('shareAmericaGap').textContent = 'Sin ventas registradas en este corte.';
+      }
+
+      const exactSum = computed.reduce((s, c) => s + c.exactPct, 0);
+      const roundedSum = computed.reduce((s, c) => s + c.visualPct, 0);
+      document.getElementById('shareMathCheck').textContent = `Total: ${fmtMXN.format(totalMarket)} (${exactSum.toFixed(2)}%)`;
+      document.getElementById('shareRoundedSumNote').textContent = `Suma de porcentajes visuales redondeados: ${roundedSum}%`;
+
+      renderSharePrevComparison(computed);
+    }
+
+    function saveCurrentShareReport() {
+      const entries = getCurrentShareEntries();
+      const total = entries.reduce((s, e) => s + e.sales, 0);
+      if (total <= 0) return showToast('Captura montos válidos antes de guardar');
+
+      const record = {
+        id: `sh_${Date.now()}`,
+        periodLabel: document.getElementById('sharePeriodLabel').value.trim().toUpperCase(),
+        startDate: document.getElementById('shareStartDate').value,
+        endDate: document.getElementById('shareEndDate').value,
+        reportType: document.getElementById('shareReportType').value,
+        brands: Object.fromEntries(entries.map(e => [e.id, e.sales]))
+      };
+
+      shareHistory.unshift(record);
+      localStorage.setItem(SHARE_STORAGE_KEY, JSON.stringify(shareHistory));
+      refreshSavedShareDropdown();
+      renderShareSlide();
+      showToast(`Corte "${record.periodLabel}" guardado`);
+    }
+
+    function refreshSavedShareDropdown() {
+      const sel = document.getElementById('shareSavedSelect');
+      if (!sel) return;
+      sel.innerHTML = `<option value="">— Seleccionar corte guardado (${shareHistory.length}) —</option>` +
+        shareHistory.map(h => `<option value="${h.id}">${h.periodLabel} [${h.reportType.toUpperCase()}]</option>`).join('');
+    }
+
+    function loadSavedShareReport(id) {
+      const item = shareHistory.find(h => h.id === id);
+      if (!item) return;
+      document.getElementById('shareStartDate').value = item.startDate || '';
+      document.getElementById('shareEndDate').value = item.endDate || '';
+      document.getElementById('sharePeriodLabel').value = item.periodLabel || '';
+      document.getElementById('shareReportType').value = item.reportType || 'parcial';
+      OFFICIAL_SHARE_BRANDS.forEach(b => {
+        const inp = document.getElementById(`shareInput_${b.id}`);
+        if (inp) inp.value = item.brands[b.id] || 0;
+      });
+      renderShareSlide();
+      showToast(`Corte "${item.periodLabel}" cargado`);
+    }
+
+    function buildMonthlyAccumulatedShare() {
+      const monthlyReports = shareHistory.filter(h => h.reportType === 'mensual');
+      if (!monthlyReports.length) {
+        return showToast('Guarda al menos un reporte marcado como "Cierre Mensual Definitivo"');
+      }
+
+      const totals = {};
+      const missingWarnings = [];
+      OFFICIAL_SHARE_BRANDS.forEach(b => {
+        totals[b.id] = 0;
+        let missingCount = 0;
+        monthlyReports.forEach(rep => {
+          const val = Number(rep.brands[b.id] || 0);
+          if (val <= 0) missingCount++;
+          totals[b.id] += val;
+        });
+        if (missingCount > 0 && totals[b.id] > 0) {
+          missingWarnings.push(`${b.name} (falta en ${missingCount} cierre(s))`);
+        }
+      });
+
+      OFFICIAL_SHARE_BRANDS.forEach(b => {
+        const inp = document.getElementById(`shareInput_${b.id}`);
+        if (inp) inp.value = Math.round(totals[b.id]);
+      });
+
+      const sortedByDate = [...monthlyReports].sort((a, b) => (a.endDate || '').localeCompare(b.endDate || ''));
+      document.getElementById('shareStartDate').value = sortedByDate[0].startDate || '';
+      document.getElementById('shareEndDate').value = sortedByDate[sortedByDate.length - 1].endDate || '';
+      document.getElementById('sharePeriodLabel').value = `ACUMULADO (${monthlyReports.length} CIERRES MENSUALES)`;
+      document.getElementById('shareReportType').value = 'acumulado';
+      renderShareSlide();
+
+      if (missingWarnings.length) {
+        const alertBox = document.getElementById('shareValidationAlert');
+        alertBox.textContent = `Aviso de acumulado: marcas con meses incompletos: ${missingWarnings.join(', ')}.`;
+        alertBox.classList.remove('hidden');
+      }
+      showToast(`Acumulado generado sumando ${monthlyReports.length} cierres mensuales`);
+    }
+
+    function renderSharePrevComparison(currentComputed) {
+      const box = document.getElementById('sharePrevDiffSummary');
+      if (!box) return;
+      if (shareHistory.length < 1) {
+        box.textContent = 'Guarda cortes para comparar variación en puntos porcentuales (pp) contra el periodo previo.';
+        return;
+      }
+      const prev = shareHistory[0];
+      const prevTotal = Object.values(prev.brands).reduce((s, v) => s + Number(v || 0), 0);
+      if (prevTotal <= 0) return;
+
+      const lines = currentComputed.slice(0, 4).map(c => {
+        const pVal = Number(prev.brands[c.id] || 0);
+        const pPct = (pVal / prevTotal) * 100;
+        const diffPp = c.exactPct - pPct;
+        const color = diffPp >= 0 ? 'text-emerald-700' : 'text-rose-600';
+        return `<div class="flex justify-between"><span class="font-bold text-navy-900">${c.name}</span><span class="${color} font-extrabold">${diffPp >= 0 ? '+' : ''}${diffPp.toFixed(1)} pp</span></div>`;
+      });
+      box.innerHTML = `<p class="text-[10px] text-slate-400 mb-1">vs ${prev.periodLabel}:</p>` + lines.join('');
+    }
+
+    function matchOfficialBrand(rawName) {
+      const norm = normalizeText(rawName);
+      if (!norm) return null;
+      return OFFICIAL_SHARE_BRANDS.find(b => b.aliases.some(al => norm === al || norm.includes(al)));
+    }
+
+    function handleShareExcelUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const targetSheet = wb.SheetNames.find(n => normalizeText(n).includes('share') || normalizeText(n).includes('marca')) || wb.SheetNames[0];
+          const rows = sheetToSmartRows(wb.Sheets[targetSheet], ['marca', 'venta', 'importe', 'monto', 'sell out', 'total']);
+          const sums = {};
+          let matched = 0;
+
+          rows.forEach(r => {
+            const rawBrand = getSmartCell(r, ['Marca', 'Fabricante', 'Proveedor', 'Nombre'], ['marca', 'fabricante']);
+            const bObj = matchOfficialBrand(rawBrand);
+            if (!bObj) return;
+            const amount = parseNum(getSmartCell(r, ['Ventas ($)', 'Ventas', 'Importe', 'Monto', 'Sell Out', 'Total'], ['venta', 'importe', 'monto', 'total']));
+            if (amount > 0) {
+              sums[bObj.id] = (sums[bObj.id] || 0) + amount;
+              matched++;
+            }
+          });
+
+          if (!matched) {
+            return showToast('No se detectaron marcas oficiales con importes en el archivo.');
+          }
+
+          OFFICIAL_SHARE_BRANDS.forEach(b => {
+            const inp = document.getElementById(`shareInput_${b.id}`);
+            if (inp) inp.value = Math.round(sums[b.id] || 0);
+          });
+          renderShareSlide();
+          showToast(`Share importado desde "${targetSheet}" (${matched} filas procesadas)`);
+        } catch (err) {
+          console.error(err);
+          showToast('Error al leer Excel de Share');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+      event.target.value = '';
+    }
+
+    async function downloadShareSlidePng() {
+      const el = document.getElementById('shareSlideExportArea');
+      if (!el || typeof html2canvas === 'undefined') {
+        return showToast('Librería de exportación no disponible');
+      }
       try {
-        const ws = XLSX.utils.aoa_to_sheet(lastScorecardExportRows);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Scorecard');
-        XLSX.writeFile(wb, `ColchoBoard_Scorecard_${new Date().toISOString().slice(0, 10)}.xlsx`);
-        showToast('Scorecard exportado a Excel (.xlsx)');
+        showToast('Generando imagen PNG 16:9 de alta resolución...');
+        const canvas = await html2canvas(el, {
+          scale: 2,
+          backgroundColor: '#FFFFFF',
+          useCORS: true
+        });
+        const link = document.createElement('a');
+        const label = (document.getElementById('sharePeriodLabel').value || 'Corte').replace(/[^a-zA-Z0-9_-]/g, '_');
+        link.download = `Share_x_Marca_${label}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('Filmina 16:9 descargada en PNG');
       } catch (err) {
         console.error(err);
-        showToast('Error al exportar Scorecard');
+        showToast('No se pudo exportar PNG (verifica los logos locales)');
       }
     }
-<!-- ... existing code ... -->
-          // Helper para normalizar Número de Sucursal (llave fija invariable, ignorando SKUs tipo A108058C)
-          const isLikelySku = (val) => {
-            const s = String(val ?? '').trim().toUpperCase();
-            return /^[A-Z]{1,3}\d{4,}[A-Z0-9]*$/.test(s);
-          };
 
+    function copyShareWhatsAppSummary() {
+      const entries = getCurrentShareEntries().filter(e => e.sales > 0).sort((a, b) => b.sales - a.sales);
+      const total = entries.reduce((s, e) => s + e.sales, 0);
+      if (!total) return showToast('Sin datos para copiar');
+      const period = document.getElementById('sharePeriodLabel').value;
+      const lines = [
+        `*SHARE X MARCA • ${period}*`,
+        `Total Mercado: *${fmtMXN.format(total)}*`,
+        '',
+        ...entries.map((e, i) => `${i + 1}. *${e.name}:* ${fmtMXN.format(e.sales)} (${Math.round((e.sales / total) * 100)}%)`),
+        '',
+        `_Sell out en precios público sin IVA_`
+      ];
+      copyTextToClipboard(lines.join('\n'));
+      showToast('Ranking Share x Marca copiado para WhatsApp');
+    }
+
+    // ---------------------------------------------------------
+    // 9. MÓDULO 4: MATRIZ DINÁMICA BI
+    // ---------------------------------------------------------
+    let lastPivotExportRows = [];
+
+    function applyPivotPreset(preset) {
+      const r = document.getElementById('pivotRowDim');
+      const c = document.getElementById('pivotColDim');
+      const fl = document.getElementById('pivotFlow');
+      if (preset === 'model_channel') { r.value = 'model'; c.value = 'channel'; fl.value = 'ALL'; }
+      else if (preset === 'model_size') { r.value = 'model'; c.value = 'size'; fl.value = 'ALL'; }
+      else if (preset === 'client_month') { r.value = 'client'; c.value = 'month'; fl.value = 'ALL'; }
+      else if (preset === 'zone_model') { r.value = 'zone'; c.value = 'model'; fl.value = 'SELL_OUT'; }
+      else if (preset === 'store_month') { r.value = 'store'; c.value = 'month'; fl.value = 'SELL_OUT'; }
+      renderPivotMaster();
+    }
+
+    function getDimValue(rec, dim) {
+      if (dim === 'channel') return rec.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out';
+      if (dim === 'month') return `${String(rec.month).padStart(2, '0')} - ${MONTH_SHORT_ES[rec.month] || rec.month}`;
+      if (dim === 'year') return String(rec.year);
+      if (dim === 'store') return rec.storeId ? `${rec.storeId} · ${rec.storeName}` : (rec.storeName || 'Sin Sucursal');
+      return rec[dim] || 'Sin dato';
+    }
+
+    function renderPivotMaster() {
+      const rowDim = document.getElementById('pivotRowDim').value;
+      const colDim = document.getElementById('pivotColDim').value;
+      const flow = document.getElementById('pivotFlow').value;
+      const metric = document.getElementById('pivotMetric').value;
+      const q = normalizeText(document.getElementById('pivotSearch').value);
+
+      let rows = getFilteredRecords();
+      if (flow !== 'ALL') rows = rows.filter(r => r.channel === flow);
+
+      const head = document.getElementById('pivotTableHead');
+      const body = document.getElementById('pivotTableBody');
+      const foot = document.getElementById('pivotTableFoot');
+
+      if (!rows.length) {
+        head.innerHTML = '';
+        body.innerHTML = `<tr><td class="py-8 text-center text-slate-400">Sin registros para esta selección</td></tr>`;
+        foot.innerHTML = '';
+        lastPivotExportRows = [];
+        return;
+      }
+
+      const colSet = new Set();
+      const matrix = new Map();
+      rows.forEach(r => {
+        const rk = getDimValue(r, rowDim);
+        if (q && !normalizeText(rk).includes(q)) return;
+        const ck = getDimValue(r, colDim);
+        colSet.add(ck);
+        if (!matrix.has(rk)) matrix.set(rk, { total: 0, cols: {} });
+        const entry = matrix.get(rk);
+        const val = metric === 'units' ? r.units : r.amount;
+        entry.cols[ck] = (entry.cols[ck] || 0) + val;
+        entry.total += val;
+      });
+
+      const cols = [...colSet].sort();
+      const sortedRows = [...matrix.entries()].sort((a, b) => b[1].total - a[1].total);
+      const grandTotal = sortedRows.reduce((s, [, v]) => s + v.total, 0);
+      const colTotals = {};
+      cols.forEach(c => colTotals[c] = 0);
+
+      const fmtV = v => !v ? '—' : (metric === 'units' ? fmtInt.format(v) : fmtMXN.format(v));
+
+      head.innerHTML = `<tr><th class="py-2.5 px-4">${rowDim.toUpperCase()}</th>${cols.map(c => `<th class="py-2.5 px-3 text-right">${c}</th>`).join('')}<th class="py-2.5 px-4 text-right bg-sky-900">TOTAL</th><th class="py-2.5 px-3 text-right bg-sky-950">%</th></tr>`;
+
+      lastPivotExportRows = [[rowDim.toUpperCase(), ...cols, 'TOTAL', '%']];
+
+      body.innerHTML = sortedRows.map(([rk, obj]) => {
+        const pct = grandTotal > 0 ? (obj.total / grandTotal) * 100 : 0;
+        const exp = [rk];
+        const tds = cols.map(c => {
+          const v = obj.cols[c] || 0;
+          colTotals[c] += v;
+          exp.push(metric === 'units' ? v : Math.round(v));
+          return `<td class="py-2 px-3 text-right text-slate-700">${fmtV(v)}</td>`;
+        }).join('');
+        exp.push(metric === 'units' ? obj.total : Math.round(obj.total), `${pct.toFixed(1)}%`);
+        lastPivotExportRows.push(exp);
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-bold text-navy-900">${rk}</td>
+            ${tds}
+            <td class="py-2 px-4 text-right font-extrabold text-navy-900 bg-slate-50/70">${fmtV(obj.total)}</td>
+            <td class="py-2 px-3 text-right text-slate-500 font-semibold">${pct.toFixed(1)}%</td>
+          </tr>
+        `;
+      }).join('');
+
+      foot.innerHTML = `<tr><td class="py-2.5 px-4">TOTAL GENERAL</td>${cols.map(c => `<td class="py-2.5 px-3 text-right">${fmtV(colTotals[c])}</td>`).join('')}<td class="py-2.5 px-4 text-right">${fmtV(grandTotal)}</td><td class="py-2.5 px-3 text-right">100%</td></tr>`;
+    }
+
+    function exportPivotToExcel() {
+      if (lastPivotExportRows.length <= 1) return showToast('No hay datos en la matriz para exportar');
+      const ws = XLSX.utils.aoa_to_sheet(lastPivotExportRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Matriz_BI');
+      XLSX.writeFile(wb, `ColchoBoard_Matriz_${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast('Matriz Dinámica exportada a Excel');
+    }
+
+    // ---------------------------------------------------------
+    // 10. MÓDULOS CLIENTES, MODELOS/ZONAS Y CONSULTA POR FECHA
+    // ---------------------------------------------------------
+    function renderClientsModule() {
+      const rows = getFilteredRecords();
+      const cMap = new Map();
+      const sMap = new Map();
+
+      rows.forEach(r => {
+        const c = cMap.get(r.client) || { segment: r.segment, inA: 0, inU: 0, outA: 0, outU: 0 };
+        if (r.channel === 'SELL_IN') { c.inA += r.amount; c.inU += r.units; }
+        else { c.outA += r.amount; c.outU += r.units; }
+        cMap.set(r.client, c);
+
+        if (r.channel === 'SELL_OUT') {
+          const sk = r.storeId || r.storeName || 'Sin Sucursal';
+          const s = sMap.get(sk) || { storeId: r.storeId, storeName: r.storeName || sk, zone: r.zone, units: 0, amount: 0 };
+          s.units += r.units;
+          s.amount += r.amount;
+          if (r.zone && r.zone !== 'General') s.zone = r.zone;
+          sMap.set(sk, s);
+        }
+      });
+
+      document.getElementById('clientsSummaryBody').innerHTML = [...cMap.entries()]
+        .sort((a, b) => (b[1].inA + b[1].outA) - (a[1].inA + a[1].outA))
+        .map(([name, v]) => {
+          const st = v.inU > 0 ? `${((v.outU / v.inU) * 100).toFixed(1)}%` : '—';
+          return `
+            <tr class="hover:bg-slate-50">
+              <td class="py-2.5 px-4 font-extrabold text-navy-900">${name}</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">${v.segment}</span></td>
+              <td class="py-2.5 px-3 text-right font-bold text-teal-700">${fmtMXN.format(v.inA)}</td>
+              <td class="py-2.5 px-3 text-right font-bold text-navy-900">${fmtMXN.format(v.outA)}</td>
+              <td class="py-2.5 px-4 text-right font-extrabold text-slate-700">${st}</td>
+            </tr>
+          `;
+        }).join('') || `<tr><td colspan="5" class="py-6 text-center text-slate-400">Sin datos</td></tr>`;
+
+      document.getElementById('storesRankingBody').innerHTML = [...sMap.values()]
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 100)
+        .map(s => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-bold text-navy-900">${s.storeId ? `<span class="text-teal-700 font-mono mr-1">${s.storeId}</span>· ${s.storeName}` : s.storeName}</td>
+            <td class="py-2 px-3 text-slate-600">${s.zone}</td>
+            <td class="py-2 px-3 text-right font-semibold">${fmtInt.format(s.units)}</td>
+            <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(s.amount)}</td>
+          </tr>
+        `).join('') || `<tr><td colspan="4" class="py-6 text-center text-slate-400">Sin sucursales de Sell Out</td></tr>`;
+    }
+
+    function renderZonesModule() {
+      const rows = getFilteredRecords();
+      const mMap = new Map();
+      const zMap = new Map();
+
+      rows.forEach(r => {
+        const m = mMap.get(r.model) || { inU: 0, inA: 0, outU: 0, outA: 0 };
+        if (r.channel === 'SELL_IN') { m.inU += r.units; m.inA += r.amount; }
+        else { m.outU += r.units; m.outA += r.amount; }
+        mMap.set(r.model, m);
+
+        const z = zMap.get(r.zone) || { inA: 0, outU: 0, outA: 0 };
+        if (r.channel === 'SELL_IN') z.inA += r.amount;
+        else { z.outU += r.units; z.outA += r.amount; }
+        zMap.set(r.zone, z);
+      });
+
+      document.getElementById('modelsFullBody').innerHTML = [...mMap.entries()]
+        .sort((a, b) => (b[1].outA + b[1].inA) - (a[1].outA + a[1].inA))
+        .map(([mod, v]) => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-extrabold text-navy-900">${mod}</td>
+            <td class="py-2 px-3 text-right text-teal-700">${fmtInt.format(v.inU)}</td>
+            <td class="py-2 px-3 text-right font-bold text-teal-800">${fmtMXN.format(v.inA)}</td>
+            <td class="py-2 px-3 text-right text-slate-700">${fmtInt.format(v.outU)}</td>
+            <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(v.outA)}</td>
+          </tr>
+        `).join('') || `<tr><td colspan="5" class="py-6 text-center text-slate-400">Sin modelos</td></tr>`;
+
+      document.getElementById('zonesFullBody').innerHTML = [...zMap.entries()]
+        .sort((a, b) => (b[1].outA + b[1].inA) - (a[1].outA + a[1].inA))
+        .map(([zn, v]) => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-extrabold text-navy-900">${zn}</td>
+            <td class="py-2 px-3 text-right font-semibold text-teal-700">${fmtMXN.format(v.inA)}</td>
+            <td class="py-2 px-3 text-right text-slate-700">${fmtInt.format(v.outU)}</td>
+            <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(v.outA)}</td>
+          </tr>
+        `).join('') || `<tr><td colspan="4" class="py-6 text-center text-slate-400">Sin zonas</td></tr>`;
+    }
+
+    let lastExplorerRows = [];
+    function renderExplorer() {
+      const exactDate = document.getElementById('explorerDate').value;
+      const flow = document.getElementById('explorerFlow').value;
+      const q = normalizeText(document.getElementById('explorerSearch').value);
+
+      let rows = getFilteredRecords();
+      if (exactDate) rows = rows.filter(r => r.date === exactDate);
+      if (flow !== 'ALL') rows = rows.filter(r => r.channel === flow);
+      if (q) {
+        rows = rows.filter(r =>
+          normalizeText(`${r.client} ${r.storeId} ${r.storeName} ${r.zone} ${r.model} ${r.size}`).includes(q)
+        );
+      }
+
+      rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      lastExplorerRows = rows;
+
+      document.getElementById('explorerCountInfo').textContent = `${fmtInt.format(rows.length)} registros encontrados`;
+      document.getElementById('explorerTableBody').innerHTML = rows.slice(0, 300).map(r => {
+        const storeLabel = r.storeId ? `${r.storeId} · ${r.storeName}` : (r.storeName || '—');
+        const badge = r.channel === 'SELL_IN'
+          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-50 text-teal-700 border border-teal-200">Sell In</span>'
+          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Sell Out</span>';
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2 px-4 font-mono text-slate-600">${r.date}</td>
+            <td class="py-2 px-3">${badge}</td>
+            <td class="py-2 px-3 font-bold text-navy-900">${r.client}</td>
+            <td class="py-2 px-3 text-slate-700">${storeLabel}</td>
+            <td class="py-2 px-3 text-slate-600">${r.zone}</td>
+            <td class="py-2 px-3"><strong class="text-navy-900">${r.model}</strong> <span class="text-slate-400 text-[10px]">${r.size}</span></td>
+            <td class="py-2 px-3 text-right font-bold">${fmtInt.format(r.units)}</td>
+            <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(r.amount)}</td>
+          </tr>
+        `;
+      }).join('') || `<tr><td colspan="8" class="py-8 text-center text-slate-400">Sin operaciones para este criterio</td></tr>`;
+    }
+
+    function exportExplorerCSV() {
+      if (!lastExplorerRows.length) return showToast('No hay registros para exportar');
+      const headers = ['Fecha', 'Flujo', 'Cliente', 'No_Sucursal', 'Tienda', 'Zona_UEN', 'Modelo', 'Medida', 'Piezas', 'Importe'];
+      const csv = [
+        headers.join(','),
+        ...lastExplorerRows.map(r => [
+          r.date, r.channel, `"${r.client}"`, `"${r.storeId}"`, `"${r.storeName}"`, `"${r.zone}"`, `"${r.model}"`, `"${r.size}"`, r.units, r.amount
+        ].join(','))
+      ].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ColchoBoard_Consulta_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('CSV exportado correctamente');
+    }
+
+    // ---------------------------------------------------------
+    // 11. MOTOR DE LECTURA INTELIGENTE DE EXCEL (DIRECTORIO + SELL IN + SELL OUT)
+    // ---------------------------------------------------------
+    function parseNum(v) {
+      if (typeof v === 'number') return isFinite(v) ? v : 0;
+      const s = String(v ?? '').trim();
+      if (!s || s === '-' || s === '—') return 0;
+      const isNeg = s.startsWith('(') && s.endsWith(')');
+      const cleaned = s.replace(/[$,\s()]/g, '');
+      const n = parseFloat(cleaned);
+      if (isNaN(n)) return 0;
+      return isNeg ? -Math.abs(n) : n;
+    }
+
+    function parseMonthNum(v) {
+      if (typeof v === 'number' && v >= 1 && v <= 12) return Math.round(v);
+      const s = normalizeText(v);
+      const n = parseInt(s, 10);
+      if (!isNaN(n) && n >= 1 && n <= 12) return n;
+      const map = { ene: 1, jan: 1, feb: 2, mar: 3, abr: 4, apr: 4, may: 5, jun: 6, jul: 7, ago: 8, aug: 8, sep: 9, set: 9, oct: 10, nov: 11, dic: 12, dec: 12 };
+      const key = s.slice(0, 3);
+      return map[key] || 0;
+    }
+
+    function parseFlexibleDate(val) {
+      if (!val) return null;
+      if (typeof val === 'number' && val > 25000 && val < 70000) {
+        const d = new Date(Math.round((val - 25569) * 86400 * 1000));
+        return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() };
+      }
+      const s = String(val).trim();
+      let m = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+      if (m) return { year: Number(m[1]), month: Number(m[2]), day: Number(m[3]) };
+      m = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})/);
+      if (m) {
+        let y = Number(m[3]);
+        if (y < 100) y += 2000;
+        return { year: y, month: Number(m[2]), day: Number(m[1]) };
+      }
+      return null;
+    }
+
+    function sheetToSmartRows(ws, keywords) {
+      const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      let headerIdx = 0;
+      let bestScore = -1;
+      const limit = Math.min(20, aoa.length);
+
+      for (let i = 0; i < limit; i++) {
+        const row = aoa[i] || [];
+        let score = 0;
+        row.forEach(cell => {
+          const norm = normalizeText(cell);
+          if (!norm) return;
+          if (keywords.some(k => norm.includes(k))) score++;
+        });
+        if (score > bestScore) {
+          bestScore = score;
+          headerIdx = i;
+        }
+      }
+
+      const headers = (aoa[headerIdx] || []).map((h, idx) => String(h || `Col_${idx}`).trim());
+      const out = [];
+      for (let i = headerIdx + 1; i < aoa.length; i++) {
+        const row = aoa[i];
+        if (!row || !row.some(c => String(c ?? '').trim() !== '')) continue;
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h] = row[idx] ?? ''; });
+        out.push(obj);
+      }
+      return out;
+    }
+
+    function getSmartCell(row, exactList, partialList = []) {
+      const keys = Object.keys(row);
+      for (const ex of exactList) {
+        const exN = normalizeText(ex);
+        const found = keys.find(k => normalizeText(k) === exN);
+        if (found !== undefined && String(row[found] ?? '').trim() !== '') return row[found];
+      }
+      for (const pt of partialList) {
+        const ptN = normalizeText(pt);
+        const found = keys.find(k => normalizeText(k).includes(ptN));
+        if (found !== undefined && String(row[found] ?? '').trim() !== '') return row[found];
+      }
+      return '';
+    }
+
+    function normalizeClientSegment(raw) {
+      const c = String(raw || 'GNC').trim();
+      const u = normalizeText(c);
+      const corpKeys = ['gnc', 'super colchones', 'grupo nacional', 'bodegon', 'bodesa', 'mavi', 'colonias', 'liverpool', 'coppel', 'palacio', 'sears', 'suburbia'];
+      const isCorp = corpKeys.some(k => u.includes(k));
+      const cleanName = (u.includes('gnc') || u.includes('super colchones') || u.includes('grupo nacional')) ? 'GNC' : c;
+      return { client: cleanName, segment: isCorp ? 'Cuentas Corporativas' : 'Canal Horizontal' };
+    }
+
+    function handleMainExcelFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const parsed = [];
+          const diagLines = [`Archivo: ${file.name} | Pestañas: ${wb.SheetNames.join(', ')}`];
+          let seq = 1;
+
+          const isLikelySku = (val) => /^[A-Z]{1,3}\d{4,}[A-Z0-9]*$/.test(String(val ?? '').trim().toUpperCase());
           const normalizeStoreKey = (val) => {
             const raw = String(val ?? '').trim();
             if (!raw || isLikelySku(raw)) return '';
-            // Extraer número limpio si viene como "045", "45 - GDL", "Suc 45", etc.
-            const pureNum = raw.match(/^0*(\d+)$/);
-            if (pureNum) return pureNum[1];
-            const numPrefix = raw.match(/^(?:suc(?:ursal)?|tda|tienda|no\.?)?\s*#?\s*0*(\d+)\b/i);
-            if (numPrefix) return numPrefix[1];
-            return '';
+            const pure = raw.match(/^0*(\d+)$/);
+            if (pure) return pure[1];
+            const pref = raw.match(/^(?:suc(?:ursal)?|tda|tienda|no\.?)?\s*#?\s*0*(\d+)\b/i);
+            return pref ? pref[1] : '';
           };
 
-          // 1) DIRECTORIO DE TIENDAS (Base sólida: No. Sucursal -> Nombre Oficial + UEN/Zona)
-          const storeDirectoryById = new Map();
-          const storeDirectoryByName = new Map();
-          const storeSheetNames = wb.SheetNames.filter(n => {
+          // 1) DIRECTORIO DE TIENDAS (No. Sucursal -> Nombre Oficial + UEN)
+          const storeDirById = new Map();
+          const storeDirByName = new Map();
+          const dirSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n);
             return u.includes('directorio') || u.includes('tienda') || u.includes('sucursal') || u.includes('catalogo') || u.includes('uen');
           });
 
-          storeSheetNames.forEach(sn => {
-            const refRows = sheetToSmartRows(wb.Sheets[sn], ['sucursal', 'tienda', 'uen', 'zona', 'numero', 'no', 'nombre']);
-            const sampleDirCols = refRows.length ? Object.keys(refRows[0]).join(' | ') : '(sin encabezados)';
-            let loadedDir = 0;
-
-            refRows.forEach(rr => {
-              const rawId = getSmartCell(
-                rr,
-                ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No Tienda', 'No. Tienda', 'Sucursal #', 'ID Sucursal', 'ID Tienda', 'No.', 'Num', 'Clave Sucursal', 'Clave Tienda', 'Sucursal'],
-                ['no sucursal', 'num sucursal', 'numero', 'no tienda', 'id sucursal', 'id tienda', 'clave sucursal', 'clave tienda']
-              );
+          dirSheets.forEach(sn => {
+            const rows = sheetToSmartRows(wb.Sheets[sn], ['sucursal', 'tienda', 'uen', 'zona', 'numero', 'no', 'nombre']);
+            let cnt = 0;
+            rows.forEach(rr => {
+              const rawId = getSmartCell(rr, ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No Tienda', 'No. Tienda', 'ID Sucursal', 'ID Tienda', 'No.', 'Num', 'Sucursal'], ['no sucursal', 'num sucursal', 'numero', 'no tienda', 'id sucursal', 'id tienda']);
               const sId = normalizeStoreKey(rawId);
-              const sName = String(getSmartCell(
-                rr,
-                ['Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Sucursal Nombre', 'Nombre', 'Descripcion', 'Sucursal'],
-                ['nombre', 'tienda']
-              )).trim();
-              const sZone = String(getSmartCell(
-                rr,
-                ['UEN', 'U.E.N.', 'Zona', 'Plaza', 'Region', 'Territorio', 'Ciudad', 'Estado'],
-                ['uen', 'zona', 'plaza', 'region']
-              )).trim();
+              const sName = String(getSmartCell(rr, ['Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Sucursal Nombre', 'Nombre', 'Sucursal'], ['nombre', 'tienda'])).trim();
+              const sZone = String(getSmartCell(rr, ['UEN', 'U.E.N.', 'Zona', 'Plaza', 'Region', 'Ciudad'], ['uen', 'zona', 'plaza'])).trim();
 
               if (sId) {
                 const cleanName = (sName && normalizeStoreKey(sName) !== sId) ? sName : `Sucursal ${sId}`;
-                const entry = {
-                  storeId: sId,
-                  storeName: cleanName,
-                  zone: sZone || 'General'
-                };
-                storeDirectoryById.set(sId, entry);
-                if (cleanName) storeDirectoryByName.set(normalizeText(cleanName), entry);
-                loadedDir++;
+                const entry = { storeId: sId, storeName: cleanName, zone: sZone || 'General' };
+                storeDirById.set(sId, entry);
+                storeDirByName.set(normalizeText(cleanName), entry);
+                cnt++;
               } else if (sName && sZone) {
-                storeDirectoryByName.set(normalizeText(sName), { storeId: '', storeName: sName, zone: sZone });
-                loadedDir++;
+                storeDirByName.set(normalizeText(sName), { storeId: '', storeName: sName, zone: sZone });
+                cnt++;
               }
             });
-            diagLines.push(`• Directorio [${sn}]: ${loadedDir} sucursales indexadas | Columnas: ${sampleDirCols}`);
+            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales indexadas`);
           });
 
-          // A) Pestaña(s) SELL IN (Unidades Netas / PCS y Suma de Neto)
-          const sellInSheets = wb.SheetNames.filter(n => {
+          // 2) SELL IN
+          const inSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             return u.includes('sellin') || u === 'sin' || u.includes('facturacion');
           });
 
-          sellInSheets.forEach(sheetName => {
-            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pzs', 'pcs', 'uen']);
-            const sampleCols = rowsIn.length ? Object.keys(rowsIn[0]).join(' | ') : '(sin encabezados)';
-            let countInSheet = 0;
-            let totalUnitsInSheet = 0;
-            let lastClient = '', lastYear = new Date().getFullYear(), lastMonth = 1, lastZone = 'General';
+          inSheets.forEach(sn => {
+            const rowsIn = sheetToSmartRows(wb.Sheets[sn], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pcs']);
+            let cnt = 0, totPcs = 0;
+            let lastClient = 'GNC', lastYear = new Date().getFullYear(), lastMonth = 1, lastZone = 'General';
 
             rowsIn.forEach(r => {
-              const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
-              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) {
-                return;
-              }
+              const vals = Object.values(r).map(v => normalizeText(v));
+              if (vals.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) return;
 
-              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta'])).trim();
+              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena'])).trim();
               if (rawC) lastClient = rawC;
 
-              const rawZ = String(getSmartCell(r, ['UEN', 'Zona', 'Region', 'Plaza', 'Territorio'], ['uen', 'zona', 'region', 'plaza'])).trim();
+              const rawZ = String(getSmartCell(r, ['UEN', 'Zona', 'Region', 'Plaza'], ['uen', 'zona', 'plaza'])).trim();
               if (rawZ) lastZone = rawZ;
 
-              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Fecha Conclusion', 'Date', 'Dia'], ['fecha']);
-              const parsedDate = parseFlexibleDate(rawDate);
+              const pDate = parseFlexibleDate(getSmartCell(r, ['Fecha', 'Fecha Factura', 'Date'], ['fecha']));
+              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year']);
+              const pY = parseInt(String(rawY).match(/\d{4}/)?.[0] || '', 10);
+              if (pY >= 2000 && pY <= 2100) lastYear = pY;
+              else if (pDate) lastYear = pDate.year;
 
-              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year', 'Ejercicio'], ['ano', 'year', 'ejerc']);
-              const parsedY = parseInt(String(rawY).match(/\d{4}/)?.[0] || '', 10);
-              if (parsedY >= 2000 && parsedY <= 2100) lastYear = parsedY;
-              else if (parsedDate) lastYear = parsedDate.year;
+              const pM = parseMonthNum(getSmartCell(r, ['Mes', 'Month', 'Periodo'], ['mes', 'month']));
+              if (pM >= 1 && pM <= 12) lastMonth = pM;
+              else if (pDate) lastMonth = pDate.month;
 
-              const rawM = getSmartCell(r, ['Mes', 'Month', 'Periodo'], ['mes', 'month']);
-              const parsedM = parseMonthNum(rawM);
-              if (parsedM >= 1 && parsedM <= 12) lastMonth = parsedM;
-              else if (parsedDate) lastMonth = parsedDate.month;
-
-              const dayVal = parsedDate
-                ? parsedDate.day
-                : Math.min(31, Math.max(1, parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15));
-
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Descripcion', 'Articulo', 'Linea', 'Familia'], ['modelo', 'articulo', 'producto', 'descrip'])).trim();
+              const dayVal = pDate ? pDate.day : (parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15);
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion', 'Linea'], ['modelo', 'articulo', 'producto'])).trim();
               if (!model) return;
 
-              const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
-              const size = rawSize.split(' ').pop();
-
-              const units = parseNum(getSmartCell(
-                r,
-                ['Unidades Netas', 'Suma de Unidades Netas', 'Uds Netas', 'Suma de Uds Netas', 'U. Netas', 'Unid. Netas', 'Unid Netas', 'PCS', 'Pcs', 'Suma de PCS', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Pzs', 'Uds', 'Suma de Cantidad', 'Suma de Unidades', 'Volumen'],
-                ['unidades netas', 'uds netas', 'unid', 'pieza', 'pcs', 'pza', 'pzs', 'cant', 'uds', 'qty', 'vol']
-              ));
-              const amount = parseNum(getSmartCell(
-                r,
-                ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto', 'Venta'],
-                ['neto', 'importe', 'venta', 'monto', 'total']
-              ));
+              const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
+              const units = Math.round(parseNum(getSmartCell(r, ['Unidades Netas', 'Suma de Unidades Netas', 'Uds Netas', 'PCS', 'Suma de PCS', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas'], ['unidades netas', 'uds netas', 'unid', 'pieza', 'pcs', 'pza', 'cant'])));
+              const amount = parseNum(getSmartCell(r, ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto'], ['neto', 'importe', 'venta', 'monto', 'total']));
 
               if (units === 0 && amount === 0) return;
 
-              const cInfo = normalizeClientSegment(lastClient || 'GNC');
-              const roundedUnits = Math.round(units);
-              totalUnitsInSheet += roundedUnits;
+              const cInfo = normalizeClientSegment(lastClient);
+              totPcs += units;
               parsed.push({
-                folio: `SI-XL-${seq++}`,
+                folio: `SI-${seq++}`,
                 channel: 'SELL_IN',
                 date: `${lastYear}-${String(lastMonth).padStart(2, '0')}-${String(dayVal).padStart(2, '0')}`,
-                year: lastYear,
-                month: lastMonth,
-                day: dayVal,
-                client: cInfo.client,
-                segment: cInfo.segment,
-                storeId: '',
-                storeName: '',
-                zone: lastZone,
-                model,
-                size,
-                units: roundedUnits,
-                unitPrice: roundedUnits !== 0 ? Math.round(amount / roundedUnits) : 0,
+                year: lastYear, month: lastMonth, day: dayVal,
+                client: cInfo.client, segment: cInfo.segment,
+                storeId: '', storeName: '', zone: lastZone,
+                model, size, units,
                 amount: Math.round(amount * 100) / 100
               });
-              countInSheet++;
+              cnt++;
             });
-            diagLines.push(`• SELL IN [${sheetName}]: ${countInSheet} registros (${fmtInt.format(totalUnitsInSheet)} pzas) | Columnas: ${sampleCols}`);
+            diagLines.push(`• SELL IN [${sn}]: ${cnt} filas (${fmtInt.format(totPcs)} pzas)`);
           });
 
-          // B) Pestaña(s) SELL OUT (Cruce con Directorio de Tiendas por No. Sucursal -> Nombre + UEN, nunca SKU)
-          const sellOutSheets = wb.SheetNames.filter(n => {
+          // 3) SELL OUT
+          const outSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
-            return u.includes('sellout') || u === 'so' || u === 'sout' || u.includes('desplazamiento') || u.includes('pos') || u.includes('salidas');
+            return u.includes('sellout') || u === 'so' || u === 'sout' || u.includes('desplazamiento') || u.includes('pos');
           });
 
-          sellOutSheets.forEach(sheetName => {
-            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'articulo', 'cantidad', 'unidades', 'importe', 'uen']);
-            const sampleCols = rowsOut.length ? Object.keys(rowsOut[0]).join(' | ') : '(sin encabezados)';
-            let countOutSheet = 0;
+          outSheets.forEach(sn => {
+            const rowsOut = sheetToSmartRows(wb.Sheets[sn], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'cantidad', 'importe', 'uen']);
+            let cnt = 0, totPcs = 0;
 
             rowsOut.forEach(r => {
-              const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
-              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) {
-                return;
-              }
+              const vals = Object.values(r).map(v => normalizeText(v));
+              if (vals.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) return;
 
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion', 'Nombre Articulo', 'Colchon'], ['modelo', 'articulo', 'producto', 'descrip', 'colchon'])).trim();
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo', 'articulo', 'producto'])).trim();
               if (!model) return;
 
-              const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta']);
-              const cInfo = normalizeClientSegment(rawClient || 'GNC');
+              const cInfo = normalizeClientSegment(getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena'], ['cliente', 'cadena']) || 'GNC');
 
-              // IMPORTANTE: Excluir 'Clave' genérica porque corresponde al SKU del producto (ej. A108058C)
-              const rawStoreId = getSmartCell(
-                r,
-                ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No. Tienda', 'No Tienda', 'Num Tienda', 'ID Sucursal', 'ID Tienda', 'Clave Sucursal', 'Clave Tienda', 'Sucursal', 'Centro', 'Almacen'],
-                ['no sucursal', 'num sucursal', 'no tienda', 'num tienda', 'id sucursal', 'id tienda', 'clave sucursal', 'clave tienda', 'sucursal']
-              );
-              const rawStoreName = String(getSmartCell(
-                r,
-                ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal', 'Sucursal Nombre', 'Almacen', 'Punto de Venta'],
-                ['tienda', 'nombre sucursal', 'almacen']
-              )).trim();
+              // Excluir SKU (Clave) y cruzar por No. Sucursal contra Directorio de Tiendas
+              const rawStoreId = getSmartCell(r, ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No Tienda', 'ID Sucursal', 'ID Tienda', 'Sucursal', 'Almacen'], ['no sucursal', 'num sucursal', 'no tienda', 'id sucursal', 'sucursal']);
+              const rawStoreName = String(getSmartCell(r, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal', 'Punto de Venta'], ['tienda', 'nombre sucursal'])).trim();
 
-              // Cruce sólido contra Directorio de Tiendas usando No. de Sucursal (descartando SKUs)
               const cleanRawName = isLikelySku(rawStoreName) ? '' : rawStoreName;
               const normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(cleanRawName);
-              const dirMatch = (normId && storeDirectoryById.get(normId))
-                || (cleanRawName && storeDirectoryByName.get(normalizeText(cleanRawName)))
-                || null;
+              const dirMatch = (normId && storeDirById.get(normId)) || (cleanRawName && storeDirByName.get(normalizeText(cleanRawName))) || null;
 
               const storeId = (dirMatch && dirMatch.storeId) || normId || '';
               const storeName = (dirMatch && dirMatch.storeName) || cleanRawName || (storeId ? `Sucursal ${storeId}` : '');
-<!-- ... existing code ... -->
+
+              const rawZone = String(getSmartCell(r, ['UEN', 'U.E.N.', 'Zona', 'Plaza', 'Region'], ['uen', 'zona', 'plaza'])).trim();
+              const zone = (dirMatch && dirMatch.zone && dirMatch.zone !== 'General') ? dirMatch.zone : (rawZone || 'General');
+
+              const pDate = parseFlexibleDate(getSmartCell(r, ['Fecha Conclusion', 'Fecha Conclusión', 'Fecha', 'Date'], ['fecha']));
+              const yVal = pDate ? pDate.year : (parseInt(String(getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year'])).match(/\d{4}/)?.[0] || '', 10) || new Date().getFullYear());
+              const mVal = pDate ? pDate.month : (parseMonthNum(getSmartCell(r, ['Mes', 'Month'], ['mes', 'month'])) || 1);
+              const dVal = pDate ? pDate.day : (parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15);
+
+              const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
+              const units = Math.round(parseNum(getSmartCell(r, ['Piezas', 'Cantidad', 'Unidades', 'Pzas', 'PCS'], ['pieza', 'cant', 'unid', 'pcs'])));
+              const unitCost = parseNum(getSmartCell(r, ['Costo', 'Precio', 'Precio Unitario', 'Costo Unitario'], ['costo', 'precio']));
+              const rawImporte = parseNum(getSmartCell(r, ['Importe', 'Total', 'Monto', 'Venta'], ['importe', 'total', 'monto', 'venta']));
+
+              // Regla Sell Out: Costo x Piezas (o Importe si Costo no viene)
+              const amount = unitCost > 0 ? (unitCost * units) : rawImporte;
+              if (units === 0 && amount === 0) return;
+
+              totPcs += units;
+              parsed.push({
+                folio: `SO-${seq++}`,
+                channel: 'SELL_OUT',
+                date: `${yVal}-${String(mVal).padStart(2, '0')}-${String(dVal).padStart(2, '0')}`,
+                year: yVal, month: mVal, day: dVal,
+                client: cInfo.client, segment: cInfo.segment,
+                storeId, storeName, zone,
+                model, size, units,
+                amount: Math.round(amount * 100) / 100
+              });
+              cnt++;
+            });
+            diagLines.push(`• SELL OUT [${sn}]: ${cnt} filas (${fmtInt.format(totPcs)} pzas)`);
+          });
+
+          stagedRecords = parsed;
+          document.getElementById('excelStatusPanel').classList.remove('hidden');
+          document.getElementById('excelStatusHeadline').textContent = `Listo para aplicar: ${fmtInt.format(parsed.length)} registros válidos`;
+          document.getElementById('excelStatusSummary').textContent = 'Revisa el diagnóstico y presiona "Aplicar y Actualizar Dashboard".';
+          document.getElementById('excelDiagOutput').textContent = diagLines.join('\n');
+        } catch (err) {
+          console.error(err);
+          showToast('Error leyendo el archivo Excel');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+      event.target.value = '';
+    }
+
+    async function commitStagedExcel() {
+      if (!stagedRecords.length) return showToast('No hay registros preparados para aplicar');
+      const mode = document.querySelector('input[name="excelImportMode"]:checked')?.value || 'replace';
+      allRecords = mode === 'append' ? [...allRecords, ...stagedRecords] : [...stagedRecords];
+      await saveRecordsToDB(allRecords);
+
+      stagedRecords = [];
+      document.getElementById('excelStatusPanel').classList.add('hidden');
+      populateFilterDropdowns();
+      document.getElementById('filterMonth').value = 'ALL';
+      switchModule('resumen');
+      showToast(`Dashboard actualizado con ${fmtInt.format(allRecords.length)} registros reales`);
+    }
+
+    // ---------------------------------------------------------
+    // 12. COMPARTIR WHATSAPP Y PWA
+    // ---------------------------------------------------------
+    function copyTextToClipboard(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+
+    function copyWhatsAppExecutiveText() {
+      if (activeModule === 'share') return copyShareWhatsAppSummary();
+      const rows = getFilteredRecords();
+      const inR = rows.filter(r => r.channel === 'SELL_IN');
+      const outR = rows.filter(r => r.channel === 'SELL_OUT');
+      const f = getGlobalFilters();
+      const text = [
+        `*COLCHOBOARD • COLCHONES AMÉRICA*`,
+        `Periodo: ${f.month === 'ALL' ? 'Anual' : MONTH_NAMES_ES[Number(f.month)]} ${f.year === 'ALL' ? '' : f.year}`,
+        `• *Sell In:* ${fmtMXN.format(inR.reduce((s, r) => s + r.amount, 0))} (${fmtInt.format(inR.reduce((s, r) => s + r.units, 0))} pzas)`,
+        `• *Sell Out:* ${fmtMXN.format(outR.reduce((s, r) => s + r.amount, 0))} (${fmtInt.format(outR.reduce((s, r) => s + r.units, 0))} pzas)`
+      ].join('\n');
+      copyTextToClipboard(text);
+      showToast('Resumen ejecutivo copiado para WhatsApp');
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      document.getElementById('btnInstallPwaLogin')?.classList.remove('hidden');
+      document.getElementById('btnInstallPwaSidebar')?.classList.remove('hidden');
+    });
+
+    async function triggerPwaInstall() {
+      if (!deferredInstallPrompt) return showToast('En móvil usa "Compartir → Agregar a pantalla de inicio"');
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // ---------------------------------------------------------
+    // 13. ARRANQUE INICIAL
+    // ---------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', async () => {
+      allRecords = await loadRecordsFromDB();
+      try {
+        const savedUser = sessionStorage.getItem(SESSION_KEY);
+        if (savedUser) {
+          currentUser = JSON.parse(savedUser);
+          enterAppSession(currentUser);
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
