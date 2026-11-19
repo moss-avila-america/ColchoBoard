@@ -1,4 +1,4 @@
-const CACHE_NAME = 'colchoboard-v6';
+const CACHE_NAME = 'colchoboard-v7';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
 
 self.addEventListener('install', (event) => {
