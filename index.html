@@ -419,16 +419,16 @@
 
             <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
               <div class="mb-3">
-                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Participación por Modelo (Pastel %)</h4>
+                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Participación por Modelo (Dona %)</h4>
                 <p class="text-[11px] text-slate-500">Peso porcentual de cada modelo en el periodo</p>
               </div>
-              <div class="relative h-60 w-full">
+              <div class="relative h-64 w-full">
                 <canvas id="chartCoverModelsPie"></canvas>
               </div>
             </div>
           </div>
 
-          <!-- Gráficas por Zona: Barras y Pastel -->
+          <!-- Gráficas por Zona: Barras y Dona -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
               <div class="flex items-center justify-between mb-3">
@@ -438,17 +438,17 @@
                 </div>
                 <span id="topZonePill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Líder: -</span>
               </div>
-              <div class="relative h-60 w-full">
+              <div class="relative h-64 w-full">
                 <canvas id="chartCoverZonesBar"></canvas>
               </div>
             </div>
 
             <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
               <div class="mb-3">
-                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Distribución por Zona (Pastel %)</h4>
+                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Distribución por Zona (Dona %)</h4>
                 <p class="text-[11px] text-slate-500">Participación comercial por zona</p>
               </div>
-              <div class="relative h-60 w-full">
+              <div class="relative h-64 w-full">
                 <canvas id="chartCoverZonesPie"></canvas>
               </div>
             </div>
@@ -787,9 +787,10 @@
             </div>
 
             <div id="excelStatusPanel" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-3">
-              <div>
+              <div class="space-y-1">
                 <p id="excelStatusText" class="font-extrabold">Archivo listo</p>
-                <p id="excelStatusSub" class="text-[11px] text-emerald-700 mt-0.5"></p>
+                <p id="excelStatusSub" class="text-[11px] text-emerald-800"></p>
+                <p id="excelStatusDetail" class="text-[11px] font-mono text-emerald-700"></p>
               </div>
               <button onclick="commitExcelData()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold shadow-xs">
                 Aplicar y Actualizar Dashboard
@@ -973,7 +974,7 @@
       const clientSel = document.getElementById('filterClient');
       const zoneSel = document.getElementById('filterZone');
 
-      const years = [...new Set(salesData.map(r => r.year).filter(Boolean))].sort((a, b) => b - a);
+      const years = [...new Set(salesData.map(r => r.year).filter(y => y >= 2000 && y <= 2100))].sort((a, b) => b - a);
       const clients = [...new Set(salesData.map(r => r.client).filter(Boolean))].sort();
       const zones = [...new Set(salesData.map(r => r.zone).filter(Boolean))].sort();
 
@@ -983,10 +984,10 @@
       clientSel.innerHTML = `<option value="ALL">Cliente: Todos</option>` + clients.map(c => `<option value="${c}">${c}</option>`).join('');
       zoneSel.innerHTML = `<option value="ALL">Zona: Todas</option>` + zones.map(z => `<option value="${z}">Zona ${z}</option>`).join('');
 
-      // Si hay datos reales, seleccionar por defecto el mes más reciente disponible en ese año
+      // Seleccionar por defecto el mes más reciente disponible en el año más reciente
       if (salesData.length > 0 && years.length > 0) {
-        const latestYearRows = salesData.filter(r => r.year === years[0]);
-        const latestMonth = Math.max(...latestYearRows.map(r => r.month || 1));
+        const latestYearRows = salesData.filter(r => r.year === years[0] && r.month >= 1 && r.month <= 12);
+        const latestMonth = latestYearRows.length ? Math.max(...latestYearRows.map(r => r.month)) : 1;
         document.getElementById('filterMonth').value = String(latestMonth);
       } else {
         document.getElementById('filterMonth').value = 'ALL';
@@ -1345,72 +1346,124 @@
           });
         }
 
-        exportRow.push(Math.round(entry.totalAmt), entry.totalUnits, Number(sharePct.toFixed(1)));
+        exportRow.push(Math.round(entry.totalAmt), entry.totalUnits, `${sharePct.toFixed(1)}%`);
         lastPivotExportMatrix.push(exportRow);
 
-        const rowTotalHtml = metric === 'both'
-          ? `<div class="leading-tight"><span class="block font-extrabold text-navy-900">${fmtMXN.format(entry.totalAmt)}</span><span class="block text-[10px] text-blue-700 font-bold">${fmtInt.format(entry.totalUnits)} pzas</span></div>`
-          : `<span class="font-extrabold text-navy-900">${metric === 'units' ? fmtInt.format(entry.totalUnits) : fmtMXN.format(entry.totalAmt)}</span>`;
-
+        const totalCellObj = { amt: entry.totalAmt, units: entry.totalUnits };
         return `
           <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} hover:bg-blue-50/40 transition">
             <td class="py-2.5 px-4 font-bold text-navy-900 whitespace-nowrap">${displayLabel}</td>
             ${cellsHtml}
-            <td class="py-2.5 px-4 text-right bg-blue-50/30 whitespace-nowrap">${rowTotalHtml}</td>
-            <td class="py-2.5 px-4 text-right bg-blue-50/10 whitespace-nowrap">
+            <td class="py-2.5 px-4 text-right font-extrabold text-navy-900 bg-blue-50/40 whitespace-nowrap">${formatCellContent(totalCellObj)}</td>
+            <td class="py-2.5 px-4 text-right bg-blue-50/20 whitespace-nowrap">
               <div class="flex items-center justify-end gap-2">
-                <div class="w-12 h-1.5 bg-slate-200 rounded-full overflow-hidden hidden sm:block">
+                <div class="w-12 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                   <div class="h-full bg-blue-600 rounded-full" style="width:${barWidth}%"></div>
                 </div>
-                <span class="font-bold text-slate-700 w-10 text-right">${sharePct.toFixed(1)}%</span>
+                <span class="font-bold text-slate-600 text-[11px]">${sharePct.toFixed(1)}%</span>
               </div>
             </td>
           </tr>
         `;
       }).join('');
 
-      // Renderizar TFOOT (Total General)
-      let footHtml = `<tr>
-        <td class="py-3 px-4 uppercase tracking-wider text-[11px] text-sky-300">TOTAL GENERAL</td>`;
+      // Renderizar TFOOT con Totales Generales
+      let footHtml = `<tr><td class="py-3 px-4 uppercase tracking-wider text-[11px]">Total General</td>`;
+      const exportTotalRow = ['TOTAL GENERAL'];
 
       if (colDim !== 'NONE') {
         colKeys.forEach(ck => {
           const ct = colTotals[ck];
-          if (metric === 'both') {
-            footHtml += `<td class="py-3 px-3.5 text-right whitespace-nowrap"><span class="block">${fmtMXN.format(ct.amt)}</span><span class="block text-[10px] text-sky-300">${fmtInt.format(ct.units)} pzas</span></td>`;
-          } else {
-            footHtml += `<td class="py-3 px-3.5 text-right whitespace-nowrap">${metric === 'units' ? fmtInt.format(ct.units) : fmtMXN.format(ct.amt)}</td>`;
-          }
+          exportTotalRow.push(metric === 'units' ? ct.units : Math.round(ct.amt));
+          const valStr = metric === 'units'
+            ? fmtInt.format(ct.units)
+            : (metric === 'both' ? `${fmtMXN.format(ct.amt)}<span class="block text-[10px] text-sky-300 font-normal">${fmtInt.format(ct.units)} pzas</span>` : fmtMXN.format(ct.amt));
+          footHtml += `<td class="py-3 px-3.5 text-right whitespace-nowrap">${valStr}</td>`;
         });
       }
 
-      const grandTotalCell = metric === 'both'
-        ? `<span class="block text-emerald-300">${fmtMXN.format(grandAmt)}</span><span class="block text-[10px] text-sky-300">${fmtInt.format(grandUnits)} pzas</span>`
-        : `<span class="text-emerald-300">${metric === 'units' ? fmtInt.format(grandUnits) : fmtMXN.format(grandAmt)}</span>`;
+      exportTotalRow.push(Math.round(grandAmt), grandUnits, '100.0%');
+      lastPivotExportMatrix.push(exportTotalRow);
+
+      const grandStr = metric === 'units'
+        ? fmtInt.format(grandUnits)
+        : (metric === 'both' ? `${fmtMXN.format(grandAmt)}<span class="block text-[10px] text-emerald-300 font-normal">${fmtInt.format(grandUnits)} pzas</span>` : fmtMXN.format(grandAmt));
 
       footHtml += `
-        <td class="py-3 px-4 text-right bg-navy-950 whitespace-nowrap">${grandTotalCell}</td>
-        <td class="py-3 px-4 text-right bg-navy-950 text-sky-300">100.0%</td>
+        <td class="py-3 px-4 text-right text-emerald-300 whitespace-nowrap">${grandStr}</td>
+        <td class="py-3 px-4 text-right text-sky-300 whitespace-nowrap">100.0%</td>
       </tr>`;
       tfoot.innerHTML = footHtml;
     }
 
     function exportPivotToExcel() {
       if (!lastPivotExportMatrix || lastPivotExportMatrix.length <= 1) {
-        showToast('No hay datos en la tabla dinámica para exportar');
+        showToast('No hay datos en la matriz para exportar');
         return;
       }
       try {
         const ws = XLSX.utils.aoa_to_sheet(lastPivotExportMatrix);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Matriz_Dinamica');
-        XLSX.writeFile(wb, `ColchoBoard_Matriz_Dinamica_${new Date().toISOString().slice(0, 10)}.xlsx`);
-        showToast('Tabla dinámica exportada a Excel (.xlsx)');
+        XLSX.writeFile(wb, `ColchoBoard_Matriz_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        showToast('Matriz Dinámica exportada a Excel (.xlsx)');
       } catch (err) {
-        console.error('Error exportando tabla dinámica:', err);
-        showToast('Error al exportar la tabla dinámica');
+        console.error(err);
+        showToast('Error al exportar la tabla a Excel');
       }
     }
+
+    // Plugin nativo ligero para mostrar porcentajes sobre cada segmento de Dona y el Total al centro
+    const doughnutPercentPlugin = {
+      id: 'doughnutPercentPlugin',
+      afterDatasetsDraw(chart) {
+        if (chart.config.type !== 'doughnut') return;
+        const { ctx } = chart;
+        const dataset = chart.data.datasets[0];
+        if (!dataset || !dataset.data || !dataset.data.length) return;
+
+        const meta = chart.getDatasetMeta(0);
+        const total = dataset.data.reduce((acc, val) => acc + (Number(val) > 0 ? Number(val) : 0), 0);
+        if (total <= 0) return;
+
+        ctx.save();
+        // 1) Porcentajes dentro de cada arco suficientemente grande (>= 4.5%)
+        meta.data.forEach((arc, index) => {
+          const val = Number(dataset.data[index]) || 0;
+          if (val <= 0 || arc.hidden) return;
+          const pct = (val / total) * 100;
+          if (pct < 4.5) return;
+
+          const pos = arc.tooltipPosition();
+          ctx.font = '700 10px Inter, system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = 'rgba(15, 30, 60, 0.55)';
+          ctx.fillText(`${pct.toFixed(1)}%`, pos.x + 1, pos.y + 1);
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillText(`${pct.toFixed(1)}%`, pos.x, pos.y);
+        });
+
+        // 2) Total central de la Dona
+        if (meta.data.length > 0) {
+          const centerX = meta.data[0].x;
+          const centerY = meta.data[0].y;
+          const compactTotal = total >= 1000000
+            ? `$${(total / 1000000).toFixed(2)}M`
+            : `$${(total / 1000).toFixed(0)}k`;
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#64748B';
+          ctx.font = '600 10px Inter, system-ui, sans-serif';
+          ctx.fillText('TOTAL', centerX, centerY - 9);
+          ctx.fillStyle = '#0F1E3C';
+          ctx.font = '800 13px Inter, system-ui, sans-serif';
+          ctx.fillText(compactTotal, centerX, centerY + 8);
+        }
+        ctx.restore();
+      }
+    };
 
     function renderChart(canvasId, config) {
       const canvas = document.getElementById(canvasId);
@@ -1421,7 +1474,7 @@
       chartsRegistry[canvasId] = new Chart(canvas.getContext('2d'), config);
     }
 
-    // 5. CARÁTULA EJECUTIVA (BARRAS Y PASTEL CON DATOS REALES)
+    // 5. CARÁTULA EJECUTIVA (BARRAS Y DONA CON PORCENTAJES Y DATOS REALES)
     function renderCoverModule() {
       const f = getFilters();
       const rows = getFilteredRecords();
@@ -1436,7 +1489,7 @@
       // Comparativo mismo día año anterior
       const currentYearNum = f.year === 'ALL' ? new Date().getFullYear() : parseInt(f.year, 10);
       const prevYearStr = String(currentYearNum - 1);
-      const maxDayCut = new Date().getDate();
+      const maxDayCut = rows.length ? Math.max(...rows.map(r => r.day || 15)) : new Date().getDate();
 
       const prevRows = getFilteredRecords({ year: prevYearStr }).filter(r => f.month === 'ALL' || (r.day || 15) <= maxDayCut);
       const prevInRows = prevRows.filter(r => r.channel === 'SELL_IN');
@@ -1500,29 +1553,37 @@
         }
       });
 
-      // Gráfica 2: Pastel por Modelo
+      // Gráfica 2: Dona por Modelo (solo positivos para que la participación sume 100% limpio)
+      const posModels = modelStats.filter(m => m.totalAmt > 0);
+      const posModelsSum = posModels.reduce((s, m) => s + m.totalAmt, 0);
       renderChart('chartCoverModelsPie', {
-        type: 'pie',
+        type: 'doughnut',
         data: {
-          labels: modelStats.map(m => m.name),
+          labels: posModels.map(m => {
+            const pct = posModelsSum > 0 ? ((m.totalAmt / posModelsSum) * 100).toFixed(1) : '0.0';
+            return `${m.name} (${pct}%)`;
+          }),
           datasets: [{
-            data: modelStats.map(m => m.totalAmt),
-            backgroundColor: modelStats.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
+            data: posModels.map(m => m.totalAmt),
+            backgroundColor: posModels.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
             borderWidth: 2,
-            borderColor: '#FFFFFF'
+            borderColor: '#FFFFFF',
+            hoverOffset: 10
           }]
         },
+        plugins: [doughnutPercentPlugin],
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          cutout: '56%',
+          animation: { animateRotate: true, animateScale: true, duration: 900 },
           plugins: {
-            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
+            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10, weight: '600' }, padding: 8 } },
             tooltip: {
               callbacks: {
                 label: ctx => {
-                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                  const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : '0.0';
-                  return ` ${ctx.label}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
+                  const pct = posModelsSum > 0 ? ((ctx.raw / posModelsSum) * 100).toFixed(1) : '0.0';
+                  return ` ${posModels[ctx.dataIndex].name}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
                 }
               }
             }
@@ -1570,29 +1631,37 @@
         }
       });
 
-      // Gráfica 4: Pastel por Zona
+      // Gráfica 4: Dona por Zona
+      const posZones = zoneStats.filter(z => z.totalAmt > 0);
+      const posZonesSum = posZones.reduce((s, z) => s + z.totalAmt, 0);
       renderChart('chartCoverZonesPie', {
-        type: 'pie',
+        type: 'doughnut',
         data: {
-          labels: zoneStats.map(z => z.zone),
+          labels: posZones.map(z => {
+            const pct = posZonesSum > 0 ? ((z.totalAmt / posZonesSum) * 100).toFixed(1) : '0.0';
+            return `${z.zone} (${pct}%)`;
+          }),
           datasets: [{
-            data: zoneStats.map(z => z.totalAmt),
-            backgroundColor: zoneStats.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
+            data: posZones.map(z => z.totalAmt),
+            backgroundColor: posZones.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
             borderWidth: 2,
-            borderColor: '#FFFFFF'
+            borderColor: '#FFFFFF',
+            hoverOffset: 10
           }]
         },
+        plugins: [doughnutPercentPlugin],
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          cutout: '56%',
+          animation: { animateRotate: true, animateScale: true, duration: 900 },
           plugins: {
-            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
+            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10, weight: '600' }, padding: 8 } },
             tooltip: {
               callbacks: {
                 label: ctx => {
-                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                  const pct = total > 0 ? ((ctx.raw / total) * 100).toFixed(1) : '0.0';
-                  return ` ${ctx.label}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
+                  const pct = posZonesSum > 0 ? ((ctx.raw / posZonesSum) * 100).toFixed(1) : '0.0';
+                  return ` ${posZones[ctx.dataIndex].zone}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
                 }
               }
             }
@@ -1618,192 +1687,296 @@
       }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos reales cargados</td></tr>`;
     }
 
-    // 6. MÓDULO CLIENTES Y TIENDAS (POR NO. SUCURSAL)
+    // 6. MÓDULO CLIENTES Y TIENDAS (POR NÚMERO DE SUCURSAL)
     function renderClientsModule() {
       const rows = getFilteredRecords();
-      const clients = [...new Set(rows.map(r => r.client))];
-      const cBody = document.getElementById('clientsTableBody');
+      const clientsMap = new Map();
 
-      cBody.innerHTML = clients.map(c => {
-        const cRows = rows.filter(r => r.client === c);
-        const seg = cRows[0]?.segment || 'Corporativa';
-        const inR = cRows.filter(r => r.channel === 'SELL_IN');
-        const outR = cRows.filter(r => r.channel === 'SELL_OUT');
-        return `
-          <tr class="hover:bg-slate-50">
-            <td class="py-3 px-4 font-bold text-navy-900">${c}</td>
-            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${seg === 'Corporativa' ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'}">${seg}</span></td>
-            <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(inR.reduce((s, r) => s + r.units, 0))}</td>
-            <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(inR.reduce((s, r) => s + r.amount, 0))}</td>
-            <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(outR.reduce((s, r) => s + r.units, 0))}</td>
-            <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(outR.reduce((s, r) => s + r.amount, 0))}</td>
-          </tr>
-        `;
-      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos de clientes</td></tr>`;
-
-      const outRows = rows.filter(r => r.channel === 'SELL_OUT');
-      const storeMap = new Map();
-      outRows.forEach(r => {
-        const key = r.storeId || r.storeName || 'S/N';
-        if (!storeMap.has(key)) {
-          storeMap.set(key, { id: key, name: r.storeName, client: r.client, zone: r.zone, units: 0, amount: 0, latestSort: 0 });
+      rows.forEach(r => {
+        const key = r.client || 'Sin Cliente';
+        if (!clientsMap.has(key)) {
+          clientsMap.set(key, { client: key, segment: r.segment || 'Corporativa', inPzas: 0, inAmt: 0, outPzas: 0, outAmt: 0 });
         }
-        const entry = storeMap.get(key);
-        const ymSort = (r.year * 100) + r.month;
-        if (ymSort >= entry.latestSort && r.storeName) {
-          entry.name = r.storeName;
-          entry.latestSort = ymSort;
+        const entry = clientsMap.get(key);
+        if (r.channel === 'SELL_IN') {
+          entry.inPzas += r.units;
+          entry.inAmt += r.amount;
+        } else {
+          entry.outPzas += r.units;
+          entry.outAmt += r.amount;
         }
-        entry.units += r.units;
-        entry.amount += r.amount;
       });
 
-      const sortedStores = [...storeMap.values()].sort((a, b) => b.amount - a.amount);
-      document.getElementById('storesTableBody').innerHTML = sortedStores.map(st => `
+      const clientsList = [...clientsMap.values()].sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt));
+      document.getElementById('clientsTableBody').innerHTML = clientsList.map(c => `
         <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-mono font-bold text-navy-900">${st.id}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${st.name}</td>
-          <td class="py-3 px-4 text-slate-600">${st.client}</td>
-          <td class="py-3 px-4 text-slate-600">${st.zone}</td>
-          <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(st.units)}</td>
-          <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(st.amount)}</td>
+          <td class="py-3 px-4 font-bold text-navy-900">${c.client}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${c.segment === 'Horizontal' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'}">${c.segment}</span>
+          </td>
+          <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(c.inPzas)}</td>
+          <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(c.inAmt)}</td>
+          <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(c.outPzas)}</td>
+          <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(c.outAmt)}</td>
         </tr>
-      `).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos Sell Out por sucursal</td></tr>`;
+      `).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin clientes cargados en el periodo</td></tr>`;
+
+      // Ranking por Número de Sucursal (Sell Out) conservando el nombre vigente más reciente
+      const outRows = rows.filter(r => r.channel === 'SELL_OUT');
+      const storesMap = new Map();
+
+      outRows.forEach(r => {
+        const sKey = r.storeId || r.storeName || 'S/N';
+        if (!storesMap.has(sKey)) {
+          storesMap.set(sKey, {
+            storeId: r.storeId || 'S/N',
+            storeName: r.storeName || 'Sin nombre',
+            latestDate: r.date || '',
+            client: r.client || '',
+            zone: r.zone || 'General',
+            units: 0,
+            amount: 0
+          });
+        }
+        const st = storesMap.get(sKey);
+        if ((r.date || '') >= st.latestDate && r.storeName) {
+          st.storeName = r.storeName;
+          st.latestDate = r.date || st.latestDate;
+        }
+        st.units += r.units;
+        st.amount += r.amount;
+      });
+
+      const storesList = [...storesMap.values()].sort((a, b) => b.amount - a.amount);
+      document.getElementById('storesTableBody').innerHTML = storesList.map(s => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-4 font-mono font-bold text-navy-900">${s.storeId}</td>
+          <td class="py-2.5 px-4 font-semibold text-slate-800">${s.storeName}</td>
+          <td class="py-2.5 px-4 text-slate-600">${s.client}</td>
+          <td class="py-2.5 px-4 text-slate-600">${s.zone}</td>
+          <td class="py-2.5 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(s.units)}</td>
+          <td class="py-2.5 px-4 text-right font-bold text-navy-900">${fmtMXN.format(s.amount)}</td>
+        </tr>
+      `).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos de Sell Out por sucursal</td></tr>`;
     }
 
-    // 7. MÓDULO ZONAS DETALLADO
+    // 7. MÓDULO MODELOS Y ZONAS
     function renderZonesModule() {
       const rows = getFilteredRecords();
-      const totalAll = rows.reduce((s, r) => s + r.amount, 0);
-      const zones = [...new Set(rows.map(r => r.zone).filter(Boolean))];
-      document.getElementById('zonesDetailTableBody').innerHTML = zones.map(z => {
-        const zIn = rows.filter(r => r.zone === z && r.channel === 'SELL_IN');
-        const zOut = rows.filter(r => r.zone === z && r.channel === 'SELL_OUT');
-        const inA = zIn.reduce((s, r) => s + r.amount, 0);
-        const outA = zOut.reduce((s, r) => s + r.amount, 0);
-        const share = totalAll > 0 ? (((inA + outA) / totalAll) * 100).toFixed(1) : '0.0';
+      const zonesMap = new Map();
+
+      rows.forEach(r => {
+        const z = r.zone || 'General';
+        if (!zonesMap.has(z)) {
+          zonesMap.set(z, { zone: z, inPzas: 0, inAmt: 0, outPzas: 0, outAmt: 0 });
+        }
+        const entry = zonesMap.get(z);
+        if (r.channel === 'SELL_IN') {
+          entry.inPzas += r.units;
+          entry.inAmt += r.amount;
+        } else {
+          entry.outPzas += r.units;
+          entry.outAmt += r.amount;
+        }
+      });
+
+      const list = [...zonesMap.values()].sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt));
+      const grand = list.reduce((s, z) => s + z.inAmt + z.outAmt, 0);
+
+      document.getElementById('zonesDetailTableBody').innerHTML = list.map(z => {
+        const pct = grand > 0 ? (((z.inAmt + z.outAmt) / grand) * 100).toFixed(1) : '0.0';
         return `
           <tr class="hover:bg-slate-50">
-            <td class="py-3 px-4 font-bold text-navy-900">Zona ${z}</td>
-            <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(zIn.reduce((s, r) => s + r.units, 0))}</td>
-            <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(inA)}</td>
-            <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(zOut.reduce((s, r) => s + r.units, 0))}</td>
-            <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(outA)}</td>
-            <td class="py-3 px-4 text-right font-bold text-slate-700">${share}%</td>
+            <td class="py-3 px-4 font-bold text-navy-900">${z.zone}</td>
+            <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(z.inPzas)}</td>
+            <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(z.inAmt)}</td>
+            <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(z.outPzas)}</td>
+            <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(z.outAmt)}</td>
+            <td class="py-3 px-4 text-right font-bold text-slate-600">${pct}%</td>
           </tr>
         `;
-      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos por zona</td></tr>`;
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos de zonas en el periodo</td></tr>`;
     }
 
-    // 8. EXPLORADOR POR FECHA PUNTUAL
+    // 8. MÓDULO CONSULTA POR FECHA PUNTUAL (EXPLORADOR)
+    function getExplorerFilteredRows() {
+      const exactDate = document.getElementById('exactDateFilter')?.value || '';
+      const flowSel = document.getElementById('explorerChannelSelect')?.value || 'ALL';
+      const query = (document.getElementById('explorerTextSearch')?.value || '').trim().toLowerCase();
+
+      return getFilteredRecords().filter(r => {
+        if (exactDate && r.date !== exactDate) return false;
+        if (flowSel !== 'ALL' && r.channel !== flowSel) return false;
+        if (query) {
+          const hay = `${r.client} ${r.storeId} ${r.storeName} ${r.zone} ${r.model} ${r.size} ${r.date}`.toLowerCase();
+          if (!hay.includes(query)) return false;
+        }
+        return true;
+      }).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    }
+
     function renderExplorer() {
-      let rows = getFilteredRecords();
-      const exactDate = document.getElementById('exactDateFilter').value;
-      const flow = document.getElementById('explorerChannelSelect').value;
-      const q = document.getElementById('explorerTextSearch').value.trim().toLowerCase();
-
-      if (exactDate) rows = rows.filter(r => r.date === exactDate);
-      if (flow !== 'ALL') rows = rows.filter(r => r.channel === flow);
-      if (q) {
-        rows = rows.filter(r =>
-          (r.client || '').toLowerCase().includes(q) ||
-          (r.storeId || '').toLowerCase().includes(q) ||
-          (r.storeName || '').toLowerCase().includes(q) ||
-          (r.model || '').toLowerCase().includes(q)
-        );
-      }
-
-      document.getElementById('explorerBody').innerHTML = rows.slice(0, 150).map(r => `
+      const rows = getExplorerFilteredRows().slice(0, 250);
+      document.getElementById('explorerBody').innerHTML = rows.map(r => `
         <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-4 font-mono text-slate-600">${r.date}</td>
-          <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.channel === 'SELL_IN' ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'}">${r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out'}</span></td>
-          <td class="py-2.5 px-4 font-bold text-navy-900">${r.client}</td>
-          <td class="py-2.5 px-4 text-slate-600">${r.storeId ? `${r.storeId} - ${r.storeName}` : 'Cedis / Cadena'}</td>
+          <td class="py-2.5 px-4 font-mono text-slate-700 whitespace-nowrap">${r.date}</td>
+          <td class="py-2.5 px-4 whitespace-nowrap">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${r.channel === 'SELL_IN' ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'}">
+              ${r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out'}
+            </span>
+          </td>
+          <td class="py-2.5 px-4 font-semibold text-navy-900">${r.client}</td>
+          <td class="py-2.5 px-4 text-slate-600">${r.storeId ? `${r.storeId} · ${r.storeName}` : (r.storeName || '—')}</td>
           <td class="py-2.5 px-4 text-slate-600">${r.zone}</td>
-          <td class="py-2.5 px-4 font-semibold text-slate-800">${r.model} (${r.size})</td>
-          <td class="py-2.5 px-4 text-right font-bold">${fmtInt.format(r.units)}</td>
-          <td class="py-2.5 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(r.amount)}</td>
+          <td class="py-2.5 px-4 font-semibold text-slate-800">${r.model} <span class="text-[10px] text-slate-400">${r.size}</span></td>
+          <td class="py-2.5 px-4 text-right font-semibold text-slate-800">${fmtInt.format(r.units)}</td>
+          <td class="py-2.5 px-4 text-right font-bold text-navy-900">${fmtMXN.format(r.amount)}</td>
         </tr>
-      `).join('') || `<tr><td colspan="8" class="py-8 text-center text-slate-400">No se encontraron registros reales con esa búsqueda</td></tr>`;
+      `).join('') || `<tr><td colspan="8" class="py-6 text-center text-slate-400">Sin registros que coincidan con la búsqueda</td></tr>`;
     }
 
     function exportExplorerCSV() {
-      const rows = getFilteredRecords();
-      const headers = ['Fecha', 'Flujo', 'Cliente', 'Segmento', 'NoSucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
-      const csvLines = [headers.join(',')];
-      rows.forEach(r => {
-        csvLines.push([r.date, r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out', `"${r.client}"`, r.segment, r.storeId || '', `"${r.storeName || ''}"`, r.zone, `"${r.model}"`, r.size, r.units, r.amount].join(','));
-      });
-      const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const rows = getExplorerFilteredRows();
+      if (!rows.length) {
+        showToast('No hay registros para exportar');
+        return;
+      }
+      const headers = ['Fecha', 'Flujo', 'Cliente', 'Segmento', 'No_Sucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe_MXN'];
+      const csvLines = [headers.join(',')].concat(rows.map(r => [
+        r.date,
+        r.channel === 'SELL_IN' ? 'Sell In' : 'Sell Out',
+        `"${String(r.client || '').replace(/"/g, '""')}"`,
+        r.segment || '',
+        `"${String(r.storeId || '').replace(/"/g, '""')}"`,
+        `"${String(r.storeName || '').replace(/"/g, '""')}"`,
+        `"${String(r.zone || '').replace(/"/g, '""')}"`,
+        `"${String(r.model || '').replace(/"/g, '""')}"`,
+        r.size || '',
+        r.units,
+        r.amount
+      ].join(',')));
+
+      const blob = new Blob(['\uFEFF' + csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `Colchones_America_Real_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.href = url;
+      a.download = `ColchoBoard_Consulta_${new Date().toISOString().slice(0, 10)}.csv`;
       a.click();
-      showToast('CSV exportado');
+      URL.revokeObjectURL(url);
+      showToast('Consulta exportada a CSV');
     }
 
-    // 9. MODO CAPTURA Y COMPARTIR EN WHATSAPP
-    function toggleSnapshotMode(active) {
-      if (active) {
-        switchModule('resumen');
+    // 9. MODO CAPTURA Y COMPARTIR WHATSAPP
+    function toggleSnapshotMode(enable) {
+      if (enable) {
+        if (activeModule !== 'resumen') switchModule('resumen');
         document.body.classList.add('whatsapp-snapshot-mode');
-        showToast('Modo Captura activado: toma screenshot de pantalla');
+        showToast('Modo Captura activo: toma tu screenshot limpio');
       } else {
         document.body.classList.remove('whatsapp-snapshot-mode');
       }
     }
 
     async function captureAndShareWhatsApp() {
-      switchModule('resumen');
-      const f = getFilters();
-      const rows = getFilteredRecords();
-      const inAmt = rows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
-      const inPzas = rows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
-      const outAmt = rows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
-      const outPzas = rows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+      if (activeModule !== 'resumen') switchModule('resumen');
+      const area = document.getElementById('captureArea');
+      if (!area) return;
 
-      const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
-      const summaryText = `*COLCHONES AMÉRICA • RESUMEN EJECUTIVO*\nPeriodo: ${mLabel} ${f.year === 'ALL' ? 'Todos los años' : f.year}\n• *Sell In:* ${fmtMXN.format(inAmt)} (${fmtInt.format(inPzas)} pzas)\n• *Sell Out:* ${fmtMXN.format(outAmt)} (${fmtInt.format(outPzas)} pzas)`;
-
+      showToast('Generando imagen de la Carátula Ejecutiva...');
       try {
-        const ta = document.createElement('textarea');
-        ta.value = summaryText;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      } catch (e) {}
-
-      if (typeof html2canvas !== 'undefined') {
-        try {
-          const area = document.getElementById('module-resumen');
-          const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#f8fafc' });
-          const link = document.createElement('a');
-          link.download = `Caratula_Colchones_America_${new Date().toISOString().slice(0, 10)}.png`;
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-          showToast('Imagen descargada y resumen copiado para WhatsApp');
-          return;
-        } catch (err) {
-          console.warn('Error generando imagen:', err);
-        }
+        const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#F8FAFC', useCORS: true });
+        const link = document.createElement('a');
+        link.download = `ColchoBoard_Resumen_${new Date().toISOString().slice(0, 10)}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('Captura PNG descargada lista para compartir en WhatsApp');
+      } catch (err) {
+        console.error(err);
+        toggleSnapshotMode(true);
       }
-      showToast('Resumen ejecutivo copiado para pegar en WhatsApp');
     }
 
-    // 10. LECTOR REAL DE EXCEL MULTI-PESTAÑA (COLCHOBOARD_2.XLSX)
+    // 10. LECTOR REAL DE EXCEL MULTI-PESTAÑA (ROBUSTO PARA TABLAS DINÁMICAS, FECHAS Y NÚMEROS)
     const MONTH_MAP_ES = {
-      ene: 1, enero: 1, feb: 2, febrero: 2, mar: 3, marzo: 3, abr: 4, abril: 4,
-      may: 5, mayo: 5, jun: 6, junio: 6, jul: 7, julio: 7, ago: 8, agosto: 8,
-      sep: 9, sept: 9, septiembre: 9, oct: 10, octubre: 10, nov: 11, noviembre: 11, dic: 12, diciembre: 12
+      ene: 1, enero: 1, jan: 1, january: 1,
+      feb: 2, febrero: 2, february: 2,
+      mar: 3, marzo: 3, march: 3,
+      abr: 4, abril: 4, apr: 4, april: 4,
+      may: 5, mayo: 5,
+      jun: 6, junio: 6, june: 6,
+      jul: 7, julio: 7, july: 7,
+      ago: 8, agosto: 8, aug: 8, august: 8,
+      sep: 9, sept: 9, septiembre: 9, september: 9,
+      oct: 10, octubre: 10, october: 10,
+      nov: 11, noviembre: 11, november: 11,
+      dic: 12, diciembre: 12, dec: 12, december: 12
     };
 
+    function normalizeText(str) {
+      return String(str || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function parseNum(val) {
+      if (typeof val === 'number') return Number.isFinite(val) ? val : 0;
+      if (val === null || val === undefined || val === '') return 0;
+      let s = String(val).trim();
+      let neg = false;
+      if (s.startsWith('(') && s.endsWith(')')) {
+        neg = true;
+        s = s.slice(1, -1);
+      }
+      s = s.replace(/[$\s,]/g, '');
+      const n = parseFloat(s);
+      if (Number.isNaN(n)) return 0;
+      return neg ? -Math.abs(n) : n;
+    }
+
     function parseMonthNum(val) {
-      if (typeof val === 'number' && val >= 1 && val <= 12) return Math.round(val);
-      const clean = String(val || '').trim().toLowerCase();
+      if (val === null || val === undefined || val === '') return 0;
+      if (typeof val === 'number') {
+        if (val >= 1 && val <= 12) return Math.round(val);
+        return 0;
+      }
+      const clean = normalizeText(val);
+      if (!clean) return 0;
       if (MONTH_MAP_ES[clean]) return MONTH_MAP_ES[clean];
-      const num = parseInt(clean, 10);
-      return (num >= 1 && num <= 12) ? num : 1;
+      for (const [k, mNum] of Object.entries(MONTH_MAP_ES)) {
+        if (clean.includes(k)) return mNum;
+      }
+      const numMatch = clean.match(/\b(1[0-2]|0?[1-9])\b/);
+      if (numMatch) return parseInt(numMatch[1], 10);
+      return 0;
+    }
+
+    function parseFlexibleDate(val) {
+      if (!val && val !== 0) return null;
+      if (val instanceof Date && !Number.isNaN(val.getTime())) {
+        return { year: val.getUTCFullYear(), month: val.getUTCMonth() + 1, day: val.getUTCDate() };
+      }
+      if (typeof val === 'number' && val > 25000 && val < 70000) {
+        const d = new Date(Math.round((val - 25569) * 86400 * 1000));
+        if (!Number.isNaN(d.getTime())) {
+          return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() };
+        }
+      }
+      const s = String(val).trim();
+      // YYYY-MM-DD
+      const iso = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+      if (iso) return { year: parseInt(iso[1], 10), month: parseInt(iso[2], 10), day: parseInt(iso[3], 10) };
+      // DD/MM/YYYY o DD-MM-YYYY
+      const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+      if (dmy) {
+        let y = parseInt(dmy[3], 10);
+        if (y < 100) y += 2000;
+        return { year: y, month: parseInt(dmy[2], 10), day: parseInt(dmy[1], 10) };
+      }
+      return null;
     }
 
     function normalizeClientSegment(rawName) {
@@ -1816,12 +1989,67 @@
       return { client: clean, segment: 'Corporativa' };
     }
 
-    function getCellCI(row, keys) {
-      const rowKeys = Object.keys(row);
-      for (const k of keys) {
-        const found = rowKeys.find(rk => rk.trim().toLowerCase() === k.toLowerCase());
-        if (found !== undefined && row[found] !== '') return row[found];
+    // Convierte cualquier hoja en arreglo de objetos detectando automáticamente la fila real de encabezados
+    function sheetToSmartRows(sheet, headerKeywords) {
+      const aoa = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', raw: true });
+      if (!aoa || !aoa.length) return [];
+
+      let bestRowIdx = 0;
+      let bestScore = -1;
+      const maxScan = Math.min(25, aoa.length);
+
+      for (let i = 0; i < maxScan; i++) {
+        const row = aoa[i];
+        if (!Array.isArray(row)) continue;
+        let score = 0;
+        const normalizedCells = row.map(c => normalizeText(c));
+        headerKeywords.forEach(kw => {
+          if (normalizedCells.some(c => c === kw || c.includes(kw))) score++;
+        });
+        if (score > bestScore) {
+          bestScore = score;
+          bestRowIdx = i;
+        }
       }
+
+      const rawHeaders = aoa[bestRowIdx].map((h, idx) => String(h || '').trim() || `COL_${idx}`);
+      const results = [];
+
+      for (let r = bestRowIdx + 1; r < aoa.length; r++) {
+        const rowArr = aoa[r];
+        if (!Array.isArray(rowArr)) continue;
+        const hasAny = rowArr.some(v => v !== '' && v !== null && v !== undefined);
+        if (!hasAny) continue;
+
+        const obj = {};
+        for (let c = 0; c < rawHeaders.length; c++) {
+          obj[rawHeaders[c]] = rowArr[c] !== undefined ? rowArr[c] : '';
+        }
+        results.push(obj);
+      }
+      return results;
+    }
+
+    // Buscador de columnas tolerante a acentos, mayúsculas y prefijos tipo "Suma de ..."
+    function getSmartCell(row, exactCandidates, partialCandidates = []) {
+      const entries = Object.keys(row).map(k => ({ raw: k, norm: normalizeText(k) }));
+
+      for (const cand of exactCandidates) {
+        const normC = normalizeText(cand);
+        const match = entries.find(e => e.norm === normC);
+        if (match && row[match.raw] !== '' && row[match.raw] !== null && row[match.raw] !== undefined) {
+          return row[match.raw];
+        }
+      }
+
+      for (const cand of partialCandidates) {
+        const normC = normalizeText(cand);
+        const match = entries.find(e => e.norm.includes(normC));
+        if (match && row[match.raw] !== '' && row[match.raw] !== null && row[match.raw] !== undefined) {
+          return row[match.raw];
+        }
+      }
+
       return '';
     }
 
@@ -1832,65 +2060,97 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         try {
-          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: false });
           const parsed = [];
           let seq = 1;
 
           // Mapa auxiliar de sucursales/zonas si existe pestaña catálogo de tiendas
           const storeZoneLookup = new Map();
-          const storeSheetName = wb.SheetNames.find(n => {
-            const u = n.toUpperCase();
-            return u.includes('TIENDA') || u.includes('SUCURSAL') || u.includes('ZONA') || u.includes('CATALOGO');
+          const storeNameLookup = new Map();
+          const storeSheetNames = wb.SheetNames.filter(n => {
+            const u = normalizeText(n);
+            return u.includes('tienda') || u.includes('sucursal') || u.includes('zona') || u.includes('catalogo') || u.includes('directorio');
           });
-          if (storeSheetName) {
-            const refRows = XLSX.utils.sheet_to_json(wb.Sheets[storeSheetName], { defval: '' });
-            refRows.forEach(rr => {
-              const sId = String(getCellCI(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'Sucursal', 'ID'])).trim();
-              const sName = String(getCellCI(rr, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Sucursal Nombre'])).trim();
-              const sZone = String(getCellCI(rr, ['Zona', 'Region', 'Plaza'])).trim();
-              if (sId && sZone) storeZoneLookup.set(sId, sZone);
-              if (sName && sZone) storeZoneLookup.set(sName.toUpperCase(), sZone);
-            });
-          }
 
-          // A) Pestaña SELL IN (Unidades Netas y Suma de Neto)
-          const sellInSheetName = wb.SheetNames.find(n => n.toUpperCase().replace('_', ' ').includes('SELL IN'));
-          if (sellInSheetName) {
-            const rowsIn = XLSX.utils.sheet_to_json(wb.Sheets[sellInSheetName], { defval: '' });
-            let lastClient = '', lastYear = 2026, lastMonth = 1, lastZone = 'General';
+          storeSheetNames.forEach(sn => {
+            const refRows = sheetToSmartRows(wb.Sheets[sn], ['clave', 'sucursal', 'tienda', 'zona', 'region', 'plaza']);
+            refRows.forEach(rr => {
+              const sId = String(getSmartCell(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'No Tienda', 'Sucursal', 'ID'], ['sucursal', 'clave', 'no tienda'])).trim();
+              const sName = String(getSmartCell(rr, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Sucursal Nombre'], ['tienda'])).trim();
+              const sZone = String(getSmartCell(rr, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region'])).trim();
+              if (sId && sZone) storeZoneLookup.set(sId, sZone);
+              if (sName && sZone) storeZoneLookup.set(normalizeText(sName), sZone);
+              if (sId && sName) storeNameLookup.set(sId, sName);
+            });
+          });
+
+          // A) Pestaña(s) SELL IN (Unidades Netas y Suma de Neto)
+          const sellInSheets = wb.SheetNames.filter(n => {
+            const u = normalizeText(n).replace(/\s+/g, '');
+            return u.includes('sellin') || u.includes('facturacion');
+          });
+
+          sellInSheets.forEach(sheetName => {
+            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'fecha']);
+            let lastClient = '', lastYear = new Date().getFullYear(), lastMonth = 1, lastZone = 'General';
 
             rowsIn.forEach(r => {
-              const rawC = String(getCellCI(r, ['Cliente'])).trim();
-              if (rawC.toLowerCase().startsWith('total')) return;
+              // Omitir cualquier fila de subtotal o total general de tablas dinámicas
+              const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
+              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) {
+                return;
+              }
+
+              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena'])).trim();
               if (rawC) lastClient = rawC;
 
-              const rawZ = String(getCellCI(r, ['Zona', 'Region'])).trim();
-              if (rawZ && !rawZ.toLowerCase().startsWith('total')) lastZone = rawZ;
+              const rawZ = String(getSmartCell(r, ['Zona', 'Region', 'Plaza'], ['zona', 'region'])).trim();
+              if (rawZ) lastZone = rawZ;
 
-              const rawY = getCellCI(r, ['Año', 'Year']);
-              if (String(rawY).toLowerCase().startsWith('total')) return;
-              if (rawY) lastYear = parseInt(rawY, 10) || lastYear;
+              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Date'], ['fecha']);
+              const parsedDate = parseFlexibleDate(rawDate);
 
-              const rawM = getCellCI(r, ['Mes', 'Month']);
-              if (String(rawM).toLowerCase().startsWith('total')) return;
-              if (rawM) lastMonth = parseMonthNum(rawM);
+              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year', 'Ejercicio'], ['ano', 'year']);
+              const parsedY = parseInt(String(rawY).match(/\d{4}/)?.[0] || '', 10);
+              if (parsedY >= 2000 && parsedY <= 2100) lastYear = parsedY;
+              else if (parsedDate) lastYear = parsedDate.year;
 
-              const model = String(getCellCI(r, ['Modelo'])).trim();
-              if (!model || model.toLowerCase().startsWith('total')) return;
+              const rawM = getSmartCell(r, ['Mes', 'Month', 'Periodo'], ['mes', 'month']);
+              const parsedM = parseMonthNum(rawM);
+              if (parsedM >= 1 && parsedM <= 12) lastMonth = parsedM;
+              else if (parsedDate) lastMonth = parsedDate.month;
 
-              const size = String(getCellCI(r, ['Medida']) || 'MAT').trim().split(' ').pop();
-              const units = Number(getCellCI(r, ['Unidades Netas', 'Suma de Piezas', 'Piezas'])) || 0;
-              const amount = Number(getCellCI(r, ['Suma de Neto', 'Neto', 'Suma de Total'])) || 0;
+              const dayVal = parsedDate
+                ? parsedDate.day
+                : Math.min(28, Math.max(1, parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15));
+
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Descripcion', 'Articulo'], ['modelo'])).trim();
+              if (!model) return;
+
+              const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
+              const size = rawSize.split(' ').pop();
+
+              const units = parseNum(getSmartCell(
+                r,
+                ['Unidades Netas', 'Suma de Unidades Netas', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas'],
+                ['unidades netas', 'unidad', 'pieza', 'pza', 'cant']
+              ));
+              const amount = parseNum(getSmartCell(
+                r,
+                ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total'],
+                ['neto', 'importe', 'venta', 'total']
+              ));
+
               if (units === 0 && amount === 0) return;
 
-              const cInfo = normalizeClientSegment(lastClient);
+              const cInfo = normalizeClientSegment(lastClient || 'GNC');
               parsed.push({
                 folio: `SI-XL-${seq++}`,
                 channel: 'SELL_IN',
-                date: `${lastYear}-${String(lastMonth).padStart(2, '0')}-15`,
+                date: `${lastYear}-${String(lastMonth).padStart(2, '0')}-${String(dayVal).padStart(2, '0')}`,
                 year: lastYear,
                 month: lastMonth,
-                day: 15,
+                day: dayVal,
                 client: cInfo.client,
                 segment: cInfo.segment,
                 storeId: '',
@@ -1898,39 +2158,85 @@
                 zone: lastZone,
                 model,
                 size,
-                units,
-                unitPrice: units > 0 ? Math.round(amount / units) : 0,
-                amount
+                units: Math.round(units),
+                unitPrice: units !== 0 ? Math.round(amount / units) : 0,
+                amount: Math.round(amount * 100) / 100
               });
             });
-          }
+          });
 
-          // B) Pestaña SELL OUT (Costo x Piezas + Referencia No. Sucursal y Zona)
-          const sellOutSheetName = wb.SheetNames.find(n => n.toUpperCase().replace('_', ' ').includes('SELL OUT'));
-          if (sellOutSheetName) {
-            const rowsOut = XLSX.utils.sheet_to_json(wb.Sheets[sellOutSheetName], { defval: '' });
+          // B) Pestaña(s) SELL OUT (Costo x Piezas + Referencia No. Sucursal y Zona)
+          const sellOutSheets = wb.SheetNames.filter(n => {
+            const u = normalizeText(n).replace(/\s+/g, '');
+            return u.includes('sellout') || u === 'so' || u.includes('desplazamiento') || u.includes('pos');
+          });
+
+          sellOutSheets.forEach(sheetName => {
+            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente']);
             rowsOut.forEach(r => {
-              const model = String(getCellCI(r, ['Modelo'])).trim();
-              if (!model || model.toLowerCase().startsWith('total')) return;
+              const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
+              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general'))) {
+                return;
+              }
 
-              const rawClient = getCellCI(r, ['Cliente', 'Nombre de Cadena']);
-              const cInfo = normalizeClientSegment(rawClient);
-              const storeId = String(getCellCI(r, ['Clave', 'No. Sucursal', 'No de Tienda', 'Sucursal'])).trim();
-              const storeName = String(getCellCI(r, ['Tienda', 'Nombre Tienda'])).trim();
-              const size = String(getCellCI(r, ['Medida']) || 'MAT').trim().split(' ').pop();
-              const units = Number(getCellCI(r, ['Piezas', 'Unidades'])) || 0;
-              const unitCost = Number(getCellCI(r, ['Costo', 'Precio'])) || 0;
-              const amount = Math.round(unitCost * units * 100) / 100;
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo'])).trim();
+              if (!model) return;
 
-              const yr = parseInt(getCellCI(r, ['Año']), 10) || 2026;
-              const mo = parseMonthNum(getCellCI(r, ['Mes']));
-              const dy = Math.min(28, Math.max(1, parseInt(getCellCI(r, ['Dia', 'Día']), 10) || 15));
+              const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena', 'Cuenta'], ['cliente', 'cadena']);
+              const cInfo = normalizeClientSegment(rawClient || 'GNC');
+
+              const storeId = String(getSmartCell(
+                r,
+                ['Clave', 'No. Sucursal', 'No Sucursal', 'No de Tienda', 'No. Tienda', 'Num Sucursal', 'Sucursal', 'ID Tienda'],
+                ['no sucursal', 'no tienda', 'clave', 'sucursal']
+              )).trim();
+              const storeName = String(getSmartCell(
+                r,
+                ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal'],
+                ['tienda']
+              )).trim() || storeNameLookup.get(storeId) || '';
+
+              const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
+              const size = rawSize.split(' ').pop();
+
+              const units = parseNum(getSmartCell(
+                r,
+                ['Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Venta Piezas', 'Unidades Vendidas'],
+                ['pieza', 'unidad', 'pza', 'cant']
+              ));
+              const unitCost = parseNum(getSmartCell(
+                r,
+                ['Costo', 'Costo Unitario', 'Precio', 'Precio Unitario'],
+                ['costo', 'precio']
+              ));
+              const directAmt = parseNum(getSmartCell(
+                r,
+                ['Importe', 'Total', 'Venta', 'Monto', 'Costo Total'],
+                ['importe', 'monto', 'total']
+              ));
+
+              // Regla definida: Costo x Piezas (respaldo a importe directo si costo viniera vacío)
+              const amount = unitCost !== 0 && units !== 0
+                ? Math.round(unitCost * units * 100) / 100
+                : Math.round(directAmt * 100) / 100;
 
               if (units === 0 && amount === 0) return;
 
-              const detectedZone = String(getCellCI(r, ['Zona', 'Region'])).trim()
+              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Venta', 'Date'], ['fecha']);
+              const parsedDate = parseFlexibleDate(rawDate);
+
+              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year']);
+              const yr = parseInt(String(rawY).match(/\d{4}/)?.[0] || '', 10) || (parsedDate ? parsedDate.year : new Date().getFullYear());
+
+              const rawM = getSmartCell(r, ['Mes', 'Month'], ['mes', 'month']);
+              const mo = parseMonthNum(rawM) || (parsedDate ? parsedDate.month : 1);
+
+              const rawD = getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']);
+              const dy = Math.min(31, Math.max(1, parseInt(rawD, 10) || (parsedDate ? parsedDate.day : 15)));
+
+              const detectedZone = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region'])).trim()
                 || storeZoneLookup.get(storeId)
-                || storeZoneLookup.get(storeName.toUpperCase())
+                || storeZoneLookup.get(normalizeText(storeName))
                 || 'General';
 
               parsed.push({
@@ -1947,12 +2253,12 @@
                 zone: detectedZone,
                 model,
                 size,
-                units,
-                unitPrice: unitCost,
+                units: Math.round(units),
+                unitPrice: unitCost || (units !== 0 ? Math.round(amount / units) : 0),
                 amount
               });
             });
-          }
+          });
 
           if (parsed.length === 0) {
             showToast('No se encontraron registros válidos en SELL IN o SELL OUT');
@@ -1960,9 +2266,16 @@
           }
 
           stagedExcelRecords = parsed;
+          const inRecs = parsed.filter(p => p.channel === 'SELL_IN');
+          const outRecs = parsed.filter(p => p.channel === 'SELL_OUT');
           const uniqueClients = [...new Set(parsed.map(p => p.client))].join(', ');
+          const uniqueYears = [...new Set(parsed.map(p => p.year))].sort().join(', ');
+          const latestDate = [...parsed.map(p => p.date)].sort().pop() || '-';
+
           document.getElementById('excelStatusText').textContent = `Listo: ${fmtInt.format(parsed.length)} registros reales detectados en "${file.name}"`;
-          document.getElementById('excelStatusSub').textContent = `Clientes detectados: ${uniqueClients} • Pestañas leídas: ${wb.SheetNames.join(', ')}`;
+          document.getElementById('excelStatusSub').textContent = `Clientes: ${uniqueClients} • Años: ${uniqueYears} • Última fecha: ${latestDate}`;
+          document.getElementById('excelStatusDetail').textContent =
+            `SELL IN: ${fmtInt.format(inRecs.length)} filas (${fmtInt.format(inRecs.reduce((s, r) => s + r.units, 0))} pzas) | SELL OUT: ${fmtInt.format(outRecs.length)} filas (${fmtInt.format(outRecs.reduce((s, r) => s + r.units, 0))} pzas)`;
           document.getElementById('excelStatusPanel').classList.remove('hidden');
         } catch (err) {
           console.error(err);
@@ -1985,7 +2298,8 @@
       try {
         localStorage.setItem(DATA_KEY, JSON.stringify(salesData));
       } catch (e) {
-        console.warn('No se pudo guardar en localStorage:', e);
+        console.warn('Archivo grande: los datos quedan activos en memoria de esta sesión:', e);
+        showToast('Base cargada en memoria activa (supera límite local del navegador)');
       }
 
       document.getElementById('excelStatusPanel').classList.add('hidden');
