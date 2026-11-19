@@ -167,7 +167,7 @@
               </svg>
             </div>
             <div>
-              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard</span>
+              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard <span class="text-[10px] font-mono text-emerald-400">v2.4</span></span>
               <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Colchones América</span>
             </div>
           </div>
@@ -461,18 +461,18 @@
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs tabular-nums">
-                <thead>
-                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
-                    <th class="py-2.5 px-4 font-bold">Modelo</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In ($)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out ($)</th>
-                    <th class="py-2.5 px-4 font-bold text-right">% Part.</th>
-                  </tr>
-                </thead>
-                <tbody id="coverModelTableBody" class="divide-y divide-slate-100"></tbody>
-              </table>
+            <div id="excelStatusPanel" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="space-y-1">
+                  <p id="excelStatusText" class="font-extrabold">Archivo listo</p>
+                  <p id="excelStatusSub" class="text-[11px] text-emerald-800"></p>
+                  <p id="excelStatusDetail" class="text-[11px] font-mono text-emerald-700"></p>
+                </div>
+                <button onclick="commitExcelData()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold shadow-xs">
+                  Aplicar y Actualizar Dashboard
+                </button>
+              </div>
+              <div id="excelDiagnosticsBox" class="p-3 rounded-lg bg-white/80 border border-emerald-200/80 text-[11px] text-slate-700 font-mono whitespace-pre-wrap"></div>
             </div>
           </div>
         </section>
@@ -865,6 +865,87 @@
 
     const SESSION_KEY = 'ca_pwa_session_v2';
     const DATA_KEY = 'ca_pwa_real_sales_v2';
+    const IDB_NAME = 'ColchoBoardDB_v2';
+    const IDB_STORE = 'datasets';
+
+    // Registro del Service Worker actualizado (colchoboard-v4)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    // Almacenamiento IndexedDB (soporta decenas de miles de filas sin límite de 5MB)
+    function openColchoDB() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) return reject(new Error('IndexedDB no disponible'));
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) {
+            db.createObjectStore(IDB_STORE);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveSalesToStorage(records) {
+      try {
+        const db = await openColchoDB();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(records, DATA_KEY);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+        try { localStorage.removeItem(DATA_KEY); } catch (_) {}
+        return true;
+      } catch (err) {
+        try {
+          localStorage.setItem(DATA_KEY, JSON.stringify(records));
+          return true;
+        } catch (e) {
+          console.warn('No se pudo persistir en disco, queda en memoria activa:', e);
+          return false;
+        }
+      }
+    }
+
+    async function loadSalesFromStorage() {
+      try {
+        const db = await openColchoDB();
+        const stored = await new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get(DATA_KEY);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+        if (Array.isArray(stored) && stored.length > 0) return stored;
+      } catch (err) {
+        console.warn('Leyendo respaldo localStorage:', err);
+      }
+      try {
+        const saved = localStorage.getItem(DATA_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (_) {}
+      return [];
+    }
+
+    async function clearSalesStorage() {
+      try {
+        const db = await openColchoDB();
+        await new Promise((resolve) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).delete(DATA_KEY);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        });
+      } catch (_) {}
+      try { localStorage.removeItem(DATA_KEY); } catch (_) {}
+    }
 
     function handleLoginSubmit(e) {
       e.preventDefault();
@@ -889,7 +970,7 @@
       inp.type = inp.type === 'password' ? 'text' : 'password';
     }
 
-    function activateSession(account) {
+    async function activateSession(account) {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appShell').classList.remove('hidden');
 
@@ -908,7 +989,7 @@
         if (topExcelBtn) topExcelBtn.classList.remove('hidden');
       }
 
-      loadStoredRealData();
+      salesData = await loadSalesFromStorage();
       syncDynamicFilterDropdowns();
       applyFilters();
     }
@@ -958,8 +1039,8 @@
       salesData = [];
     }
 
-    function clearStoredData() {
-      localStorage.removeItem(DATA_KEY);
+    async function clearStoredData() {
+      await clearSalesStorage();
       salesData = [];
       stagedExcelRecords = [];
       document.getElementById('excelStatusPanel').classList.add('hidden');
@@ -984,11 +1065,11 @@
       clientSel.innerHTML = `<option value="ALL">Cliente: Todos</option>` + clients.map(c => `<option value="${c}">${c}</option>`).join('');
       zoneSel.innerHTML = `<option value="ALL">Zona: Todas</option>` + zones.map(z => `<option value="${z}">Zona ${z}</option>`).join('');
 
-      // Seleccionar por defecto el mes más reciente disponible en el año más reciente
+      // Seleccionar por defecto el mes más reciente con información en el año más reciente
       if (salesData.length > 0 && years.length > 0) {
-        const latestYearRows = salesData.filter(r => r.year === years[0] && r.month >= 1 && r.month <= 12);
-        const latestMonth = latestYearRows.length ? Math.max(...latestYearRows.map(r => r.month)) : 1;
-        document.getElementById('filterMonth').value = String(latestMonth);
+        const latestYearRows = salesData.filter(r => r.year === years[0] && r.month >= 1 && r.month <= 12 && (r.amount !== 0 || r.units !== 0));
+        const latestMonth = latestYearRows.length ? Math.max(...latestYearRows.map(r => r.month)) : 0;
+        document.getElementById('filterMonth').value = latestMonth > 0 ? String(latestMonth) : 'ALL';
       } else {
         document.getElementById('filterMonth').value = 'ALL';
       }
@@ -2062,6 +2143,7 @@
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: false });
           const parsed = [];
+          const diagLines = [`Pestañas en archivo: ${wb.SheetNames.join(', ')}`];
           let seq = 1;
 
           // Mapa auxiliar de sucursales/zonas si existe pestaña catálogo de tiendas
@@ -2075,42 +2157,44 @@
           storeSheetNames.forEach(sn => {
             const refRows = sheetToSmartRows(wb.Sheets[sn], ['clave', 'sucursal', 'tienda', 'zona', 'region', 'plaza']);
             refRows.forEach(rr => {
-              const sId = String(getSmartCell(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'No Tienda', 'Sucursal', 'ID'], ['sucursal', 'clave', 'no tienda'])).trim();
+              const sId = String(getSmartCell(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'No Tienda', 'Sucursal', 'ID'], ['sucursal', 'clave', 'no tienda', 'num'])).trim();
               const sName = String(getSmartCell(rr, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Sucursal Nombre'], ['tienda'])).trim();
-              const sZone = String(getSmartCell(rr, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region'])).trim();
+              const sZone = String(getSmartCell(rr, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim();
               if (sId && sZone) storeZoneLookup.set(sId, sZone);
               if (sName && sZone) storeZoneLookup.set(normalizeText(sName), sZone);
               if (sId && sName) storeNameLookup.set(sId, sName);
             });
+            diagLines.push(`• Catálogo [${sn}]: ${refRows.length} filas leídas`);
           });
 
           // A) Pestaña(s) SELL IN (Unidades Netas y Suma de Neto)
           const sellInSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
-            return u.includes('sellin') || u.includes('facturacion');
+            return u.includes('sellin') || u === 'sin' || u.includes('facturacion');
           });
 
           sellInSheets.forEach(sheetName => {
-            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'fecha']);
+            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pzs']);
+            const sampleCols = rowsIn.length ? Object.keys(rowsIn[0]).join(' | ') : '(sin encabezados)';
+            let countInSheet = 0;
             let lastClient = '', lastYear = new Date().getFullYear(), lastMonth = 1, lastZone = 'General';
 
             rowsIn.forEach(r => {
-              // Omitir cualquier fila de subtotal o total general de tablas dinámicas
               const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
               if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) {
                 return;
               }
 
-              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena'])).trim();
+              const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta'])).trim();
               if (rawC) lastClient = rawC;
 
-              const rawZ = String(getSmartCell(r, ['Zona', 'Region', 'Plaza'], ['zona', 'region'])).trim();
+              const rawZ = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim();
               if (rawZ) lastZone = rawZ;
 
-              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Date'], ['fecha']);
+              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Date', 'Dia'], ['fecha']);
               const parsedDate = parseFlexibleDate(rawDate);
 
-              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year', 'Ejercicio'], ['ano', 'year']);
+              const rawY = getSmartCell(r, ['Año', 'Ano', 'Year', 'Ejercicio'], ['ano', 'year', 'ejerc']);
               const parsedY = parseInt(String(rawY).match(/\d{4}/)?.[0] || '', 10);
               if (parsedY >= 2000 && parsedY <= 2100) lastYear = parsedY;
               else if (parsedDate) lastYear = parsedDate.year;
@@ -2122,9 +2206,9 @@
 
               const dayVal = parsedDate
                 ? parsedDate.day
-                : Math.min(28, Math.max(1, parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15));
+                : Math.min(31, Math.max(1, parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15));
 
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Descripcion', 'Articulo'], ['modelo'])).trim();
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Descripcion', 'Articulo', 'Linea', 'Familia'], ['modelo', 'articulo', 'producto', 'descrip'])).trim();
               if (!model) return;
 
               const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
@@ -2132,13 +2216,13 @@
 
               const units = parseNum(getSmartCell(
                 r,
-                ['Unidades Netas', 'Suma de Unidades Netas', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas'],
-                ['unidades netas', 'unidad', 'pieza', 'pza', 'cant']
+                ['Unidades Netas', 'Suma de Unidades Netas', 'U. Netas', 'Unid. Netas', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Pzs', 'Uds', 'Suma de Cantidad', 'Suma de Unidades'],
+                ['unidades netas', 'unid', 'pieza', 'pza', 'pzs', 'cant', 'uds', 'qty']
               ));
               const amount = parseNum(getSmartCell(
                 r,
-                ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total'],
-                ['neto', 'importe', 'venta', 'total']
+                ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto', 'Venta'],
+                ['neto', 'importe', 'venta', 'monto', 'total']
               ));
 
               if (units === 0 && amount === 0) return;
@@ -2162,38 +2246,43 @@
                 unitPrice: units !== 0 ? Math.round(amount / units) : 0,
                 amount: Math.round(amount * 100) / 100
               });
+              countInSheet++;
             });
+            diagLines.push(`• SELL IN [${sheetName}]: ${countInSheet} registros | Columnas: ${sampleCols}`);
           });
 
           // B) Pestaña(s) SELL OUT (Costo x Piezas + Referencia No. Sucursal y Zona)
           const sellOutSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
-            return u.includes('sellout') || u === 'so' || u.includes('desplazamiento') || u.includes('pos');
+            return u.includes('sellout') || u === 'so' || u === 'sout' || u.includes('desplazamiento') || u.includes('pos') || u.includes('salidas');
           });
 
           sellOutSheets.forEach(sheetName => {
-            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente']);
+            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'articulo', 'cantidad', 'unidades']);
+            const sampleCols = rowsOut.length ? Object.keys(rowsOut[0]).join(' | ') : '(sin encabezados)';
+            let countOutSheet = 0;
+
             rowsOut.forEach(r => {
               const rowValuesNorm = Object.values(r).map(v => normalizeText(v));
-              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general'))) {
+              if (rowValuesNorm.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) {
                 return;
               }
 
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo'])).trim();
+              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion', 'Nombre Articulo', 'Colchon'], ['modelo', 'articulo', 'producto', 'descrip', 'colchon'])).trim();
               if (!model) return;
 
-              const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena', 'Cuenta'], ['cliente', 'cadena']);
+              const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta']);
               const cInfo = normalizeClientSegment(rawClient || 'GNC');
 
               const storeId = String(getSmartCell(
                 r,
-                ['Clave', 'No. Sucursal', 'No Sucursal', 'No de Tienda', 'No. Tienda', 'Num Sucursal', 'Sucursal', 'ID Tienda'],
-                ['no sucursal', 'no tienda', 'clave', 'sucursal']
+                ['Clave', 'No. Sucursal', 'No Sucursal', 'No de Tienda', 'No. Tienda', 'Num Sucursal', 'Sucursal', 'ID Tienda', 'Tienda ID'],
+                ['no sucursal', 'no tienda', 'clave', 'sucursal', 'num tienda']
               )).trim();
               const storeName = String(getSmartCell(
                 r,
-                ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal'],
-                ['tienda']
+                ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal', 'Almacen'],
+                ['tienda', 'almacen']
               )).trim() || storeNameLookup.get(storeId) || '';
 
               const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
@@ -2201,18 +2290,18 @@
 
               const units = parseNum(getSmartCell(
                 r,
-                ['Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Venta Piezas', 'Unidades Vendidas'],
-                ['pieza', 'unidad', 'pza', 'cant']
+                ['Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Pzs', 'Uds', 'Venta Piezas', 'Unidades Vendidas', 'Suma de Piezas'],
+                ['pieza', 'unid', 'pza', 'pzs', 'cant', 'uds', 'qty']
               ));
               const unitCost = parseNum(getSmartCell(
                 r,
-                ['Costo', 'Costo Unitario', 'Precio', 'Precio Unitario'],
+                ['Costo', 'Costo Unitario', 'Costo Unit', 'Precio', 'Precio Unitario'],
                 ['costo', 'precio']
               ));
               const directAmt = parseNum(getSmartCell(
                 r,
-                ['Importe', 'Total', 'Venta', 'Monto', 'Costo Total'],
-                ['importe', 'monto', 'total']
+                ['Importe', 'Total', 'Venta', 'Monto', 'Costo Total', 'Venta $'],
+                ['importe', 'monto', 'venta', 'total']
               ));
 
               // Regla definida: Costo x Piezas (respaldo a importe directo si costo viniera vacío)
@@ -2234,7 +2323,7 @@
               const rawD = getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']);
               const dy = Math.min(31, Math.max(1, parseInt(rawD, 10) || (parsedDate ? parsedDate.day : 15)));
 
-              const detectedZone = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region'])).trim()
+              const detectedZone = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim()
                 || storeZoneLookup.get(storeId)
                 || storeZoneLookup.get(normalizeText(storeName))
                 || 'General';
@@ -2257,11 +2346,15 @@
                 unitPrice: unitCost || (units !== 0 ? Math.round(amount / units) : 0),
                 amount
               });
+              countOutSheet++;
             });
+            diagLines.push(`• SELL OUT [${sheetName}]: ${countOutSheet} registros | Columnas: ${sampleCols}`);
           });
 
           if (parsed.length === 0) {
             showToast('No se encontraron registros válidos en SELL IN o SELL OUT');
+            document.getElementById('excelDiagnosticsBox').textContent = diagLines.join('\n');
+            document.getElementById('excelStatusPanel').classList.remove('hidden');
             return;
           }
 
@@ -2276,6 +2369,7 @@
           document.getElementById('excelStatusSub').textContent = `Clientes: ${uniqueClients} • Años: ${uniqueYears} • Última fecha: ${latestDate}`;
           document.getElementById('excelStatusDetail').textContent =
             `SELL IN: ${fmtInt.format(inRecs.length)} filas (${fmtInt.format(inRecs.reduce((s, r) => s + r.units, 0))} pzas) | SELL OUT: ${fmtInt.format(outRecs.length)} filas (${fmtInt.format(outRecs.reduce((s, r) => s + r.units, 0))} pzas)`;
+          document.getElementById('excelDiagnosticsBox').textContent = diagLines.join('\n');
           document.getElementById('excelStatusPanel').classList.remove('hidden');
         } catch (err) {
           console.error(err);
@@ -2285,7 +2379,7 @@
       reader.readAsArrayBuffer(file);
     }
 
-    function commitExcelData() {
+    async function commitExcelData() {
       if (!stagedExcelRecords.length) return;
       const mode = document.querySelector('input[name="excelLoadMode"]:checked')?.value || 'REPLACE';
 
@@ -2295,11 +2389,9 @@
         salesData = [...stagedExcelRecords];
       }
 
-      try {
-        localStorage.setItem(DATA_KEY, JSON.stringify(salesData));
-      } catch (e) {
-        console.warn('Archivo grande: los datos quedan activos en memoria de esta sesión:', e);
-        showToast('Base cargada en memoria activa (supera límite local del navegador)');
+      const savedOk = await saveSalesToStorage(salesData);
+      if (!savedOk) {
+        showToast('Base cargada en memoria activa (sin persistencia local)');
       }
 
       document.getElementById('excelStatusPanel').classList.add('hidden');
