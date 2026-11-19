@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0F1E3C" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Colchones América BI" />
+  <title>Colchones América | App Ejecutiva Comercial</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <!-- html2canvas para generar captura lista para WhatsApp con un clic -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            navy: { 950: '#081226', 900: '#0F1E3C', 800: '#162A52', 700: '#1E3A6E' }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .tab-active {
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%);
+      border-left: 3px solid #38bdf8;
+      color: #ffffff;
+    }
+    /* Estilo especial para modo captura limpia WhatsApp */
+    body.whatsapp-snapshot-mode #sidebar,
+    body.whatsapp-snapshot-mode #filterBarContainer,
+    body.whatsapp-snapshot-mode .no-snapshot {
+      display: none !important;
+    }
+    body.whatsapp-snapshot-mode #snapshotExitBanner {
+      display: flex !important;
+    }
+    body.whatsapp-snapshot-mode main {
+      max-width: 960px !important;
+      padding: 16px !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ========================================================= -->
+  <!-- PANTALLA DE LOGIN (AUTENTICACIÓN CORPORATIVA)             -->
+  <!-- ========================================================= -->
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-navy-950 via-navy-900 to-slate-900 p-4">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden">
+      <div class="bg-navy-900 px-7 py-7 text-center relative overflow-hidden">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center shadow-lg mb-3">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h1 class="text-xl font-extrabold text-white tracking-tight">Colchones América</h1>
+        <p class="text-xs text-sky-300 font-medium mt-0.5">Portal Ejecutivo Sell In & Sell Out • PWA</p>
+      </div>
+
+      <form onsubmit="handleLoginSubmit(event)" class="p-7 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Usuario</label>
+          <input type="text" id="loginUser" required autocomplete="username" placeholder="Ej. VENTAS1.MOSS"
+                 class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-navy-900 uppercase focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Contraseña</label>
+          <div class="relative">
+            <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••••••"
+                   class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition pr-11" />
+            <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 p-0.5">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginErrorBox" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
+          Usuario o contraseña incorrectos. Verifica tus credenciales.
+        </div>
+
+        <button type="submit" class="w-full py-3.5 px-4 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-sm font-bold tracking-wide shadow-lg shadow-navy-900/20 transition">
+          Iniciar Sesión
+        </button>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+          <span>Acceso autorizado Dirección & Supervisión</span>
+          <button type="button" id="btnInstallPWA" onclick="triggerPWAInstall()" class="hidden text-blue-600 font-bold hover:underline">
+            + Instalar App
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- APLICACIÓN PRINCIPAL (OCULTA HASTA INICIAR SESIÓN)        -->
+  <!-- ========================================================= -->
+  <div id="appShell" class="hidden min-h-screen flex flex-col lg:flex-row">
+
+    <!-- Banner flotante para salir del Modo Captura WhatsApp -->
+    <div id="snapshotExitBanner" class="hidden fixed top-3 right-3 z-50 items-center gap-2 bg-navy-900 text-white px-4 py-2 rounded-full shadow-xl border border-slate-700 text-xs font-bold">
+      <span>Vista Limpia para Captura</span>
+      <button onclick="toggleSnapshotMode(false)" class="px-2.5 py-1 rounded-full bg-rose-500 hover:bg-rose-600 text-white text-[11px]">Salir</button>
+    </div>
+
+    <!-- Overlay móvil -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+    <!-- Sidebar Minimalista -->
+    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-68 bg-navy-900 text-slate-200 flex flex-col justify-between transition-transform duration-300 -translate-x-full lg:translate-x-0 shadow-xl shrink-0">
+      <div>
+        <!-- Marca -->
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center shadow">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <span class="block text-white font-bold text-sm leading-tight">Colchones América</span>
+              <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Consulta Ejecutiva</span>
+            </div>
+          </div>
+          <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <!-- Perfil del Usuario Logueado -->
+        <div class="px-5 py-3.5 bg-navy-950/60 border-b border-slate-800/80">
+          <div class="flex items-center justify-between">
+            <span id="userBadgeRole" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-500/20 text-sky-300 border border-blue-500/30">Perfil</span>
+            <span id="userBadgeCred" class="text-[10px] font-mono text-slate-400">ID: 0000</span>
+          </div>
+          <p id="userDisplayName" class="text-xs font-bold text-white mt-1.5 truncate">USUARIO</p>
+          <p id="userLoginCode" class="text-[11px] text-slate-400 font-mono truncate">USER</p>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="p-3.5 space-y-1">
+          <button onclick="switchModule('resumen')" data-nav="resumen" class="nav-btn tab-active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+            <span>Carátula Ejecutiva</span>
+          </button>
+
+          <button onclick="switchModule('clientes')" data-nav="clientes" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+            <span>Clientes & Tiendas</span>
+          </button>
+
+          <button onclick="switchModule('modelos')" data-nav="modelos" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+            <span>Modelos & Zonas</span>
+          </button>
+
+          <button onclick="switchModule('explorador')" data-nav="explorador" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
+            <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <span>Consulta por Fecha</span>
+          </button>
+
+          <!-- Sección Admin (visible según credencial) -->
+          <div id="adminNavSection" class="pt-2.5 mt-2.5 border-t border-slate-800 space-y-1">
+            <p class="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Administración</p>
+            <button onclick="switchModule('excel')" data-nav="excel" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 hover:bg-navy-800 transition text-left">
+              <span class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <span>Cargar Excel</span>
+              </span>
+              <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-500/20 text-emerald-300">.XLSX</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Pie del Sidebar -->
+      <div class="p-4 border-t border-slate-800 space-y-2 bg-navy-950/40">
+        <button onclick="logoutUser()" class="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- Cabecera Minimalista + Filtros -->
+      <header class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90">
+        <div class="px-4 sm:px-6 py-3 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <button onclick="toggleSidebar()" class="no-snapshot lg:hidden p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 id="moduleTitle" class="text-base sm:text-lg font-extrabold text-navy-900 tracking-tight">Carátula Ejecutiva</h2>
+                  <span id="periodBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Nov 2026</span>
+                </div>
+                <p id="moduleSubtitle" class="text-[11px] text-slate-500">Corte Sell In (Celin) y Sell Out (Celout) • MXN</p>
+              </div>
+            </div>
+
+            <!-- Botones de Captura / Compartir WhatsApp -->
+            <div class="no-snapshot flex items-center gap-2">
+              <button onclick="toggleSnapshotMode(true)" title="Oculta menús para tomar captura limpia de pantalla" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
+                <svg class="w-4 h-4 text-navy-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <span class="hidden sm:inline">Modo Captura</span>
+              </button>
+              <button onclick="captureAndShareWhatsApp()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                <span>Compartir WhatsApp</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filtros Compactos -->
+          <div id="filterBarContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
+            <div>
+              <select id="filterYear" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">Año: Todos</option>
+                <option value="2026" selected>Año: 2026</option>
+                <option value="2025">Año: 2025</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterMonth" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">Mes: Todos</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11" selected>Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterClientType" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">Segmento: Todos</option>
+                <option value="Corporativa">Cuentas Corporativas</option>
+                <option value="Horizontal">Canal Horizontal</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">Cadena: Todas</option>
+                <option value="GNC (Grupo Nacional Colchonero)">GNC (Super Colchones)</option>
+                <option value="El Bodegón">El Bodegón</option>
+                <option value="Bodesa">Bodesa</option>
+                <option value="Mueblería Las Colonias">Mueblería Las Colonias</option>
+                <option value="Mavi">Mavi</option>
+                <option value="Mueblerías Independientes">Canal Horizontal</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterZone" onchange="applyFilters()" class="w-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="ALL">Zona: Todas</option>
+                <option value="Occidente">Zona Occidente</option>
+                <option value="Norte">Zona Norte</option>
+                <option value="Centro">Zona Centro</option>
+                <option value="Bajío">Zona Bajío</option>
+                <option value="Sureste">Zona Sureste</option>
+              </select>
+            </div>
+            <div>
+              <button onclick="resetFilters()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                Limpiar Filtros
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Toast -->
+      <div id="toastBanner" class="fixed bottom-4 right-4 z-50 hidden">
+        <div class="bg-navy-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2.5 text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="toastMessage">Listo</span>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- CONTENIDO DE MÓDULOS                                      -->
+      <!-- ========================================================= -->
+      <main id="captureArea" class="flex-1 p-4 sm:p-6 max-w-6xl w-full mx-auto space-y-5 bg-slate-50">
+
+        <!-- ======================================================= -->
+        <!-- 1. CARÁTULA EJECUTIVA (OPTIMIZADA PARA WHATSAPP)        -->
+        <!-- ======================================================= -->
+        <section id="module-resumen" class="module-section space-y-5">
+          <!-- Encabezado de Carátula Ejecutivo (ideal para screenshot) -->
+          <div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="text-[10px] uppercase tracking-widest text-sky-300 font-bold">Reporte Comercial • Colchones América</span>
+              <h3 id="coverHeadline" class="text-base sm:text-lg font-extrabold tracking-tight mt-0.5">Corte Ejecutivo: Noviembre 2026</h3>
+            </div>
+            <div class="text-right">
+              <span id="coverCutDate" class="block text-xs font-bold text-emerald-300">Corte al día 18</span>
+              <span id="coverClientScope" class="block text-[11px] text-slate-300">Todas las Cadenas y Zonas</span>
+            </div>
+          </div>
+
+          <!-- BLOQUE KPI: SELL IN (CELIN) & SELL OUT (CELOUT) + MISMO DÍA AÑO ANTERIOR -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Tarjeta Sell In ("Celin") -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-l-4 border-l-blue-600 shadow-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Facturado Sell In (Celin)</span>
+                <span id="kpiInYoYBadge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-blue-50 text-blue-700">+0.0%</span>
+              </div>
+              <div class="mt-2 flex items-baseline justify-between gap-2">
+                <p id="kpiInAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">$0.00</p>
+                <span id="kpiInUnits" class="text-sm font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg">0 pzas</span>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500">Mismo día año anterior:</span>
+                <span id="kpiInPrevSameDay" class="font-bold text-slate-700">$0.00 (0 pzas)</span>
+              </div>
+            </div>
+
+            <!-- Tarjeta Sell Out ("Celout") -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-l-4 border-l-emerald-500 shadow-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Desplazamiento Sell Out (Celout)</span>
+                <span id="kpiOutYoYBadge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-700">+0.0%</span>
+              </div>
+              <div class="mt-2 flex items-baseline justify-between gap-2">
+                <p id="kpiOutAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">$0.00</p>
+                <span id="kpiOutUnits" class="text-sm font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">0 pzas</span>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500">Mismo día año anterior:</span>
+                <span id="kpiOutPrevSameDay" class="font-bold text-slate-700">$0.00 (0 pzas)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRÁFICOS DUALES: POR MODELO (PESOS Y PIEZAS) + POR ZONAS (PESOS Y PIEZAS) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Gráfico por Modelo: Pesos ($) y Piezas -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <h4 class="text-sm font-extrabold text-navy-900">Participación por Modelo ($ y Piezas)</h4>
+                  <p class="text-[11px] text-slate-500">Barras: Importe MXN ($) • Línea: Volumen (pzas)</p>
+                </div>
+                <span id="topModelPill" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700">Top: -</span>
+              </div>
+              <div class="relative h-60 w-full">
+                <canvas id="chartCoverModels"></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfico por Zonas: Pesos ($) y Piezas -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <h4 class="text-sm font-extrabold text-navy-900">Participación por Zonas ($ y Piezas)</h4>
+                  <p class="text-[11px] text-slate-500">Distribución geográfica en importe y unidades</p>
+                </div>
+                <span id="topZonePill" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700">Líder: -</span>
+              </div>
+              <div class="relative h-60 w-full">
+                <canvas id="chartCoverZones"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLA COMPACTA DE DESGLOSE POR MODELO DEL MES SEÑALADO (IDEAL PARA CAPTURA) -->
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between">
+              <h4 class="text-xs sm:text-sm font-extrabold text-navy-900 uppercase tracking-wide">Desglose por Modelo del Periodo Señalado</h4>
+              <span class="text-[11px] font-semibold text-slate-500">Sell In vs Sell Out</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-white text-slate-500 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-2.5 px-4 font-bold">Modelo</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Celin (Pzas)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Celin ($)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Celout (Pzas)</th>
+                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Celout ($)</th>
+                    <th class="py-2.5 px-4 font-bold text-right">% Part. ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="coverModelTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 2. MÓDULO CLIENTES Y TIENDAS (POR NO. SUCURSAL)         -->
+        <!-- ======================================================= -->
+        <section id="module-clientes" class="module-section hidden space-y-5">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-slate-100">
+              <h3 class="text-sm font-extrabold text-navy-900">Desempeño por Cadena (Corporativas y Canal Horizontal)</h3>
+              <p class="text-xs text-slate-500">Comparativo Sell In (Neto) vs Sell Out (Costo × Piezas)</p>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-3 px-4 font-bold">Cadena / Cliente</th>
+                    <th class="py-3 px-4 font-bold">Segmento</th>
+                    <th class="py-3 px-4 font-bold text-right text-blue-700">Sell In (Pzas)</th>
+                    <th class="py-3 px-4 font-bold text-right text-blue-700">Sell In ($)</th>
+                    <th class="py-3 px-4 font-bold text-right text-emerald-700">Sell Out (Pzas)</th>
+                    <th class="py-3 px-4 font-bold text-right text-emerald-700">Sell Out ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-slate-100">
+              <h3 class="text-sm font-extrabold text-navy-900">Ranking por Número de Sucursal (Sell Out)</h3>
+              <p class="text-xs text-slate-500">Referencia por No. de Sucursal con nombre vigente del mes y año consultado</p>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-3 px-4 font-bold">No. Sucursal</th>
+                    <th class="py-3 px-4 font-bold">Nombre Tienda (Vigente)</th>
+                    <th class="py-3 px-4 font-bold">Cadena</th>
+                    <th class="py-3 px-4 font-bold">Zona</th>
+                    <th class="py-3 px-4 font-bold text-right">Piezas Out</th>
+                    <th class="py-3 px-4 font-bold text-right">Importe Out ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="storesTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 3. MÓDULO MODELOS Y ZONAS (DETALLE COMPLETO)            -->
+        <!-- ======================================================= -->
+        <section id="module-modelos" class="module-section hidden space-y-5">
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="p-4 sm:p-5 border-b border-slate-100">
+              <h3 class="text-sm font-extrabold text-navy-900">Detalle por Zona Comercial (Pesos $ y Piezas)</h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-3 px-4 font-bold">Zona</th>
+                    <th class="py-3 px-4 font-bold text-right text-blue-700">Sell In (Pzas)</th>
+                    <th class="py-3 px-4 font-bold text-right text-blue-700">Sell In ($)</th>
+                    <th class="py-3 px-4 font-bold text-right text-emerald-700">Sell Out (Pzas)</th>
+                    <th class="py-3 px-4 font-bold text-right text-emerald-700">Sell Out ($)</th>
+                    <th class="py-3 px-4 font-bold text-right">% Participación</th>
+                  </tr>
+                </thead>
+                <tbody id="zonesDetailTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 4. CONSULTA POR FECHA PUNTUAL (EXPLORADOR)              -->
+        <!-- ======================================================= -->
+        <section id="module-explorador" class="module-section hidden space-y-5">
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-extrabold text-navy-900">Búsqueda Puntual por Fecha, Sucursal o Modelo</h3>
+                <p class="text-xs text-slate-500">Filtra por fecha exacta o palabra clave para consultar operaciones específicas</p>
+              </div>
+              <button onclick="exportExplorerCSV()" class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">
+                Exportar CSV
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 mb-1">Fecha Específica</label>
+                <input type="date" id="exactDateFilter" onchange="renderExplorer()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 mb-1">Flujo</label>
+                <select id="explorerChannelSelect" onchange="renderExplorer()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold">
+                  <option value="ALL">Sell In + Sell Out</option>
+                  <option value="SELL_IN">Solo Sell In (Celin)</option>
+                  <option value="SELL_OUT">Solo Sell Out (Celout)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-500 mb-1">Buscar (Sucursal, Modelo, Cadena)</label>
+                <input type="text" id="explorerTextSearch" oninput="renderExplorer()" placeholder="Ej. GNC, 954007, Absolut II..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs" />
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-3 px-4 font-bold">Fecha</th>
+                    <th class="py-3 px-4 font-bold">Flujo</th>
+                    <th class="py-3 px-4 font-bold">Cadena</th>
+                    <th class="py-3 px-4 font-bold">Sucursal / Tienda</th>
+                    <th class="py-3 px-4 font-bold">Zona</th>
+                    <th class="py-3 px-4 font-bold">Modelo / Medida</th>
+                    <th class="py-3 px-4 font-bold text-right">Piezas</th>
+                    <th class="py-3 px-4 font-bold text-right">Importe ($)</th>
+                  </tr>
+                </thead>
+                <tbody id="explorerBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 5. MÓDULO CARGA DE EXCEL (MULTI-PESTAÑA SELL IN/OUT)    -->
+        <!-- ======================================================= -->
+        <section id="module-excel" class="module-section hidden space-y-5">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="text-base font-extrabold text-navy-900">Actualizar Base desde Archivo Excel (.xlsx)</h3>
+                <p class="text-xs text-slate-500">Lee automáticamente las pestañas <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas + No. Sucursal).</p>
+              </div>
+              <button onclick="restoreDemoData()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                Restaurar Datos Demo
+              </button>
+            </div>
+
+            <div onclick="document.getElementById('excelInput').click()" class="cursor-pointer border-2 border-dashed border-slate-300 hover:border-blue-600 bg-slate-50 hover:bg-blue-50/40 rounded-2xl p-8 text-center transition">
+              <p class="text-sm font-bold text-navy-900">Haz clic aquí para seleccionar tu archivo ColchoBoard.xlsx</p>
+              <p class="text-xs text-slate-500 mt-1">Procesa pestañas SELL IN y SELL OUT en un solo paso</p>
+              <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="handleExcelUpload(event)" class="hidden" />
+            </div>
+
+            <div id="excelStatusPanel" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-3">
+              <span id="excelStatusText" class="font-bold">Archivo listo</span>
+              <button onclick="commitExcelData()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold shadow-xs">
+                Aplicar y Actualizar Dashboard
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- SCRIPTS: PWA MANIFEST + AUTH + MOTOR COMERCIAL            -->
+  <!-- ========================================================= -->
+  <script>
+    // 1. REGISTRO DINÁMICO DE MANIFEST PWA (PARA GITHUB PAGES EN 1 SOLO ARCHIVO)
+    (function setupPWA() {
+      const manifest = {
+        name: 'Colchones América - Consulta Ejecutiva',
+        short_name: 'América BI',
+        start_url: './index.html',
+        display: 'standalone',
+        background_color: '#081226',
+        theme_color: '#0F1E3C',
+        icons: [
+          {
+            src: 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#0F1E3C"/><path d="M36 80h120M36 112h120M96 80v64M48 48h96a12 12 0 0112 12v72a12 12 0 01-12 12H48a12 12 0 01-12-12V60a12 12 0 0112-12z" stroke="#38BDF8" stroke-width="12" fill="none" stroke-linecap="round"/></svg>'),
+            sizes: '192x192',
+            type: 'image/svg+xml'
+          }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+      const link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = URL.createObjectURL(blob);
+      document.head.appendChild(link);
+    })();
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('btnInstallPWA');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    function triggerPWAInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt = null;
+      }
+    }
+
+    // 2. DIRECTORIO DE USUARIOS AUTORIZADOS (SEGÚN TABLA PROPORCIONADA)
+    const AUTHORIZED_USERS = [
+      { user: 'VENTAS1.MOSS',  pass: 'America.24$',   perfil: 'Direccion/Ejecutivo', credencial: '3001', nombre: 'MOSSES AVILA' },
+      { user: 'ADMIN1.MOSS',   pass: 'America.24$',   perfil: 'Administrador',       credencial: '9999', nombre: 'ADMINISTRADOR' },
+      { user: 'GERENTE1.DANY', pass: 'America.2026$', perfil: 'Direccion/Ejecutivo', credencial: '3001', nombre: 'DANIEL OCHOA' },
+      { user: 'DIREC1.TEMOC',  pass: 'America.2026$', perfil: 'Direccion/Ejecutivo', credencial: '3001', nombre: 'CUAUTEMOC GARCÍA' },
+      { user: 'SUPER1.ISRAEL', pass: 'America.2026$', perfil: 'Supervisor',          credencial: '2001', nombre: 'ISRAEL SOLANO' },
+      { user: 'SUPER2.JONA',   pass: 'America.2026$', perfil: 'Supervisor',          credencial: '2001', nombre: 'JONATHAN MORALES' }
+    ];
+
+    const SESSION_KEY = 'ca_pwa_session_v1';
+    const DATA_KEY = 'ca_pwa_sales_v1';
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const uInput = document.getElementById('loginUser').value.trim().toUpperCase();
+      const pInput = document.getElementById('loginPass').value.trim();
+
+      const matched = AUTHORIZED_USERS.find(acc => acc.user === uInput && acc.pass === pInput);
+      const errBox = document.getElementById('loginErrorBox');
+
+      if (!matched) {
+        errBox.classList.remove('hidden');
+        return;
+      }
+
+      errBox.classList.add('hidden');
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(matched));
+      activateSession(matched);
+    }
+
+    function togglePassVisibility() {
+      const inp = document.getElementById('loginPass');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function activateSession(account) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('hidden');
+
+      document.getElementById('userDisplayName').textContent = account.nombre;
+      document.getElementById('userLoginCode').textContent = account.user;
+      document.getElementById('userBadgeRole').textContent = account.perfil;
+      document.getElementById('userBadgeCred').textContent = `CRED: ${account.credencial}`;
+
+      // Solo Administrador (9999) y Dirección (3001) ven carga Excel
+      const adminSec = document.getElementById('adminNavSection');
+      if (account.credencial === '2001') {
+        adminSec.classList.add('hidden');
+      } else {
+        adminSec.classList.remove('hidden');
+      }
+
+      initDataset();
+      applyFilters();
+    }
+
+    function logoutUser() {
+      sessionStorage.removeItem(SESSION_KEY);
+      document.getElementById('appShell').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('loginPass').value = '';
+    }
+
+    // 3. CATÁLOGOS Y BASE DE DATOS DEMO (INCLUYE GNC, ZONAS, MODELOS Y SUCURSALES)
+    const ZONES = ['Occidente', 'Norte', 'Centro', 'Bajío', 'Sureste'];
+    const MODELS_CATALOG = [
+      { name: 'Royal Colchón', priceIn: 4800, priceOut: 6480 },
+      { name: 'Derby',         priceIn: 3650, priceOut: 4820 },
+      { name: 'Gravity',       priceIn: 6200, priceOut: 8550 },
+      { name: 'Ámbar',         priceIn: 6890, priceOut: 9580 },
+      { name: 'Absolut II',    priceIn: 8850, priceOut: 12650 },
+      { name: 'Cloud',         priceIn: 7100, priceOut: 9940 },
+      { name: 'Forum',         priceIn: 5400, priceOut: 7340 },
+      { name: 'Box Royal',     priceIn: 2850, priceOut: 3700 }
+    ];
+
+    const STORES_REF = [
+      { id: '954001', name: 'GNC GUADALAJARA CENTRO', client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Occidente' },
+      { id: '954007', name: 'BODEGON AMARILLAS',      client: 'El Bodegón',                      segment: 'Corporativa', zone: 'Occidente' },
+      { id: '954012', name: 'GNC MONTERREY CUMBRES',  client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Norte' },
+      { id: '454600', name: 'BODESA TEPIC 25',        client: 'Bodesa',                          segment: 'Corporativa', zone: 'Occidente' },
+      { id: '610204', name: 'LAS COLONIAS LEON',      client: 'Mueblería Las Colonias',          segment: 'Corporativa', zone: 'Bajío' },
+      { id: '720110', name: 'MAVI ZAPOPAN',           client: 'Mavi',                            segment: 'Corporativa', zone: 'Occidente' },
+      { id: '810045', name: 'GNC CDMX INSURGENTES',   client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Centro' },
+      { id: '810088', name: 'GNC MERIDA MONTEJO',     client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa', zone: 'Sureste' },
+      { id: '300101', name: 'MUEBLERIA DEL CENTRO',   client: 'Mueblerías Independientes',      segment: 'Horizontal',  zone: 'Bajío' },
+      { id: '300205', name: 'COLCHONES DEL SURESTE',  client: 'Mueblerías Independientes',      segment: 'Horizontal',  zone: 'Sureste' }
+    ];
+
+    const MONTH_NAMES = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const SIZES = ['IND', 'MAT', 'QS', 'KS'];
+
+    let salesData = [];
+    let stagedExcelRecords = [];
+    let activeModule = 'resumen';
+    let chartsRegistry = {};
+
+    const fmtMXN = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+    const fmtInt = new Intl.NumberFormat('es-MX', { maximumFractionDigits: 0 });
+
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const label = document.getElementById('toastMessage');
+      if (!banner || !label) return;
+      label.textContent = msg;
+      banner.classList.remove('hidden');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => banner.classList.add('hidden'), 3200);
+    }
+
+    // 4. INICIALIZACIÓN Y GENERACIÓN DE DATOS DEMO (2025 Y 2026)
+    function generateDemoRecords() {
+      const records = [];
+      let seq = 1000;
+      const years = [2025, 2026];
+
+      years.forEach(yr => {
+        for (let m = 1; m <= 12; m++) {
+          const seasonFactor = (m === 5 || m === 6 || m === 11) ? 1.38 : (m === 12 ? 1.25 : 1.0);
+          const yearGrowth = yr === 2026 ? 1.16 : 1.0;
+
+          STORES_REF.forEach((store, sIdx) => {
+            MODELS_CATALOG.forEach((mod, mIdx) => {
+              if ((m + sIdx + mIdx) % 3 !== 0) return;
+
+              const size = SIZES[(m + sIdx + mIdx) % SIZES.length];
+              const sizeMult = size === 'IND' ? 0.82 : (size === 'MAT' ? 1.0 : (size === 'QS' ? 1.18 : 1.36));
+              const baseUnitsIn = Math.max(4, Math.round((8 + ((seq % 9) * 2)) * seasonFactor * yearGrowth));
+              const unitPriceIn = Math.round(mod.priceIn * sizeMult);
+              const dayIn = Math.min(26, 2 + ((seq * 3) % 24));
+              const dateIn = `${yr}-${String(m).padStart(2, '0')}-${String(dayIn).padStart(2, '0')}`;
+
+              records.push({
+                folio: `SI-${yr}-${seq}`,
+                channel: 'SELL_IN',
+                date: dateIn,
+                year: yr,
+                month: m,
+                day: dayIn,
+                client: store.client,
+                segment: store.segment,
+                storeId: store.id,
+                storeName: store.name,
+                zone: store.zone,
+                model: mod.name,
+                size,
+                units: baseUnitsIn,
+                unitPrice: unitPriceIn,
+                amount: baseUnitsIn * unitPriceIn
+              });
+
+              const unitsOut = Math.max(2, Math.round(baseUnitsIn * (0.78 + ((seq % 4) * 0.04))));
+              const unitPriceOut = Math.round(mod.priceOut * sizeMult);
+              const dayOut = Math.min(28, dayIn + 2);
+              const dateOut = `${yr}-${String(m).padStart(2, '0')}-${String(dayOut).padStart(2, '0')}`;
+
+              records.push({
+                folio: `SO-${yr}-${seq}`,
+                channel: 'SELL_OUT',
+                date: dateOut,
+                year: yr,
+                month: m,
+                day: dayOut,
+                client: store.client,
+                segment: store.segment,
+                storeId: store.id,
+                storeName: store.name,
+                zone: store.zone,
+                model: mod.name,
+                size,
+                units: unitsOut,
+                unitPrice: unitPriceOut,
+                amount: unitsOut * unitPriceOut
+              });
+
+              seq++;
+            });
+          });
+        }
+      });
+
+      return records;
+    }
+
+    function initDataset() {
+      try {
+        const saved = localStorage.getItem(DATA_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            salesData = parsed;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Error cargando localStorage:', e);
+      }
+      salesData = generateDemoRecords();
+    }
+
+    function restoreDemoData() {
+      localStorage.removeItem(DATA_KEY);
+      salesData = generateDemoRecords();
+      document.getElementById('excelStatusPanel').classList.add('hidden');
+      applyFilters();
+      showToast('Base demo restaurada correctamente');
+    }
+
+    // 5. NAVEGACIÓN Y FILTROS GLOBALES
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebarOverlay');
+      sb.classList.toggle('-translate-x-full');
+      ov.classList.toggle('hidden');
+    }
+
+    function switchModule(modKey) {
+      activeModule = modKey;
+      document.querySelectorAll('.module-section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById(`module-${modKey}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.nav === modKey) {
+          btn.classList.add('tab-active');
+        } else {
+          btn.classList.remove('tab-active');
+        }
+      });
+
+      const titles = {
+        resumen: ['Carátula Ejecutiva', 'Corte Sell In (Celin) y Sell Out (Celout) • MXN'],
+        clientes: ['Clientes & Tiendas', 'Desempeño por cadena y ranking por No. de Sucursal'],
+        modelos: ['Modelos & Zonas', 'Distribución detallada por región geográfica y portafolio'],
+        explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, sucursal o modelo'],
+        excel: ['Cargar Excel', 'Actualización multi-pestaña SELL IN y SELL OUT']
+      };
+      if (titles[modKey]) {
+        document.getElementById('moduleTitle').textContent = titles[modKey][0];
+        document.getElementById('moduleSubtitle').textContent = titles[modKey][1];
+      }
+
+      if (window.innerWidth < 1024) {
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+        document.getElementById('sidebarOverlay').classList.add('hidden');
+      }
+
+      renderActiveModule();
+    }
+
+    function getFilters() {
+      return {
+        year: document.getElementById('filterYear').value,
+        month: document.getElementById('filterMonth').value,
+        segment: document.getElementById('filterClientType').value,
+        client: document.getElementById('filterClient').value,
+        zone: document.getElementById('filterZone').value
+      };
+    }
+
+    function getFilteredRecords(overrides = {}) {
+      const f = { ...getFilters(), ...overrides };
+      return salesData.filter(r => {
+        if (f.year !== 'ALL' && String(r.year) !== String(f.year)) return false;
+        if (f.month !== 'ALL' && String(r.month) !== String(f.month)) return false;
+        if (f.segment !== 'ALL' && r.segment !== f.segment) return false;
+        if (f.client !== 'ALL' && r.client !== f.client) return false;
+        if (f.zone !== 'ALL' && r.zone !== f.zone) return false;
+        return true;
+      });
+    }
+
+    function applyFilters() {
+      const f = getFilters();
+      const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
+      const yLabel = f.year === 'ALL' ? '2025-2026' : f.year;
+      document.getElementById('periodBadge').textContent = `${mLabel} ${yLabel}`;
+      document.getElementById('coverHeadline').textContent = `Corte Ejecutivo: ${mLabel} ${yLabel}`;
+
+      const today = new Date();
+      document.getElementById('coverCutDate').textContent = `Corte al día ${today.getDate()} (${today.toLocaleDateString('es-MX')})`;
+      const scopeParts = [];
+      if (f.segment !== 'ALL') scopeParts.push(`Segmento: ${f.segment}`);
+      if (f.client !== 'ALL') scopeParts.push(f.client);
+      if (f.zone !== 'ALL') scopeParts.push(`Zona ${f.zone}`);
+      document.getElementById('coverClientScope').textContent = scopeParts.length ? scopeParts.join(' • ') : 'Todas las Cadenas y Zonas';
+
+      renderActiveModule();
+    }
+
+    function resetFilters() {
+      document.getElementById('filterYear').value = '2026';
+      document.getElementById('filterMonth').value = '11';
+      document.getElementById('filterClientType').value = 'ALL';
+      document.getElementById('filterClient').value = 'ALL';
+      document.getElementById('filterZone').value = 'ALL';
+      applyFilters();
+      showToast('Filtros restablecidos');
+    }
+
+    function renderActiveModule() {
+      renderCoverModule();
+      if (activeModule === 'clientes') renderClientsModule();
+      if (activeModule === 'modelos') renderZonesModule();
+      if (activeModule === 'explorador') renderExplorer();
+    }
+
+    function renderChart(canvasId, config) {
+      const ctx = document.getElementById(canvasId);
+      if (!ctx) return;
+      if (chartsRegistry[canvasId]) {
+        chartsRegistry[canvasId].destroy();
+      }
+      chartsRegistry[canvasId] = new Chart(ctx, config);
+    }
+
+    // 6. RENDERIZADO DE CARÁTULA EJECUTIVA
+    function renderCoverModule() {
+      const f = getFilters();
+      const rows = getFilteredRecords();
+      const inRows = rows.filter(r => r.channel === 'SELL_IN');
+      const outRows = rows.filter(r => r.channel === 'SELL_OUT');
+
+      const inAmt = inRows.reduce((s, r) => s + r.amount, 0);
+      const inPzas = inRows.reduce((s, r) => s + r.units, 0);
+      const outAmt = outRows.reduce((s, r) => s + r.amount, 0);
+      const outPzas = outRows.reduce((s, r) => s + r.units, 0);
+
+      // Comparativo mismo día año anterior
+      const currentYearNum = f.year === 'ALL' ? 2026 : parseInt(f.year, 10);
+      const prevYearStr = String(currentYearNum - 1);
+      const maxDayCut = new Date().getDate();
+
+      const prevRows = getFilteredRecords({ year: prevYearStr }).filter(r => f.month === 'ALL' || (r.day || 15) <= maxDayCut);
+      const prevInRows = prevRows.filter(r => r.channel === 'SELL_IN');
+      const prevOutRows = prevRows.filter(r => r.channel === 'SELL_OUT');
+
+      const prevInAmt = prevInRows.reduce((s, r) => s + r.amount, 0);
+      const prevInPzas = prevInRows.reduce((s, r) => s + r.units, 0);
+      const prevOutAmt = prevOutRows.reduce((s, r) => s + r.amount, 0);
+      const prevOutPzas = prevOutRows.reduce((s, r) => s + r.units, 0);
+
+      const inVar = prevInAmt > 0 ? ((inAmt - prevInAmt) / prevInAmt) * 100 : 0;
+      const outVar = prevOutAmt > 0 ? ((outAmt - prevOutAmt) / prevOutAmt) * 100 : 0;
+
+      document.getElementById('kpiInAmount').textContent = fmtMXN.format(inAmt);
+      document.getElementById('kpiInUnits').textContent = `${fmtInt.format(inPzas)} pzas`;
+      document.getElementById('kpiInYoYBadge').textContent = `${inVar >= 0 ? '+' : ''}${inVar.toFixed(1)}%`;
+      document.getElementById('kpiInPrevSameDay').textContent = `${fmtMXN.format(prevInAmt)} (${fmtInt.format(prevInPzas)} pzas)`;
+
+      document.getElementById('kpiOutAmount').textContent = fmtMXN.format(outAmt);
+      document.getElementById('kpiOutUnits').textContent = `${fmtInt.format(outPzas)} pzas`;
+      document.getElementById('kpiOutYoYBadge').textContent = `${outVar >= 0 ? '+' : ''}${outVar.toFixed(1)}%`;
+      document.getElementById('kpiOutPrevSameDay').textContent = `${fmtMXN.format(prevOutAmt)} (${fmtInt.format(prevOutPzas)} pzas)`;
+
+      // Agrupación por Modelo
+      const modelNames = [...new Set([...MODELS_CATALOG.map(m => m.name), ...rows.map(r => r.model)])];
+      const modelStats = modelNames.map(name => {
+        const mIn = inRows.filter(r => r.model === name);
+        const mOut = outRows.filter(r => r.model === name);
+        return {
+          name,
+          inUnits: mIn.reduce((s, r) => s + r.units, 0),
+          inAmt: mIn.reduce((s, r) => s + r.amount, 0),
+          outUnits: mOut.reduce((s, r) => s + r.units, 0),
+          outAmt: mOut.reduce((s, r) => s + r.amount, 0)
+        };
+      }).filter(m => m.inAmt > 0 || m.outAmt > 0).sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt));
+
+      document.getElementById('topModelPill').textContent = modelStats.length ? `Top: ${modelStats[0].name}` : 'Top: -';
+
+      renderChart('chartCoverModels', {
+        data: {
+          labels: modelStats.map(m => m.name),
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Sell In ($)',
+              data: modelStats.map(m => m.inAmt),
+              backgroundColor: '#2563EB',
+              borderRadius: 5,
+              yAxisID: 'y'
+            },
+            {
+              type: 'bar',
+              label: 'Sell Out ($)',
+              data: modelStats.map(m => m.outAmt),
+              backgroundColor: '#10B981',
+              borderRadius: 5,
+              yAxisID: 'y'
+            },
+            {
+              type: 'line',
+              label: 'Piezas Totales',
+              data: modelStats.map(m => m.inUnits + m.outUnits),
+              borderColor: '#0F1E3C',
+              backgroundColor: '#0F1E3C',
+              borderWidth: 2,
+              tension: 0.3,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+          scales: {
+            y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
+            y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+            x: { ticks: { font: { size: 10 } } }
+          }
+        }
+      });
+
+      // Agrupación por Zonas
+      const zoneStats = ZONES.map(z => {
+        const zIn = inRows.filter(r => r.zone === z);
+        const zOut = outRows.filter(r => r.zone === z);
+        return {
+          zone: z,
+          inUnits: zIn.reduce((s, r) => s + r.units, 0),
+          inAmt: zIn.reduce((s, r) => s + r.amount, 0),
+          outUnits: zOut.reduce((s, r) => s + r.units, 0),
+          outAmt: zOut.reduce((s, r) => s + r.amount, 0)
+        };
+      });
+
+      const topZone = [...zoneStats].sort((a, b) => (b.inAmt + b.outAmt) - (a.inAmt + a.outAmt))[0];
+      document.getElementById('topZonePill').textContent = topZone ? `Líder: ${topZone.zone}` : 'Líder: -';
+
+      renderChart('chartCoverZones', {
+        data: {
+          labels: zoneStats.map(z => z.zone),
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Sell In ($)',
+              data: zoneStats.map(z => z.inAmt),
+              backgroundColor: '#1E3A6E',
+              borderRadius: 5,
+              yAxisID: 'y'
+            },
+            {
+              type: 'bar',
+              label: 'Sell Out ($)',
+              data: zoneStats.map(z => z.outAmt),
+              backgroundColor: '#059669',
+              borderRadius: 5,
+              yAxisID: 'y'
+            },
+            {
+              type: 'line',
+              label: 'Piezas',
+              data: zoneStats.map(z => z.inUnits + z.outUnits),
+              borderColor: '#F59E0B',
+              backgroundColor: '#F59E0B',
+              borderWidth: 2,
+              tension: 0.3,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+          scales: {
+            y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
+            y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+            x: { ticks: { font: { size: 10 } } }
+          }
+        }
+      });
+
+      // Tabla de desglose por modelo en carátula
+      const grandTotalAmt = modelStats.reduce((s, m) => s + m.inAmt + m.outAmt, 0);
+      const tbody = document.getElementById('coverModelTableBody');
+      tbody.innerHTML = modelStats.map(m => {
+        const share = grandTotalAmt > 0 ? (((m.inAmt + m.outAmt) / grandTotalAmt) * 100).toFixed(1) : '0.0';
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-4 font-bold text-navy-900">${m.name}</td>
+            <td class="py-2.5 px-3 text-right font-semibold text-blue-700">${fmtInt.format(m.inUnits)}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-blue-800">${fmtMXN.format(m.inAmt)}</td>
+            <td class="py-2.5 px-3 text-right font-semibold text-emerald-700">${fmtInt.format(m.outUnits)}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-emerald-800">${fmtMXN.format(m.outAmt)}</td>
+            <td class="py-2.5 px-4 text-right font-bold text-slate-600">${share}%</td>
+          </tr>
+        `;
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos para los filtros seleccionados</td></tr>`;
+    }
+
+    // 7. MÓDULO CLIENTES Y TIENDAS (POR NO. SUCURSAL)
+    function renderClientsModule() {
+      const rows = getFilteredRecords();
+      const clients = [...new Set(rows.map(r => r.client))];
+      const cBody = document.getElementById('clientsTableBody');
+
+      cBody.innerHTML = clients.map(c => {
+        const cRows = rows.filter(r => r.client === c);
+        const seg = cRows[0]?.segment || 'Corporativa';
+        const inR = cRows.filter(r => r.channel === 'SELL_IN');
+        const outR = cRows.filter(r => r.channel === 'SELL_OUT');
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-3 px-4 font-bold text-navy-900">${c}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${seg === 'Corporativa' ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'}">${seg}</span></td>
+            <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(inR.reduce((s, r) => s + r.units, 0))}</td>
+            <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(inR.reduce((s, r) => s + r.amount, 0))}</td>
+            <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(outR.reduce((s, r) => s + r.units, 0))}</td>
+            <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(outR.reduce((s, r) => s + r.amount, 0))}</td>
+          </tr>
+        `;
+      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin datos de cadenas</td></tr>`;
+
+      // Agrupar tiendas Sell Out por número de sucursal
+      const outRows = rows.filter(r => r.channel === 'SELL_OUT');
+      const storeMap = new Map();
+      outRows.forEach(r => {
+        const key = r.storeId || r.storeName || 'S/N';
+        if (!storeMap.has(key)) {
+          storeMap.set(key, { id: key, name: r.storeName, client: r.client, zone: r.zone, units: 0, amount: 0, latestSort: 0 });
+        }
+        const entry = storeMap.get(key);
+        const ymSort = (r.year * 100) + r.month;
+        if (ymSort >= entry.latestSort && r.storeName) {
+          entry.name = r.storeName;
+          entry.latestSort = ymSort;
+        }
+        entry.units += r.units;
+        entry.amount += r.amount;
+      });
+
+      const sortedStores = [...storeMap.values()].sort((a, b) => b.amount - a.amount);
+      document.getElementById('storesTableBody').innerHTML = sortedStores.map(st => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono font-bold text-navy-900">${st.id}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${st.name}</td>
+          <td class="py-3 px-4 text-slate-600">${st.client}</td>
+          <td class="py-3 px-4 text-slate-600">${st.zone}</td>
+          <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(st.units)}</td>
+          <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(st.amount)}</td>
+        </tr>
+      `).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos Sell Out por sucursal</td></tr>`;
+    }
+
+    // 8. MÓDULO ZONAS DETALLADO
+    function renderZonesModule() {
+      const rows = getFilteredRecords();
+      const totalAll = rows.reduce((s, r) => s + r.amount, 0);
+      document.getElementById('zonesDetailTableBody').innerHTML = ZONES.map(z => {
+        const zIn = rows.filter(r => r.zone === z && r.channel === 'SELL_IN');
+        const zOut = rows.filter(r => r.zone === z && r.channel === 'SELL_OUT');
+        const inA = zIn.reduce((s, r) => s + r.amount, 0);
+        const outA = zOut.reduce((s, r) => s + r.amount, 0);
+        const share = totalAll > 0 ? (((inA + outA) / totalAll) * 100).toFixed(1) : '0.0';
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-3 px-4 font-bold text-navy-900">Zona ${z}</td>
+            <td class="py-3 px-4 text-right font-semibold text-blue-700">${fmtInt.format(zIn.reduce((s, r) => s + r.units, 0))}</td>
+            <td class="py-3 px-4 text-right font-bold text-blue-800">${fmtMXN.format(inA)}</td>
+            <td class="py-3 px-4 text-right font-semibold text-emerald-700">${fmtInt.format(zOut.reduce((s, r) => s + r.units, 0))}</td>
+            <td class="py-3 px-4 text-right font-bold text-emerald-800">${fmtMXN.format(outA)}</td>
+            <td class="py-3 px-4 text-right font-bold text-slate-700">${share}%</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 9. EXPLORADOR POR FECHA PUNTUAL
+    function renderExplorer() {
+      let rows = getFilteredRecords();
+      const exactDate = document.getElementById('exactDateFilter').value;
+      const flow = document.getElementById('explorerChannelSelect').value;
+      const q = document.getElementById('explorerTextSearch').value.trim().toLowerCase();
+
+      if (exactDate) rows = rows.filter(r => r.date === exactDate);
+      if (flow !== 'ALL') rows = rows.filter(r => r.channel === flow);
+      if (q) {
+        rows = rows.filter(r =>
+          (r.client || '').toLowerCase().includes(q) ||
+          (r.storeId || '').toLowerCase().includes(q) ||
+          (r.storeName || '').toLowerCase().includes(q) ||
+          (r.model || '').toLowerCase().includes(q)
+        );
+      }
+
+      document.getElementById('explorerBody').innerHTML = rows.slice(0, 120).map(r => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-4 font-mono text-slate-600">${r.date}</td>
+          <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.channel === 'SELL_IN' ? 'bg-blue-50 text-blue-700' : 'bg-emerald-50 text-emerald-700'}">${r.channel === 'SELL_IN' ? 'SELL IN' : 'SELL OUT'}</span></td>
+          <td class="py-2.5 px-4 font-bold text-navy-900">${r.client}</td>
+          <td class="py-2.5 px-4 text-slate-600">${r.storeId ? `${r.storeId} - ${r.storeName}` : 'Cedis / Cadena'}</td>
+          <td class="py-2.5 px-4 text-slate-600">${r.zone}</td>
+          <td class="py-2.5 px-4 font-semibold text-slate-800">${r.model} (${r.size})</td>
+          <td class="py-2.5 px-4 text-right font-bold">${fmtInt.format(r.units)}</td>
+          <td class="py-2.5 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(r.amount)}</td>
+        </tr>
+      `).join('') || `<tr><td colspan="8" class="py-8 text-center text-slate-400">No se encontraron registros con esa búsqueda</td></tr>`;
+    }
+
+    function exportExplorerCSV() {
+      const rows = getFilteredRecords();
+      const headers = ['Fecha', 'Flujo', 'Cadena', 'Segmento', 'NoSucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
+      const csvLines = [headers.join(',')];
+      rows.forEach(r => {
+        csvLines.push([r.date, r.channel, `"${r.client}"`, r.segment, r.storeId || '', `"${r.storeName || ''}"`, r.zone, `"${r.model}"`, r.size, r.units, r.amount].join(','));
+      });
+      const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Colchones_America_Consulta_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      showToast('CSV exportado');
+    }
+
+    // 10. MODO CAPTURA Y COMPARTIR EN WHATSAPP
+    function toggleSnapshotMode(active) {
+      if (active) {
+        switchModule('resumen');
+        document.body.classList.add('whatsapp-snapshot-mode');
+        showToast('Modo Captura activado: toma screenshot de pantalla');
+      } else {
+        document.body.classList.remove('whatsapp-snapshot-mode');
+      }
+    }
+
+    async function captureAndShareWhatsApp() {
+      switchModule('resumen');
+      const f = getFilters();
+      const rows = getFilteredRecords();
+      const inAmt = rows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const inPzas = rows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
+      const outAmt = rows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
+      const outPzas = rows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+
+      const mLabel = f.month === 'ALL' ? 'Todos los meses' : MONTH_NAMES[parseInt(f.month, 10)];
+      const summaryText = `*COLCHONES AMÉRICA • RESUMEN EJECUTIVO*\nPeriodo: ${mLabel} ${f.year === 'ALL' ? '2025-2026' : f.year}\n• *Sell In (Celin):* ${fmtMXN.format(inAmt)} (${fmtInt.format(inPzas)} pzas)\n• *Sell Out (Celout):* ${fmtMXN.format(outAmt)} (${fmtInt.format(outPzas)} pzas)`;
+
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = summaryText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (e) {}
+
+      if (typeof html2canvas !== 'undefined') {
+        try {
+          const area = document.getElementById('module-resumen');
+          const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#f8fafc' });
+          const link = document.createElement('a');
+          link.download = `Caratula_Colchones_America_${new Date().toISOString().slice(0, 10)}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          showToast('Imagen descargada y resumen copiado para WhatsApp');
+          return;
+        } catch (err) {
+          console.warn('Error generando imagen:', err);
+        }
+      }
+      showToast('Resumen ejecutivo copiado para pegar en WhatsApp');
+    }
+
+    // 11. LECTURA DE EXCEL MULTI-PESTAÑA (SELL IN + SELL OUT)
+    const MONTH_MAP_ES = {
+      ene: 1, enero: 1, feb: 2, febrero: 2, mar: 3, marzo: 3, abr: 4, abril: 4,
+      may: 5, mayo: 5, jun: 6, junio: 6, jul: 7, julio: 7, ago: 8, agosto: 8,
+      sep: 9, sept: 9, septiembre: 9, oct: 10, octubre: 10, nov: 11, noviembre: 11, dic: 12, diciembre: 12
+    };
+
+    function parseMonthNum(val) {
+      if (typeof val === 'number' && val >= 1 && val <= 12) return Math.round(val);
+      const clean = String(val || '').trim().toLowerCase();
+      if (MONTH_MAP_ES[clean]) return MONTH_MAP_ES[clean];
+      const num = parseInt(clean, 10);
+      return (num >= 1 && num <= 12) ? num : 1;
+    }
+
+    function normalizeClientInfo(rawName) {
+      const upper = String(rawName || '').trim().toUpperCase();
+      if (upper.includes('GNC') || upper.includes('SUPER COLCHON')) {
+        return { client: 'GNC (Grupo Nacional Colchonero)', segment: 'Corporativa' };
+      }
+      if (upper.includes('BODEGON')) return { client: 'El Bodegón', segment: 'Corporativa' };
+      if (upper.includes('BODESA')) return { client: 'Bodesa', segment: 'Corporativa' };
+      if (upper.includes('COLONIA')) return { client: 'Mueblería Las Colonias', segment: 'Corporativa' };
+      if (upper.includes('MAVI')) return { client: 'Mavi', segment: 'Corporativa' };
+      return { client: rawName ? String(rawName).trim() : 'Mueblerías Independientes', segment: 'Horizontal' };
+    }
+
+    function handleExcelUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const parsed = [];
+          let seq = 1;
+
+          // A) Pestaña SELL IN (Unidades Netas y Suma de Neto)
+          const sellInSheetName = wb.SheetNames.find(n => n.toUpperCase().includes('SELL IN') || n.toUpperCase().includes('SELL_IN'));
+          if (sellInSheetName) {
+            const rowsIn = XLSX.utils.sheet_to_json(wb.Sheets[sellInSheetName], { defval: '' });
+            let lastClient = '', lastYear = 2026, lastMonth = 1;
+
+            rowsIn.forEach(r => {
+              const rawC = String(r['Cliente'] || r['CLIENTE'] || '').trim();
+              if (rawC.toLowerCase().startsWith('total')) return;
+              if (rawC) lastClient = rawC;
+
+              const rawY = r['Año'] || r['AÑO'] || r['Year'];
+              if (String(rawY).toLowerCase().startsWith('total')) return;
+              if (rawY) lastYear = parseInt(rawY, 10) || lastYear;
+
+              const rawM = r['Mes'] || r['MES'] || r['Month'];
+              if (String(rawM).toLowerCase().startsWith('total')) return;
+              if (rawM) lastMonth = parseMonthNum(rawM);
+
+              const model = String(r['Modelo'] || r['MODELO'] || '').trim();
+              if (!model || model.toLowerCase().startsWith('total')) return;
+
+              const size = String(r['Medida'] || r['MEDIDA'] || 'MAT').trim().split(' ').pop();
+              const units = Number(r['Unidades Netas'] ?? r['Suma de Piezas'] ?? r['Piezas'] ?? 0) || 0;
+              const amount = Number(r['Suma de Neto'] ?? r['Neto'] ?? r['Suma de Total'] ?? 0) || 0;
+              if (units === 0 && amount === 0) return;
+
+              const cInfo = normalizeClientInfo(lastClient);
+              parsed.push({
+                folio: `SI-XL-${seq++}`,
+                channel: 'SELL_IN',
+                date: `${lastYear}-${String(lastMonth).padStart(2, '0')}-15`,
+                year: lastYear,
+                month: lastMonth,
+                day: 15,
+                client: cInfo.client,
+                segment: cInfo.segment,
+                storeId: '',
+                storeName: '',
+                zone: ZONES[seq % ZONES.length],
+                model,
+                size,
+                units,
+                unitPrice: units > 0 ? Math.round(amount / units) : 0,
+                amount
+              });
+            });
+          }
+
+          // B) Pestaña SELL OUT (Costo x Piezas + Referencia por No. Sucursal)
+          const sellOutSheetName = wb.SheetNames.find(n => n.toUpperCase().includes('SELL OUT') || n.toUpperCase().includes('SELL_OUT'));
+          if (sellOutSheetName) {
+            const rowsOut = XLSX.utils.sheet_to_json(wb.Sheets[sellOutSheetName], { defval: '' });
+            rowsOut.forEach(r => {
+              const model = String(r['Modelo'] || r['MODELO'] || '').trim();
+              if (!model) return;
+
+              const cInfo = normalizeClientInfo(r['Cliente'] || r['Nombre de Cadena']);
+              const storeId = String(r['Clave'] || r['No. Sucursal'] || r['Sucursal'] || '').trim();
+              const storeName = String(r['Tienda'] || r['Nombre Tienda'] || '').trim();
+              const size = String(r['Medida'] || 'MAT').trim().split(' ').pop();
+              const units = Number(r['Piezas'] || r['Unidades'] || 0) || 0;
+              const unitCost = Number(r['Costo'] || r['Precio'] || 0) || 0;
+              const amount = Math.round(unitCost * units * 100) / 100;
+
+              const yr = parseInt(r['Año'] || r['AÑO'], 10) || 2026;
+              const mo = parseMonthNum(r['Mes'] || r['MES']);
+              const dy = Math.min(28, Math.max(1, parseInt(r['Dia'] || r['Día'], 10) || 15));
+
+              if (units === 0 && amount === 0) return;
+
+              parsed.push({
+                folio: `SO-XL-${seq++}`,
+                channel: 'SELL_OUT',
+                date: `${yr}-${String(mo).padStart(2, '0')}-${String(dy).padStart(2, '0')}`,
+                year: yr,
+                month: mo,
+                day: dy,
+                client: cInfo.client,
+                segment: cInfo.segment,
+                storeId,
+                storeName,
+                zone: String(r['Zona'] || ZONES[seq % ZONES.length]),
+                model,
+                size,
+                units,
+                unitPrice: unitCost,
+                amount
+              });
+            });
+          }
+
+          if (parsed.length === 0) {
+            showToast('No se encontraron registros válidos en SELL IN / SELL OUT');
+            return;
+          }
+
+          stagedExcelRecords = parsed;
+          document.getElementById('excelStatusText').textContent = `Listo: ${fmtInt.format(parsed.length)} registros detectados en "${file.name}"`;
+          document.getElementById('excelStatusPanel').classList.remove('hidden');
+        } catch (err) {
+          console.error(err);
+          showToast('Error al leer el archivo Excel');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function commitExcelData() {
+      if (!stagedExcelRecords.length) return;
+      salesData = [...stagedExcelRecords];
+      try {
+        localStorage.setItem(DATA_KEY, JSON.stringify(salesData));
+      } catch (e) {}
+      document.getElementById('excelStatusPanel').classList.add('hidden');
+      switchModule('resumen');
+      applyFilters();
+      showToast(`Dashboard actualizado con ${fmtInt.format(salesData.length)} registros`);
+    }
+
+    // 12. ARRANQUE AUTOMÁTICO SI YA HAY SESIÓN ACTIVA
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const activeSession = sessionStorage.getItem(SESSION_KEY);
+        if (activeSession) {
+          activateSession(JSON.parse(activeSession));
+        }
+      } catch (e) {
+        console.warn('Error restaurando sesión:', e);
+      }
+    });
+  </script>
+</body>
+</html>
