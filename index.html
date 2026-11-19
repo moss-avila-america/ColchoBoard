@@ -175,7 +175,7 @@
               </svg>
             </div>
             <div>
-              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard <span class="text-[10px] font-mono text-emerald-400">v2.5</span></span>
+              <span class="block text-white font-bold text-sm leading-tight">ColchoBoard <span class="text-[10px] font-mono text-emerald-400">v3.0</span></span>
               <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold">Colchones América</span>
             </div>
           </div>
@@ -362,124 +362,202 @@
         </div>
 
         <!-- ======================================================= -->
-        <!-- 1. CARÁTULA EJECUTIVA (LISTA PARA CAPTURA WHATSAPP)     -->
+        <!-- 1. CARÁTULA EJECUTIVA (DISEÑO DUAL SELL IN / SELL OUT)  -->
         <!-- ======================================================= -->
         <section id="module-resumen" class="module-section space-y-5">
-          <!-- Encabezado de Carátula -->
-          <div class="bg-navy-900 text-white rounded-2xl px-5 py-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+          <!-- Encabezado Ejecutivo -->
+          <div class="bg-gradient-to-r from-[#081226] via-[#0F1E3C] to-[#134E5E] text-white rounded-2xl px-5 py-4 shadow-md flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h3 id="coverHeadline" class="text-sm sm:text-base font-extrabold tracking-tight">Corte Ejecutivo: Sin información</h3>
-              <p id="coverClientScope" class="text-[11px] text-sky-300 font-medium mt-0.5">Sube un archivo Excel para visualizar resultados reales</p>
+              <h3 id="coverHeadline" class="text-base sm:text-lg font-extrabold tracking-tight">Reporte de Ventas Sell In | Sell Out</h3>
+              <p id="coverClientScope" class="text-xs text-teal-200 font-medium mt-0.5">Sube tu archivo Excel para visualizar resultados reales</p>
             </div>
-            <div class="text-right">
-              <span id="coverCutDate" class="block text-xs font-bold text-white">Consulta al --/--/----</span>
-              <span class="block text-[10px] text-slate-300">Colchones América • MXN</span>
-            </div>
-          </div>
-
-          <!-- KPIs Principales: Sell In vs Sell Out (con comparativo mismo día año anterior) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Tarjeta Sell In -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-t-4 border-t-blue-600 shadow-xs space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Sell In Facturado (Neto)</span>
-                <span id="kpiInYoYBadge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700">N/A</span>
+            <div class="flex flex-wrap items-center gap-2.5 text-right">
+              <div class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 backdrop-blur-xs">
+                <span class="block text-[10px] uppercase tracking-wider text-teal-300 font-bold">Última Fecha Sell Out</span>
+                <span id="coverLatestSellOutDate" class="block text-xs font-extrabold text-white">--/--/----</span>
               </div>
-              <div class="flex items-baseline justify-between gap-2">
-                <p id="kpiInAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tabular-nums">$0</p>
-                <span id="kpiInUnits" class="text-sm font-bold text-blue-700 tabular-nums">0 pzas</span>
+              <div class="hidden sm:block">
+                <span id="coverCutDate" class="block text-xs font-bold text-white">Consulta al --/--/----</span>
+                <span class="block text-[10px] text-slate-300">Colchones América • MXN</span>
               </div>
-              <p class="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
-                Mismo día año anterior: <strong id="kpiInPrevSameDay" class="text-slate-700">$0 (0 pzas)</strong>
-              </p>
-            </div>
-
-            <!-- Tarjeta Sell Out -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/90 border-t-4 border-t-emerald-500 shadow-xs space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Sell Out Desplazado (Costo × Pzas)</span>
-                <span id="kpiOutYoYBadge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-700">N/A</span>
-              </div>
-              <div class="flex items-baseline justify-between gap-2">
-                <p id="kpiOutAmount" class="text-2xl sm:text-3xl font-extrabold text-navy-900 tabular-nums">$0</p>
-                <span id="kpiOutUnits" class="text-sm font-bold text-emerald-700 tabular-nums">0 pzas</span>
-              </div>
-              <p class="text-[11px] text-slate-500 pt-1 border-t border-slate-100">
-                Mismo día año anterior: <strong id="kpiOutPrevSameDay" class="text-slate-700">$0 (0 pzas)</strong>
-              </p>
             </div>
           </div>
 
-          <!-- Gráficas por Modelo: Barras y Pastel -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
-              <div class="flex items-center justify-between mb-3">
-                <div>
-                  <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Venta por Modelo (Barras $)</h4>
-                  <p class="text-[11px] text-slate-500">Comparativo Sell In vs Sell Out en MXN</p>
+          <!-- BLOQUE PRINCIPAL: 3 COLUMNAS INSPIRADAS EN TU TABLERO (SELL IN TURQUESA | SELL OUT NAVY | ACUMULADOS YOY) -->
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+
+            <!-- COLUMNA 1: SELL IN (ESTILO TURQUESA / TEAL) -->
+            <div class="xl:col-span-4 space-y-4">
+              <!-- Tarjetas KPI Sell In -->
+              <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-2xl p-4 bg-gradient-to-br from-teal-400 to-cyan-600 text-navy-950 shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-navy-950/75">Ventas Sell In MXN</span>
+                  <p id="kpiInAmount" class="text-xl sm:text-2xl font-black tracking-tight tabular-nums mt-1 text-navy-950">$0</p>
+                  <span id="kpiInYoYBadge" class="inline-block mt-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-white/40 text-navy-950">N/A</span>
                 </div>
-                <span id="topModelPill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Top: -</span>
-              </div>
-              <div class="relative h-60 w-full">
-                <canvas id="chartCoverModelsBar"></canvas>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
-              <div class="mb-3">
-                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Participación por Modelo (Dona %)</h4>
-                <p class="text-[11px] text-slate-500">Peso porcentual de cada modelo en el periodo</p>
-              </div>
-              <div class="relative h-64 w-full">
-                <canvas id="chartCoverModelsPie"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- Gráficas por Zona: Barras y Dona -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
-              <div class="flex items-center justify-between mb-3">
-                <div>
-                  <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Venta por Zona Comercial (Barras $)</h4>
-                  <p class="text-[11px] text-slate-500">Comparativo Sell In vs Sell Out por región</p>
+                <div class="rounded-2xl p-4 bg-gradient-to-br from-cyan-400 to-teal-500 text-navy-950 shadow-sm flex flex-col justify-between">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-navy-950/75">Piezas Sell In</span>
+                  <p id="kpiInUnits" class="text-xl sm:text-2xl font-black tracking-tight tabular-nums mt-1 text-navy-950">0</p>
+                  <span class="text-[10px] font-bold text-navy-950/70">Unidades Netas</span>
                 </div>
-                <span id="topZonePill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Líder: -</span>
               </div>
-              <div class="relative h-64 w-full">
-                <canvas id="chartCoverZonesBar"></canvas>
+
+              <!-- Barras Sell In x Modelo -->
+              <div class="rounded-2xl p-4 bg-gradient-to-b from-teal-50 to-white border border-teal-200/80 shadow-xs">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-xs font-extrabold text-navy-900 uppercase tracking-wide">Sell In × Modelo ($)</h4>
+                  <span id="topModelInPill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800">Top: -</span>
+                </div>
+                <div class="relative h-48 w-full">
+                  <canvas id="chartSellInModelsBar"></canvas>
+                </div>
+              </div>
+
+              <!-- Dona Sell In Share x Modelo -->
+              <div class="rounded-2xl p-4 bg-gradient-to-b from-teal-50/70 to-white border border-teal-200/80 shadow-xs">
+                <div class="mb-2">
+                  <h4 class="text-xs font-extrabold text-navy-900 uppercase tracking-wide">Sell In Share × Modelo (%)</h4>
+                </div>
+                <div class="relative h-56 w-full">
+                  <canvas id="chartSellInModelsDoughnut"></canvas>
+                </div>
               </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs">
-              <div class="mb-3">
-                <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Distribución por Zona (Dona %)</h4>
-                <p class="text-[11px] text-slate-500">Participación comercial por zona</p>
+            <!-- COLUMNA 2: SELL OUT (ESTILO AZUL MARINO EJECUTIVO) -->
+            <div class="xl:col-span-4 space-y-4">
+              <!-- Tarjetas KPI Sell Out -->
+              <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-2xl p-4 bg-gradient-to-br from-[#0F1E3C] to-[#1E3A6E] text-white shadow-sm">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Ventas Sell Out MXN</span>
+                  <p id="kpiOutAmount" class="text-xl sm:text-2xl font-black tracking-tight tabular-nums mt-1 text-white">$0</p>
+                  <span id="kpiOutYoYBadge" class="inline-block mt-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/25 text-emerald-300 border border-emerald-400/30">N/A</span>
+                </div>
+                <div class="rounded-2xl p-4 bg-gradient-to-br from-[#162A52] to-[#0B172E] text-white shadow-sm flex flex-col justify-between">
+                  <span class="block text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Piezas Sell Out</span>
+                  <p id="kpiOutUnits" class="text-xl sm:text-2xl font-black tracking-tight tabular-nums mt-1 text-white">0</p>
+                  <span class="text-[10px] font-semibold text-slate-300">Desplazamiento POS</span>
+                </div>
               </div>
-              <div class="relative h-64 w-full">
-                <canvas id="chartCoverZonesPie"></canvas>
+
+              <!-- Barras Sell Out x Modelo -->
+              <div class="rounded-2xl p-4 bg-[#0F1E3C] text-white border border-slate-800 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-xs font-extrabold text-white uppercase tracking-wide">Sell Out × Modelo ($)</h4>
+                  <span id="topModelOutPill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300">Top: -</span>
+                </div>
+                <div class="relative h-48 w-full">
+                  <canvas id="chartSellOutModelsBar"></canvas>
+                </div>
+              </div>
+
+              <!-- Dona Sell Out Share x Modelo -->
+              <div class="rounded-2xl p-4 bg-[#0F1E3C] text-white border border-slate-800 shadow-sm">
+                <div class="mb-2">
+                  <h4 class="text-xs font-extrabold text-white uppercase tracking-wide">Sell Out Share × Modelo (%)</h4>
+                </div>
+                <div class="relative h-56 w-full">
+                  <canvas id="chartSellOutModelsDoughnut"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLUMNA 3: ACUMULADOS ANUALES YOY + DESEMPEÑO POR ZONA (UEN) -->
+            <div class="xl:col-span-4 space-y-4">
+              <!-- Acumulados Sell In YoY -->
+              <div class="rounded-2xl p-4 bg-white border border-slate-200/90 shadow-xs space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-xs font-extrabold text-navy-900 uppercase tracking-wide">Acumulados Anuales YoY</h4>
+                  <span id="yoyYearsBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">2025 vs 2026</span>
+                </div>
+
+                <!-- Acumulado Sell In MXN -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div class="rounded-xl p-3 bg-gradient-to-r from-teal-600 to-cyan-700 text-white">
+                    <span id="lblAccInPrevMxn" class="block text-[10px] font-semibold text-teal-100">Acum. Sell In MXN AA</span>
+                    <span id="valAccInPrevMxn" class="block text-sm sm:text-base font-extrabold tabular-nums mt-0.5">$0</span>
+                  </div>
+                  <div class="rounded-xl p-3 bg-gradient-to-r from-cyan-600 to-teal-500 text-white">
+                    <span id="lblAccInCurrMxn" class="block text-[10px] font-semibold text-teal-50">Acum. Sell In MXN Act</span>
+                    <span id="valAccInCurrMxn" class="block text-sm sm:text-base font-extrabold tabular-nums mt-0.5">$0</span>
+                  </div>
+                </div>
+
+                <!-- Acumulado Sell In Piezas -->
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div class="rounded-xl p-3 bg-[#0F1E3C] text-white">
+                    <span id="lblAccInPrevPcs" class="block text-[10px] font-semibold text-slate-300">Acum. Sell In PCS AA</span>
+                    <span id="valAccInPrevPcs" class="block text-sm sm:text-base font-extrabold tabular-nums mt-0.5">0</span>
+                  </div>
+                  <div class="rounded-xl p-3 bg-[#1E3A6E] text-white">
+                    <span id="lblAccInCurrPcs" class="block text-[10px] font-semibold text-sky-200">Acum. Sell In PCS Act</span>
+                    <span id="valAccInCurrPcs" class="block text-sm sm:text-base font-extrabold tabular-nums mt-0.5">0</span>
+                  </div>
+                </div>
+
+                <!-- Crecimientos Sell In y Sell Out -->
+                <div class="grid grid-cols-2 gap-2.5 pt-1">
+                  <div class="rounded-xl p-3 bg-slate-50 border border-slate-200 text-center">
+                    <span class="block text-[10px] font-bold uppercase text-slate-500">Crec. Sell In MXN</span>
+                    <span id="valGrowthInMxn" class="block text-lg font-black tabular-nums mt-0.5 text-navy-900">0%</span>
+                    <span id="valGrowthInPcs" class="block text-[10px] font-bold text-slate-500">PCS: 0%</span>
+                  </div>
+                  <div class="rounded-xl p-3 bg-slate-50 border border-slate-200 text-center">
+                    <span class="block text-[10px] font-bold uppercase text-slate-500">Crec. Sell Out MXN</span>
+                    <span id="valGrowthOutMxn" class="block text-lg font-black tabular-nums mt-0.5 text-navy-900">0%</span>
+                    <span id="valGrowthOutPcs" class="block text-[10px] font-bold text-slate-500">PCS: 0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Desempeño por Zona (UEN del Directorio de Tiendas) -->
+              <div class="rounded-2xl p-4 bg-white border border-slate-200/90 shadow-xs space-y-3">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="text-xs font-extrabold text-navy-900 uppercase tracking-wide">Desempeño por Zona (UEN)</h4>
+                    <p class="text-[10px] text-slate-500">Cruzado con Directorio de Tiendas</p>
+                  </div>
+                  <span id="topZonePill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Líder: -</span>
+                </div>
+                <div class="relative h-52 w-full">
+                  <canvas id="chartCoverZonesBar"></canvas>
+                </div>
+                <div id="coverZonesMiniList" class="divide-y divide-slate-100 text-[11px] max-h-36 overflow-y-auto"></div>
               </div>
             </div>
           </div>
 
-          <!-- Tabla Resumen de Modelos del Periodo -->
-          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-            <div class="px-5 py-3.5 border-b border-slate-100">
-              <h4 class="text-xs sm:text-sm font-extrabold text-navy-900">Desglose por Modelo (Piezas y Pesos MXN)</h4>
+          <!-- COMPARATIVO SELL OUT POR MODELO: MISMO DÍA AÑO ANTERIOR (EJ. 1-16 NOVIEMBRE 2025 vs 2026) -->
+          <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+            <div class="px-5 py-3.5 bg-gradient-to-r from-[#0F1E3C] to-[#162A52] text-white flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="text-xs sm:text-sm font-extrabold uppercase tracking-wide">Comparativo Sell Out Mismo Día Año Anterior</h4>
+                  <span id="sameDayRangeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-navy-950 uppercase">1-16 NOVIEMBRE</span>
+                </div>
+                <p id="sameDaySubtitle" class="text-[11px] text-sky-200 mt-0.5">Calculado automáticamente con base en la última fecha cargada de Sell Out</p>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-bold">
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-emerald-300">Pzas: <strong id="sameDayHeaderPcsGrowth">0%</strong></span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-sky-300">Importe: <strong id="sameDayHeaderAmtGrowth">0%</strong></span>
+              </div>
             </div>
+
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs tabular-nums">
                 <thead>
-                  <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
-                    <th class="py-2.5 px-4 font-bold">Modelo</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-blue-700">Sell In ($)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out (Pzas)</th>
-                    <th class="py-2.5 px-3 font-bold text-right text-emerald-700">Sell Out ($)</th>
-                    <th class="py-2.5 px-4 font-bold text-right">% Part.</th>
+                  <tr class="bg-slate-100 text-slate-600 uppercase text-[10px] tracking-wider border-b border-slate-200">
+                    <th class="py-2.5 px-4 font-extrabold text-navy-900">Modelo</th>
+                    <th id="thPcsPrev" class="py-2.5 px-3 font-bold text-right bg-emerald-50/40">Pzas AA</th>
+                    <th id="thPcsCurr" class="py-2.5 px-3 font-bold text-right bg-emerald-50/70">Pzas Act</th>
+                    <th class="py-2.5 px-3 font-extrabold text-right bg-emerald-50/90 border-r border-slate-200">Crec. Pzas</th>
+                    <th id="thAmtPrev" class="py-2.5 px-3 font-bold text-right bg-blue-50/40">Importe AA</th>
+                    <th id="thAmtCurr" class="py-2.5 px-3 font-bold text-right bg-blue-50/70">Importe Act</th>
+                    <th class="py-2.5 px-4 font-extrabold text-right bg-blue-50/90">Crec. $</th>
                   </tr>
                 </thead>
-                <tbody id="coverModelTableBody" class="divide-y divide-slate-100"></tbody>
+                <tbody id="sameDayComparisonBody" class="divide-y divide-slate-100"></tbody>
+                <tfoot id="sameDayComparisonFoot" class="bg-navy-900 text-white font-extrabold border-t-2 border-teal-400"></tfoot>
               </table>
             </div>
           </div>
@@ -763,7 +841,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h3 class="text-base font-extrabold text-navy-900">Cargar Información Real desde Excel (.xlsx)</h3>
-                <p class="text-xs text-slate-500">Lee las pestañas <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas + No. Sucursal y Zona).</p>
+                <p class="text-xs text-slate-500">Lee automáticamente <strong>Directorio de tiendas</strong> (No. Sucursal + UEN), <strong>SELL IN</strong> (Unidades Netas y Suma de Neto) y <strong>SELL OUT</strong> (Costo × Piezas / Importe).</p>
               </div>
               <button onclick="clearStoredData()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold">
                 Limpiar Base Guardada
@@ -789,8 +867,8 @@
             </div>
 
             <div onclick="document.getElementById('excelInput').click()" class="cursor-pointer border-2 border-dashed border-slate-300 hover:border-blue-600 bg-slate-50 hover:bg-blue-50/40 rounded-2xl p-8 text-center transition">
-              <p class="text-sm font-bold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_3.xlsx)</p>
-              <p class="text-xs text-slate-500 mt-1">Compatible con pestañas SELL IN, SELL OUT y catálogos de sucursales/zonas</p>
+              <p class="text-sm font-bold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_4.xlsx)</p>
+              <p class="text-xs text-slate-500 mt-1">Cruza automáticamente Directorio de Tiendas (UEN y Sucursal), SELL IN y SELL OUT</p>
               <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" onchange="handleExcelUpload(event)" class="hidden" />
             </div>
 
@@ -1513,6 +1591,8 @@
         const total = dataset.data.reduce((acc, val) => acc + (Number(val) > 0 ? Number(val) : 0), 0);
         if (total <= 0) return;
 
+        const isDark = Boolean(chart.config.options?.plugins?.doughnutThemeDark);
+
         ctx.save();
         // 1) Porcentajes dentro de cada arco suficientemente grande (>= 4.5%)
         meta.data.forEach((arc, index) => {
@@ -1541,10 +1621,10 @@
 
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#64748B';
+          ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
           ctx.font = '600 10px Inter, system-ui, sans-serif';
           ctx.fillText('TOTAL', centerX, centerY - 9);
-          ctx.fillStyle = '#0F1E3C';
+          ctx.fillStyle = isDark ? '#FFFFFF' : '#0F1E3C';
           ctx.font = '800 13px Inter, system-ui, sans-serif';
           ctx.fillText(compactTotal, centerX, centerY + 8);
         }
@@ -1561,7 +1641,20 @@
       chartsRegistry[canvasId] = new Chart(canvas.getContext('2d'), config);
     }
 
-    // 5. CARÁTULA EJECUTIVA (BARRAS Y DONA CON PORCENTAJES Y DATOS REALES)
+    function formatGrowthBadge(curr, prev) {
+      if (prev === 0 && curr === 0) return { text: '0%', cls: 'text-slate-400', arrow: '—' };
+      if (prev === 0 && curr > 0) return { text: '+100%', cls: 'text-emerald-700 bg-emerald-50', arrow: '▲' };
+      if (prev > 0 && curr === 0) return { text: '-100%', cls: 'text-rose-700 bg-rose-50', arrow: '▼' };
+      const pct = ((curr - prev) / Math.abs(prev)) * 100;
+      const sign = pct > 0 ? '+' : '';
+      return {
+        text: `${sign}${pct.toFixed(0)}%`,
+        cls: pct >= 0 ? 'text-emerald-700 bg-emerald-50' : 'text-rose-700 bg-rose-50',
+        arrow: pct >= 0 ? '▲' : '▼'
+      };
+    }
+
+    // 5. CARÁTULA EJECUTIVA v3.0 (DISEÑO DUAL TURQUESA/NAVY + ACUMULADOS YOY + MISMO DÍA AA)
     function renderCoverModule() {
       const f = getFilters();
       const rows = getFilteredRecords();
@@ -1573,89 +1666,122 @@
       const outAmt = outRows.reduce((s, r) => s + r.amount, 0);
       const outPzas = outRows.reduce((s, r) => s + r.units, 0);
 
-      // Comparativo mismo día año anterior
-      const currentYearNum = f.year === 'ALL' ? new Date().getFullYear() : parseInt(f.year, 10);
-      const prevYearStr = String(currentYearNum - 1);
-      const maxDayCut = rows.length ? Math.max(...rows.map(r => r.day || 15)) : new Date().getDate();
+      // Detectar última fecha real cargada de SELL OUT (ej. 16/11/2026)
+      const allSellOutGlobal = salesData.filter(r => r.channel === 'SELL_OUT' && r.date);
+      let latestOutRec = null;
+      allSellOutGlobal.forEach(r => {
+        if (!latestOutRec || r.date > latestOutRec.date) latestOutRec = r;
+      });
 
-      const prevRows = getFilteredRecords({ year: prevYearStr }).filter(r => f.month === 'ALL' || (r.day || 15) <= maxDayCut);
-      const prevInRows = prevRows.filter(r => r.channel === 'SELL_IN');
-      const prevOutRows = prevRows.filter(r => r.channel === 'SELL_OUT');
+      const latestDateLabel = latestOutRec
+        ? `${String(latestOutRec.day).padStart(2, '0')}/${String(latestOutRec.month).padStart(2, '0')}/${latestOutRec.year}`
+        : '--/--/----';
+      document.getElementById('coverLatestSellOutDate').textContent = latestDateLabel;
 
-      const prevInAmt = prevInRows.reduce((s, r) => s + r.amount, 0);
-      const prevInPzas = prevInRows.reduce((s, r) => s + r.units, 0);
-      const prevOutAmt = prevOutRows.reduce((s, r) => s + r.amount, 0);
-      const prevOutPzas = prevOutRows.reduce((s, r) => s + r.units, 0);
+      // Años de referencia para Acumulados YoY
+      const availableYears = [...new Set(salesData.map(r => r.year).filter(y => y >= 2000))].sort((a, b) => b - a);
+      const refCurrYear = f.year !== 'ALL'
+        ? parseInt(f.year, 10)
+        : (latestOutRec ? latestOutRec.year : (availableYears[0] || new Date().getFullYear()));
+      const refPrevYear = refCurrYear - 1;
 
-      const inVar = prevInAmt > 0 ? ((inAmt - prevInAmt) / prevInAmt) * 100 : 0;
-      const outVar = prevOutAmt > 0 ? ((outAmt - prevOutAmt) / prevOutAmt) * 100 : 0;
+      // Acumulados anuales completos (respetando filtros de Cliente/Segmento/Zona pero sin restringir mes)
+      const accCurrRows = getFilteredRecords({ year: String(refCurrYear), month: 'ALL' });
+      const accPrevRows = getFilteredRecords({ year: String(refPrevYear), month: 'ALL' });
+
+      const accInCurrAmt = accCurrRows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const accInCurrPcs = accCurrRows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
+      const accInPrevAmt = accPrevRows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const accInPrevPcs = accPrevRows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.units, 0);
+
+      const accOutCurrAmt = accCurrRows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
+      const accOutCurrPcs = accCurrRows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+      const accOutPrevAmt = accPrevRows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
+      const accOutPrevPcs = accPrevRows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.units, 0);
+
+      const gInMxn = formatGrowthBadge(accInCurrAmt, accInPrevAmt);
+      const gInPcs = formatGrowthBadge(accInCurrPcs, accInPrevPcs);
+      const gOutMxn = formatGrowthBadge(accOutCurrAmt, accOutPrevAmt);
+      const gOutPcs = formatGrowthBadge(accOutCurrPcs, accOutPrevPcs);
+
+      // KPIs Periodo Seleccionado
+      const prevScopeRows = getFilteredRecords({ year: String(refPrevYear) });
+      const prevScopeInAmt = prevScopeRows.filter(r => r.channel === 'SELL_IN').reduce((s, r) => s + r.amount, 0);
+      const prevScopeOutAmt = prevScopeRows.filter(r => r.channel === 'SELL_OUT').reduce((s, r) => s + r.amount, 0);
 
       document.getElementById('kpiInAmount').textContent = fmtMXN.format(inAmt);
-      document.getElementById('kpiInUnits').textContent = `${fmtInt.format(inPzas)} pzas`;
-      document.getElementById('kpiInYoYBadge').textContent = prevInAmt > 0 ? `${inVar >= 0 ? '+' : ''}${inVar.toFixed(1)}%` : 'N/A';
-      document.getElementById('kpiInPrevSameDay').textContent = `${fmtMXN.format(prevInAmt)} (${fmtInt.format(prevInPzas)} pzas)`;
+      document.getElementById('kpiInUnits').textContent = fmtInt.format(inPzas);
+      document.getElementById('kpiInYoYBadge').textContent = prevScopeInAmt > 0 ? `${formatGrowthBadge(inAmt, prevScopeInAmt).text} vs ${refPrevYear}` : 'Periodo activo';
 
       document.getElementById('kpiOutAmount').textContent = fmtMXN.format(outAmt);
-      document.getElementById('kpiOutUnits').textContent = `${fmtInt.format(outPzas)} pzas`;
-      document.getElementById('kpiOutYoYBadge').textContent = prevOutAmt > 0 ? `${outVar >= 0 ? '+' : ''}${outVar.toFixed(1)}%` : 'N/A';
-      document.getElementById('kpiOutPrevSameDay').textContent = `${fmtMXN.format(prevOutAmt)} (${fmtInt.format(prevOutPzas)} pzas)`;
+      document.getElementById('kpiOutUnits').textContent = fmtInt.format(outPzas);
+      document.getElementById('kpiOutYoYBadge').textContent = prevScopeOutAmt > 0 ? `${formatGrowthBadge(outAmt, prevScopeOutAmt).text} vs ${refPrevYear}` : 'Periodo activo';
 
-      // Agrupación real por Modelo
-      const modelNames = [...new Set(rows.map(r => r.model).filter(Boolean))];
-      const modelStats = modelNames.map(name => {
-        const mIn = inRows.filter(r => r.model === name);
-        const mOut = outRows.filter(r => r.model === name);
-        const iA = mIn.reduce((s, r) => s + r.amount, 0);
-        const oA = mOut.reduce((s, r) => s + r.amount, 0);
-        return {
-          name,
-          inUnits: mIn.reduce((s, r) => s + r.units, 0),
-          inAmt: iA,
-          outUnits: mOut.reduce((s, r) => s + r.units, 0),
-          outAmt: oA,
-          totalAmt: iA + oA
-        };
-      }).sort((a, b) => b.totalAmt - a.totalAmt);
+      // Tarjetas de Acumulados Anuales YoY
+      document.getElementById('yoyYearsBadge').textContent = `${refPrevYear} vs ${refCurrYear}`;
+      document.getElementById('lblAccInPrevMxn').textContent = `Acum. Sell In MXN ${refPrevYear}`;
+      document.getElementById('valAccInPrevMxn').textContent = fmtMXN.format(accInPrevAmt);
+      document.getElementById('lblAccInCurrMxn').textContent = `Acum. Sell In MXN ${refCurrYear}`;
+      document.getElementById('valAccInCurrMxn').textContent = fmtMXN.format(accInCurrAmt);
+      document.getElementById('lblAccInPrevPcs').textContent = `Acum. Sell In PCS ${refPrevYear}`;
+      document.getElementById('valAccInPrevPcs').textContent = fmtInt.format(accInPrevPcs);
+      document.getElementById('lblAccInCurrPcs').textContent = `Acum. Sell In PCS ${refCurrYear}`;
+      document.getElementById('valAccInCurrPcs').textContent = fmtInt.format(accInCurrPcs);
 
-      document.getElementById('topModelPill').textContent = modelStats.length ? `Top: ${modelStats[0].name}` : 'Top: -';
+      document.getElementById('valGrowthInMxn').textContent = gInMxn.text;
+      document.getElementById('valGrowthInMxn').className = `block text-lg font-black tabular-nums mt-0.5 ${accInCurrAmt >= accInPrevAmt ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('valGrowthInPcs').textContent = `PCS: ${gInPcs.text}`;
 
-      // Gráfica 1: Barras por Modelo
-      renderChart('chartCoverModelsBar', {
+      document.getElementById('valGrowthOutMxn').textContent = gOutMxn.text;
+      document.getElementById('valGrowthOutMxn').className = `block text-lg font-black tabular-nums mt-0.5 ${accOutCurrAmt >= accOutPrevAmt ? 'text-emerald-600' : 'text-rose-600'}`;
+      document.getElementById('valGrowthOutPcs').textContent = `PCS: ${gOutPcs.text}`;
+
+      // -----------------------------------------------------------
+      // GRÁFICAS SELL IN (BARRAS + DONA POR MODELO)
+      // -----------------------------------------------------------
+      const inModelMap = new Map();
+      inRows.forEach(r => {
+        const k = r.model || 'Sin Modelo';
+        inModelMap.set(k, (inModelMap.get(k) || 0) + r.amount);
+      });
+      const inModelsSorted = [...inModelMap.entries()].map(([name, amt]) => ({ name, amt })).sort((a, b) => b.amt - a.amt);
+      const topInModels = inModelsSorted.slice(0, 10);
+      document.getElementById('topModelInPill').textContent = topInModels.length ? `Top: ${topInModels[0].name}` : 'Top: -';
+
+      renderChart('chartSellInModelsBar', {
         type: 'bar',
         data: {
-          labels: modelStats.map(m => m.name),
-          datasets: [
-            { label: 'Sell In ($)', data: modelStats.map(m => m.inAmt), backgroundColor: '#2563EB', borderRadius: 5 },
-            { label: 'Sell Out ($)', data: modelStats.map(m => m.outAmt), backgroundColor: '#10B981', borderRadius: 5 }
-          ]
+          labels: topInModels.map(m => m.name),
+          datasets: [{
+            label: 'Sell In ($)',
+            data: topInModels.map(m => m.amt),
+            backgroundColor: topInModels.map(m => m.amt >= 0 ? '#0D9488' : '#F43F5E'),
+            borderRadius: 5
+          }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+          plugins: { legend: { display: false } },
           scales: {
-            y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
-            x: { ticks: { font: { size: 10 } } }
+            y: { ticks: { font: { size: 9 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' }, grid: { color: 'rgba(15,30,60,0.06)' } },
+            x: { ticks: { font: { size: 9 } }, grid: { display: false } }
           }
         }
       });
 
-      // Gráfica 2: Dona por Modelo (solo positivos para que la participación sume 100% limpio)
-      const posModels = modelStats.filter(m => m.totalAmt > 0);
-      const posModelsSum = posModels.reduce((s, m) => s + m.totalAmt, 0);
-      renderChart('chartCoverModelsPie', {
+      const posInModels = inModelsSorted.filter(m => m.amt > 0);
+      const posInSum = posInModels.reduce((s, m) => s + m.amt, 0);
+      renderChart('chartSellInModelsDoughnut', {
         type: 'doughnut',
         data: {
-          labels: posModels.map(m => {
-            const pct = posModelsSum > 0 ? ((m.totalAmt / posModelsSum) * 100).toFixed(1) : '0.0';
-            return `${m.name} (${pct}%)`;
-          }),
+          labels: posInModels.map(m => `${m.name} (${posInSum > 0 ? ((m.amt / posInSum) * 100).toFixed(0) : 0}%)`),
           datasets: [{
-            data: posModels.map(m => m.totalAmt),
-            backgroundColor: posModels.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
+            data: posInModels.map(m => m.amt),
+            backgroundColor: posInModels.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]),
             borderWidth: 2,
             borderColor: '#FFFFFF',
-            hoverOffset: 10
+            hoverOffset: 8
           }]
         },
         plugins: [doughnutPercentPlugin],
@@ -1663,22 +1789,78 @@
           responsive: true,
           maintainAspectRatio: false,
           cutout: '56%',
-          animation: { animateRotate: true, animateScale: true, duration: 900 },
           plugins: {
-            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10, weight: '600' }, padding: 8 } },
-            tooltip: {
-              callbacks: {
-                label: ctx => {
-                  const pct = posModelsSum > 0 ? ((ctx.raw / posModelsSum) * 100).toFixed(1) : '0.0';
-                  return ` ${posModels[ctx.dataIndex].name}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
-                }
-              }
-            }
+            doughnutThemeDark: false,
+            legend: { position: 'right', labels: { boxWidth: 8, font: { size: 9, weight: '600' }, padding: 6 } },
+            tooltip: { callbacks: { label: ctx => ` ${posInModels[ctx.dataIndex].name}: ${fmtMXN.format(ctx.raw)}` } }
           }
         }
       });
 
-      // Agrupación real por Zona
+      // -----------------------------------------------------------
+      // GRÁFICAS SELL OUT (BARRAS + DONA POR MODELO EN TEMA NAVY)
+      // -----------------------------------------------------------
+      const outModelMap = new Map();
+      outRows.forEach(r => {
+        const k = r.model || 'Sin Modelo';
+        outModelMap.set(k, (outModelMap.get(k) || 0) + r.amount);
+      });
+      const outModelsSorted = [...outModelMap.entries()].map(([name, amt]) => ({ name, amt })).sort((a, b) => b.amt - a.amt);
+      const topOutModels = outModelsSorted.slice(0, 10);
+      document.getElementById('topModelOutPill').textContent = topOutModels.length ? `Top: ${topOutModels[0].name}` : 'Top: -';
+
+      renderChart('chartSellOutModelsBar', {
+        type: 'bar',
+        data: {
+          labels: topOutModels.map(m => m.name),
+          datasets: [{
+            label: 'Sell Out ($)',
+            data: topOutModels.map(m => m.amt),
+            backgroundColor: '#38BDF8',
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { ticks: { color: '#CBD5E1', font: { size: 9 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+            x: { ticks: { color: '#E2E8F0', font: { size: 9 } }, grid: { display: false } }
+          }
+        }
+      });
+
+      const posOutModels = outModelsSorted.filter(m => m.amt > 0);
+      const posOutSum = posOutModels.reduce((s, m) => s + m.amt, 0);
+      renderChart('chartSellOutModelsDoughnut', {
+        type: 'doughnut',
+        data: {
+          labels: posOutModels.map(m => `${m.name} (${posOutSum > 0 ? ((m.amt / posOutSum) * 100).toFixed(0) : 0}%)`),
+          datasets: [{
+            data: posOutModels.map(m => m.amt),
+            backgroundColor: posOutModels.map((_, i) => CHART_PALETTE[i % CHART_PALETTE.length]),
+            borderWidth: 2,
+            borderColor: '#0F1E3C',
+            hoverOffset: 8
+          }]
+        },
+        plugins: [doughnutPercentPlugin],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '56%',
+          plugins: {
+            doughnutThemeDark: true,
+            legend: { position: 'right', labels: { color: '#E2E8F0', boxWidth: 8, font: { size: 9, weight: '600' }, padding: 6 } },
+            tooltip: { callbacks: { label: ctx => ` ${posOutModels[ctx.dataIndex].name}: ${fmtMXN.format(ctx.raw)}` } }
+          }
+        }
+      });
+
+      // -----------------------------------------------------------
+      // DESEMPEÑO POR ZONA (UEN DEL DIRECTORIO DE TIENDAS)
+      // -----------------------------------------------------------
       const zoneNames = [...new Set(rows.map(r => r.zone).filter(Boolean))];
       const zoneStats = zoneNames.map(z => {
         const zIn = inRows.filter(r => r.zone === z);
@@ -1691,87 +1873,139 @@
           inAmt: iA,
           outUnits: zOut.reduce((s, r) => s + r.units, 0),
           outAmt: oA,
-          totalAmt: iA + oA
+          totalAmt: iA + oA,
+          totalUnits: zIn.reduce((s, r) => s + r.units, 0) + zOut.reduce((s, r) => s + r.units, 0)
         };
-      }).sort((a, b) => b.totalAmt - a.totalAmt);
+      }).sort((a, b) => b.outAmt - a.outAmt || b.totalAmt - a.totalAmt);
 
       document.getElementById('topZonePill').textContent = zoneStats.length ? `Líder: ${zoneStats[0].zone}` : 'Líder: -';
 
-      // Gráfica 3: Barras por Zona
       renderChart('chartCoverZonesBar', {
         type: 'bar',
         data: {
-          labels: zoneStats.map(z => z.zone),
+          labels: zoneStats.slice(0, 8).map(z => z.zone),
           datasets: [
-            { label: 'Sell In ($)', data: zoneStats.map(z => z.inAmt), backgroundColor: '#1E3A6E', borderRadius: 5 },
-            { label: 'Sell Out ($)', data: zoneStats.map(z => z.outAmt), backgroundColor: '#059669', borderRadius: 5 }
+            { label: 'Sell Out ($)', data: zoneStats.slice(0, 8).map(z => z.outAmt), backgroundColor: '#10B981', borderRadius: 4 },
+            { label: 'Sell In ($)', data: zoneStats.slice(0, 8).map(z => z.inAmt), backgroundColor: '#0F1E3C', borderRadius: 4 }
           ]
         },
         options: {
+          indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+          plugins: { legend: { position: 'top', labels: { boxWidth: 8, font: { size: 9 } } } },
           scales: {
-            y: { beginAtZero: true, ticks: { font: { size: 10 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
-            x: { ticks: { font: { size: 10 } } }
+            x: { beginAtZero: true, ticks: { font: { size: 9 }, callback: v => '$' + (v / 1000).toFixed(0) + 'k' } },
+            y: { ticks: { font: { size: 9, weight: '600' } } }
           }
         }
       });
 
-      // Gráfica 4: Dona por Zona
-      const posZones = zoneStats.filter(z => z.totalAmt > 0);
-      const posZonesSum = posZones.reduce((s, z) => s + z.totalAmt, 0);
-      renderChart('chartCoverZonesPie', {
-        type: 'doughnut',
-        data: {
-          labels: posZones.map(z => {
-            const pct = posZonesSum > 0 ? ((z.totalAmt / posZonesSum) * 100).toFixed(1) : '0.0';
-            return `${z.zone} (${pct}%)`;
-          }),
-          datasets: [{
-            data: posZones.map(z => z.totalAmt),
-            backgroundColor: posZones.map((_, idx) => CHART_PALETTE[idx % CHART_PALETTE.length]),
-            borderWidth: 2,
-            borderColor: '#FFFFFF',
-            hoverOffset: 10
-          }]
-        },
-        plugins: [doughnutPercentPlugin],
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '56%',
-          animation: { animateRotate: true, animateScale: true, duration: 900 },
-          plugins: {
-            legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10, weight: '600' }, padding: 8 } },
-            tooltip: {
-              callbacks: {
-                label: ctx => {
-                  const pct = posZonesSum > 0 ? ((ctx.raw / posZonesSum) * 100).toFixed(1) : '0.0';
-                  return ` ${posZones[ctx.dataIndex].zone}: ${fmtMXN.format(ctx.raw)} (${pct}%)`;
-                }
-              }
-            }
-          }
-        }
-      });
-
-      // Tabla de desglose por modelo en carátula
-      const grandTotalAmt = modelStats.reduce((s, m) => s + m.totalAmt, 0);
-      const tbody = document.getElementById('coverModelTableBody');
-      tbody.innerHTML = modelStats.map(m => {
-        const share = grandTotalAmt > 0 ? ((m.totalAmt / grandTotalAmt) * 100).toFixed(1) : '0.0';
+      const zoneGrand = zoneStats.reduce((s, z) => s + z.outAmt + z.inAmt, 0);
+      document.getElementById('coverZonesMiniList').innerHTML = zoneStats.map(z => {
+        const share = zoneGrand > 0 ? (((z.outAmt + z.inAmt) / zoneGrand) * 100).toFixed(1) : '0.0';
         return `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2.5 px-4 font-bold text-navy-900">${m.name}</td>
-            <td class="py-2.5 px-3 text-right font-semibold text-blue-700">${fmtInt.format(m.inUnits)}</td>
-            <td class="py-2.5 px-3 text-right font-bold text-blue-800">${fmtMXN.format(m.inAmt)}</td>
-            <td class="py-2.5 px-3 text-right font-semibold text-emerald-700">${fmtInt.format(m.outUnits)}</td>
-            <td class="py-2.5 px-3 text-right font-bold text-emerald-800">${fmtMXN.format(m.outAmt)}</td>
-            <td class="py-2.5 px-4 text-right font-bold text-slate-600">${share}%</td>
+          <div class="py-1.5 flex items-center justify-between gap-2">
+            <span class="font-bold text-navy-900 truncate">${z.zone}</span>
+            <span class="text-slate-600 tabular-nums shrink-0">
+              <strong class="text-emerald-700">${fmtMXN.format(z.outAmt)}</strong> · ${fmtInt.format(z.outUnits)} pzas (${share}%)
+            </span>
+          </div>
+        `;
+      }).join('') || `<p class="py-3 text-center text-slate-400">Sin zonas cargadas</p>`;
+
+      // -----------------------------------------------------------
+      // COMPARATIVO SELL OUT POR MODELO MISMO DÍA AÑO ANTERIOR
+      // Basado en la última fecha cargada de Sell Out (ej. 1-16 Noviembre 2025 vs 2026)
+      // -----------------------------------------------------------
+      const targetYear = latestOutRec ? latestOutRec.year : refCurrYear;
+      const targetMonth = f.month !== 'ALL' ? parseInt(f.month, 10) : (latestOutRec ? latestOutRec.month : (new Date().getMonth() + 1));
+      const targetMaxDay = (latestOutRec && targetMonth === latestOutRec.month && targetYear === latestOutRec.year)
+        ? latestOutRec.day
+        : 31;
+      const prevCompYear = targetYear - 1;
+      const monthNameUpper = (MONTH_NAMES[targetMonth] || 'MES').toUpperCase();
+
+      document.getElementById('sameDayRangeBadge').textContent = `1-${targetMaxDay} ${monthNameUpper}`;
+      document.getElementById('sameDaySubtitle').textContent =
+        `Comparativo Sell Out del 1 al ${targetMaxDay} de ${MONTH_NAMES[targetMonth] || ''} (${prevCompYear} vs ${targetYear}) • Base: última fecha Sell Out (${latestDateLabel})`;
+      document.getElementById('thPcsPrev').textContent = `Pzas ${prevCompYear}`;
+      document.getElementById('thPcsCurr').textContent = `Pzas ${targetYear}`;
+      document.getElementById('thAmtPrev').textContent = `Importe ${prevCompYear}`;
+      document.getElementById('thAmtCurr').textContent = `Importe ${targetYear}`;
+
+      const currSameDayOut = getFilteredRecords({ year: String(targetYear), month: String(targetMonth) })
+        .filter(r => r.channel === 'SELL_OUT' && (r.day || 1) <= targetMaxDay);
+      const prevSameDayOut = getFilteredRecords({ year: String(prevCompYear), month: String(targetMonth) })
+        .filter(r => r.channel === 'SELL_OUT' && (r.day || 1) <= targetMaxDay);
+
+      const compModelSet = new Set([
+        ...currSameDayOut.map(r => r.model || 'Sin Modelo'),
+        ...prevSameDayOut.map(r => r.model || 'Sin Modelo')
+      ]);
+
+      const compRows = [...compModelSet].map(model => {
+        const cRows = currSameDayOut.filter(r => (r.model || 'Sin Modelo') === model);
+        const pRows = prevSameDayOut.filter(r => (r.model || 'Sin Modelo') === model);
+        return {
+          model,
+          prevPcs: pRows.reduce((s, r) => s + r.units, 0),
+          currPcs: cRows.reduce((s, r) => s + r.units, 0),
+          prevAmt: pRows.reduce((s, r) => s + r.amount, 0),
+          currAmt: cRows.reduce((s, r) => s + r.amount, 0)
+        };
+      }).sort((a, b) => b.currAmt - a.currAmt || b.prevAmt - a.prevAmt);
+
+      const totPrevPcs = compRows.reduce((s, r) => s + r.prevPcs, 0);
+      const totCurrPcs = compRows.reduce((s, r) => s + r.currPcs, 0);
+      const totPrevAmt = compRows.reduce((s, r) => s + r.prevAmt, 0);
+      const totCurrAmt = compRows.reduce((s, r) => s + r.currAmt, 0);
+
+      const totPcsBadge = formatGrowthBadge(totCurrPcs, totPrevPcs);
+      const totAmtBadge = formatGrowthBadge(totCurrAmt, totPrevAmt);
+
+      document.getElementById('sameDayHeaderPcsGrowth').textContent = `${totPcsBadge.arrow} ${totPcsBadge.text}`;
+      document.getElementById('sameDayHeaderAmtGrowth').textContent = `${totAmtBadge.arrow} ${totAmtBadge.text}`;
+
+      const compBody = document.getElementById('sameDayComparisonBody');
+      const compFoot = document.getElementById('sameDayComparisonFoot');
+
+      if (!compRows.length) {
+        compBody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400">Sin movimientos de Sell Out para comparar en el periodo ${monthNameUpper}</td></tr>`;
+        compFoot.innerHTML = '';
+      } else {
+        compBody.innerHTML = compRows.map(r => {
+          const bPcs = formatGrowthBadge(r.currPcs, r.prevPcs);
+          const bAmt = formatGrowthBadge(r.currAmt, r.prevAmt);
+          return `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2 px-4 font-bold text-navy-900">${r.model}</td>
+              <td class="py-2 px-3 text-right text-slate-600">${r.prevPcs ? fmtInt.format(r.prevPcs) : '—'}</td>
+              <td class="py-2 px-3 text-right font-bold text-navy-900">${r.currPcs ? fmtInt.format(r.currPcs) : '—'}</td>
+              <td class="py-2 px-3 text-right border-r border-slate-100">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-extrabold ${bPcs.cls}">${bPcs.arrow} ${bPcs.text}</span>
+              </td>
+              <td class="py-2 px-3 text-right text-slate-600">${r.prevAmt ? fmtMXN.format(r.prevAmt) : '—'}</td>
+              <td class="py-2 px-3 text-right font-bold text-navy-900">${r.currAmt ? fmtMXN.format(r.currAmt) : '—'}</td>
+              <td class="py-2 px-4 text-right">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-extrabold ${bAmt.cls}">${bAmt.arrow} ${bAmt.text}</span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        compFoot.innerHTML = `
+          <tr>
+            <td class="py-2.5 px-4 uppercase text-[11px]">Total General</td>
+            <td class="py-2.5 px-3 text-right text-slate-300">${fmtInt.format(totPrevPcs)}</td>
+            <td class="py-2.5 px-3 text-right text-white">${fmtInt.format(totCurrPcs)}</td>
+            <td class="py-2.5 px-3 text-right text-emerald-300 border-r border-slate-700">${totPcsBadge.arrow} ${totPcsBadge.text}</td>
+            <td class="py-2.5 px-3 text-right text-slate-300">${fmtMXN.format(totPrevAmt)}</td>
+            <td class="py-2.5 px-3 text-right text-white">${fmtMXN.format(totCurrAmt)}</td>
+            <td class="py-2.5 px-4 text-right text-sky-300">${totAmtBadge.arrow} ${totAmtBadge.text}</td>
           </tr>
         `;
-      }).join('') || `<tr><td colspan="6" class="py-6 text-center text-slate-400">Sin movimientos reales cargados</td></tr>`;
+      }
     }
 
     // 6. MÓDULO CLIENTES Y TIENDAS (POR NÚMERO DE SUCURSAL)
@@ -2152,25 +2386,62 @@
           const diagLines = [`Pestañas en archivo: ${wb.SheetNames.join(', ')}`];
           let seq = 1;
 
-          // Mapa auxiliar de sucursales/zonas si existe pestaña catálogo de tiendas
-          const storeZoneLookup = new Map();
-          const storeNameLookup = new Map();
+          // Helper para normalizar Número de Sucursal (llave fija invariable)
+          const normalizeStoreKey = (val) => {
+            const raw = String(val ?? '').trim();
+            if (!raw) return '';
+            // Si empieza con dígitos tipo "104 - GDL" o "0045", extraer el número limpio
+            const numPrefix = raw.match(/^0*(\d+)\b/);
+            if (numPrefix) return numPrefix[1];
+            return raw.replace(/^0+/, '') || raw;
+          };
+
+          // 1) DIRECTORIO DE TIENDAS (Base sólida: No. Sucursal -> Nombre Oficial + UEN/Zona)
+          const storeDirectoryById = new Map();
+          const storeDirectoryByName = new Map();
           const storeSheetNames = wb.SheetNames.filter(n => {
             const u = normalizeText(n);
-            return u.includes('tienda') || u.includes('sucursal') || u.includes('zona') || u.includes('catalogo') || u.includes('directorio');
+            return u.includes('directorio') || u.includes('tienda') || u.includes('sucursal') || u.includes('catalogo') || u.includes('uen');
           });
 
           storeSheetNames.forEach(sn => {
-            const refRows = sheetToSmartRows(wb.Sheets[sn], ['clave', 'sucursal', 'tienda', 'zona', 'region', 'plaza']);
+            const refRows = sheetToSmartRows(wb.Sheets[sn], ['sucursal', 'tienda', 'uen', 'zona', 'clave', 'numero', 'no', 'nombre']);
+            const sampleDirCols = refRows.length ? Object.keys(refRows[0]).join(' | ') : '(sin encabezados)';
+            let loadedDir = 0;
+
             refRows.forEach(rr => {
-              const sId = String(getSmartCell(rr, ['Clave', 'No. Sucursal', 'No de Tienda', 'No Tienda', 'Sucursal', 'ID'], ['sucursal', 'clave', 'no tienda', 'num'])).trim();
-              const sName = String(getSmartCell(rr, ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Sucursal Nombre'], ['tienda'])).trim();
-              const sZone = String(getSmartCell(rr, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim();
-              if (sId && sZone) storeZoneLookup.set(sId, sZone);
-              if (sName && sZone) storeZoneLookup.set(normalizeText(sName), sZone);
-              if (sId && sName) storeNameLookup.set(sId, sName);
+              const rawId = getSmartCell(
+                rr,
+                ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No. de Sucursal', 'No de Tienda', 'No Tienda', 'Sucursal #', 'Clave', 'ID Sucursal', 'ID', 'Sucursal'],
+                ['no sucursal', 'num sucursal', 'numero', 'no tienda', 'clave', 'id']
+              );
+              const sId = normalizeStoreKey(rawId);
+              const sName = String(getSmartCell(
+                rr,
+                ['Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Sucursal Nombre', 'Nombre', 'Descripcion'],
+                ['nombre', 'tienda', 'sucursal']
+              )).trim();
+              const sZone = String(getSmartCell(
+                rr,
+                ['UEN', 'U.E.N.', 'Zona', 'Plaza', 'Region', 'Territorio', 'Ciudad', 'Estado'],
+                ['uen', 'zona', 'plaza', 'region']
+              )).trim();
+
+              if (sId) {
+                const entry = {
+                  storeId: sId,
+                  storeName: sName || `Sucursal ${sId}`,
+                  zone: sZone || 'General'
+                };
+                storeDirectoryById.set(sId, entry);
+                if (sName) storeDirectoryByName.set(normalizeText(sName), entry);
+                loadedDir++;
+              } else if (sName && sZone) {
+                storeDirectoryByName.set(normalizeText(sName), { storeId: '', storeName: sName, zone: sZone });
+                loadedDir++;
+              }
             });
-            diagLines.push(`• Catálogo [${sn}]: ${refRows.length} filas leídas`);
+            diagLines.push(`• Directorio [${sn}]: ${loadedDir} sucursales indexadas | Columnas: ${sampleDirCols}`);
           });
 
           // A) Pestaña(s) SELL IN (Unidades Netas y Suma de Neto)
@@ -2180,7 +2451,7 @@
           });
 
           sellInSheets.forEach(sheetName => {
-            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pzs']);
+            const rowsIn = sheetToSmartRows(wb.Sheets[sheetName], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pzs', 'uen']);
             const sampleCols = rowsIn.length ? Object.keys(rowsIn[0]).join(' | ') : '(sin encabezados)';
             let countInSheet = 0;
             let lastClient = '', lastYear = new Date().getFullYear(), lastMonth = 1, lastZone = 'General';
@@ -2194,10 +2465,10 @@
               const rawC = String(getSmartCell(r, ['Cliente', 'Cadena', 'Nombre de Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta'])).trim();
               if (rawC) lastClient = rawC;
 
-              const rawZ = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim();
+              const rawZ = String(getSmartCell(r, ['UEN', 'Zona', 'Region', 'Plaza', 'Territorio'], ['uen', 'zona', 'region', 'plaza'])).trim();
               if (rawZ) lastZone = rawZ;
 
-              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Date', 'Dia'], ['fecha']);
+              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Factura', 'Fecha Conclusion', 'Date', 'Dia'], ['fecha']);
               const parsedDate = parseFlexibleDate(rawDate);
 
               const rawY = getSmartCell(r, ['Año', 'Ano', 'Year', 'Ejercicio'], ['ano', 'year', 'ejerc']);
@@ -2257,14 +2528,14 @@
             diagLines.push(`• SELL IN [${sheetName}]: ${countInSheet} registros | Columnas: ${sampleCols}`);
           });
 
-          // B) Pestaña(s) SELL OUT (Costo x Piezas + Referencia No. Sucursal y Zona)
+          // B) Pestaña(s) SELL OUT (Cruce con Directorio de Tiendas por No. Sucursal -> Nombre + UEN)
           const sellOutSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             return u.includes('sellout') || u === 'so' || u === 'sout' || u.includes('desplazamiento') || u.includes('pos') || u.includes('salidas');
           });
 
           sellOutSheets.forEach(sheetName => {
-            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'articulo', 'cantidad', 'unidades']);
+            const rowsOut = sheetToSmartRows(wb.Sheets[sheetName], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'articulo', 'cantidad', 'unidades', 'importe', 'uen']);
             const sampleCols = rowsOut.length ? Object.keys(rowsOut[0]).join(' | ') : '(sin encabezados)';
             let countOutSheet = 0;
 
@@ -2280,24 +2551,33 @@
               const rawClient = getSmartCell(r, ['Cliente', 'Nombre de Cadena', 'Cadena', 'Cuenta'], ['cliente', 'cadena', 'cuenta']);
               const cInfo = normalizeClientSegment(rawClient || 'GNC');
 
-              const storeId = String(getSmartCell(
+              const rawStoreId = getSmartCell(
                 r,
-                ['Clave', 'No. Sucursal', 'No Sucursal', 'No de Tienda', 'No. Tienda', 'Num Sucursal', 'Sucursal', 'ID Tienda', 'Tienda ID'],
-                ['no sucursal', 'no tienda', 'clave', 'sucursal', 'num tienda']
-              )).trim();
-              const storeName = String(getSmartCell(
+                ['No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Num Sucursal', 'No de Tienda', 'No. Tienda', 'Clave', 'ID Sucursal', 'ID Tienda', 'Sucursal'],
+                ['no sucursal', 'num sucursal', 'no tienda', 'clave', 'sucursal']
+              );
+              const rawStoreName = String(getSmartCell(
                 r,
                 ['Tienda', 'Nombre Tienda', 'Nombre de Tienda', 'Nombre Sucursal', 'Almacen'],
                 ['tienda', 'almacen']
-              )).trim() || storeNameLookup.get(storeId) || '';
+              )).trim();
+
+              // Cruce sólido contra Directorio de Tiendas usando No. de Sucursal
+              const normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
+              const dirMatch = (normId && storeDirectoryById.get(normId))
+                || (rawStoreName && storeDirectoryByName.get(normalizeText(rawStoreName)))
+                || null;
+
+              const storeId = (dirMatch && dirMatch.storeId) || normId || '';
+              const storeName = (dirMatch && dirMatch.storeName) || rawStoreName || (storeId ? `Sucursal ${storeId}` : '');
 
               const rawSize = String(getSmartCell(r, ['Medida', 'Tamaño', 'Tamano', 'Size'], ['medida', 'tamano']) || 'MAT').trim();
               const size = rawSize.split(' ').pop();
 
               const units = parseNum(getSmartCell(
                 r,
-                ['Piezas', 'Unidades', 'Cantidad', 'Pzas', 'Pzs', 'Uds', 'Venta Piezas', 'Unidades Vendidas', 'Suma de Piezas'],
-                ['pieza', 'unid', 'pza', 'pzs', 'cant', 'uds', 'qty']
+                ['Piezas', 'Cantidad', 'Unidades', 'Pzas', 'Pzs', 'Uds', 'Venta Piezas', 'Unidades Vendidas', 'Suma de Piezas', 'Suma de Cantidad'],
+                ['pieza', 'cant', 'unid', 'pza', 'pzs', 'uds', 'qty']
               ));
               const unitCost = parseNum(getSmartCell(
                 r,
@@ -2306,18 +2586,18 @@
               ));
               const directAmt = parseNum(getSmartCell(
                 r,
-                ['Importe', 'Total', 'Venta', 'Monto', 'Costo Total', 'Venta $'],
+                ['Importe', 'Suma de Importe', 'Total', 'Venta', 'Monto', 'Costo Total', 'Venta $'],
                 ['importe', 'monto', 'venta', 'total']
               ));
 
-              // Regla definida: Costo x Piezas (respaldo a importe directo si costo viniera vacío)
+              // Regla: Costo × Piezas (o Importe directo si el archivo ya trae la columna Importe sin Costo unitario)
               const amount = unitCost !== 0 && units !== 0
                 ? Math.round(unitCost * units * 100) / 100
                 : Math.round(directAmt * 100) / 100;
 
               if (units === 0 && amount === 0) return;
 
-              const rawDate = getSmartCell(r, ['Fecha', 'Fecha Venta', 'Date'], ['fecha']);
+              const rawDate = getSmartCell(r, ['Fecha Conclusión', 'Fecha Conclusion', 'Fecha', 'Fecha Venta', 'Date'], ['fecha']);
               const parsedDate = parseFlexibleDate(rawDate);
 
               const rawY = getSmartCell(r, ['Año', 'Ano', 'Year'], ['ano', 'year']);
@@ -2329,9 +2609,9 @@
               const rawD = getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']);
               const dy = Math.min(31, Math.max(1, parseInt(rawD, 10) || (parsedDate ? parsedDate.day : 15)));
 
-              const detectedZone = String(getSmartCell(r, ['Zona', 'Region', 'Plaza', 'Territorio'], ['zona', 'region', 'plaza'])).trim()
-                || storeZoneLookup.get(storeId)
-                || storeZoneLookup.get(normalizeText(storeName))
+              // Prioridad de Zona: 1) UEN del Directorio de Tiendas, 2) Columna UEN/Zona de la fila, 3) General
+              const detectedZone = (dirMatch && dirMatch.zone)
+                || String(getSmartCell(r, ['UEN', 'U.E.N.', 'Zona', 'Region', 'Plaza', 'Territorio'], ['uen', 'zona', 'region', 'plaza'])).trim()
                 || 'General';
 
               parsed.push({
