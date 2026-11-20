@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.6 | Colchones América</title>
+  <title>ColchoBoard v3.9 | Colchones América</title>
 
   <!-- Manifiesto PWA y Favicon -->
   <link rel="manifest" href="./manifest.json" />
@@ -108,7 +108,7 @@
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
           <img src="./icon.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.6</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.9</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -169,7 +169,7 @@
             <img src="./icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.6</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.9</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
@@ -328,7 +328,7 @@
           </div>
           <h3 class="text-sm font-extrabold text-navy-900">Aún no hay información cargada en el sistema</h3>
           <p class="text-xs text-slate-500 max-w-md mx-auto">Este portal muestra exclusivamente datos reales importados desde tu archivo Excel (pestañas <strong>BD Sell In</strong>, <strong>SELL OUT</strong>, <strong>Directorio de tiendas</strong> y <strong>Share</strong>).</p>
-          <button onclick="switchModule('excel')" class="px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold transition">
+          <button id="emptyBannerExcelBtn" onclick="switchModule('excel')" class="px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold transition">
             Cargar Archivo Excel Ahora
           </button>
         </div>
@@ -515,10 +515,10 @@
                   <input type="number" id="scGrowthTargetPct" value="25" min="0" max="200" step="1" onchange="renderScorecardModule()" class="w-14 bg-navy-950 text-lime-300 font-extrabold text-center rounded px-1 py-0.5 border border-slate-600 focus:outline-none focus:ring-1 focus:ring-lime-400" />
                   <span>%</span>
                 </label>
-                <button onclick="switchModule('excel')" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition">
+                <button id="scUpdateExcelBtn" onclick="switchModule('excel')" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition">
                   Actualizar Excel
                 </button>
-                <button onclick="exportScorecardToExcel()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                <button id="scExportExcelBtn" onclick="exportScorecardToExcel()" class="export-action-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
                   Exportar (.xlsx)
                 </button>
               </div>
@@ -564,17 +564,17 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 class="text-base sm:text-lg font-black tracking-tight">Share x Marca • Participación de Mercado</h2>
-                <p class="text-xs text-teal-300 font-medium">Selecciona un mes específico o "Todos los meses" para ver el acumulado anual</p>
+                <p class="text-xs text-teal-300 font-medium">Selecciona un mes específico o "Acumulado Anual" para sumar todo el año</p>
               </div>
               <div class="flex flex-wrap items-center gap-2">
                 <button onclick="toggleShareEditorPanel()" id="btnToggleShareEditor" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/15 transition">
-                  Ocultar Captura
+                  Captura Rápida
                 </button>
-                <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 text-teal-200 border border-teal-400/40 text-xs font-bold transition">
+                <label id="shareImportExcelLabel" class="cursor-pointer px-3 py-1.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 text-teal-200 border border-teal-400/40 text-xs font-bold transition">
                   <span>Importar Excel Share</span>
                   <input type="file" id="shareExcelInput" accept=".xlsx,.xls,.csv" onchange="handleShareExcelUpload(event)" class="hidden" />
                 </label>
-                <button onclick="downloadShareSlidePng()" class="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-navy-950 text-xs font-black shadow-xs transition">
+                <button id="shareDownloadPngBtn" onclick="downloadShareSlidePng()" class="export-action-btn px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-navy-950 text-xs font-black shadow-xs transition">
                   Descargar PNG HD
                 </button>
                 <button onclick="copyShareWhatsAppSummary()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">
@@ -583,19 +583,19 @@
               </div>
             </div>
 
-            <!-- Barra de Consulta Dinámica Share (Año + Mes) -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-white/10">
+            <!-- Barra de Consulta Dinámica Share (Solo Año y Mes / Acumulado) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10">
               <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Año de Análisis</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Año</label>
                 <select id="shareFilterYear" onchange="applyDynamicShareSelection()" class="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-extrabold focus:outline-none focus:ring-2 focus:ring-teal-400">
                   <option value="2026" class="text-navy-900">2026</option>
                   <option value="2025" class="text-navy-900">2025</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Periodo / Mes</label>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Mes / Acumulado</label>
                 <select id="shareFilterMonth" onchange="applyDynamicShareSelection()" class="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-extrabold focus:outline-none focus:ring-2 focus:ring-teal-400">
-                  <option value="ALL" class="text-navy-900">Todos los meses (Acumulado Anual)</option>
+                  <option value="ALL" class="text-navy-900">Acumulado Anual (Todos los meses)</option>
                   <option value="1" class="text-navy-900">Enero</option>
                   <option value="2" class="text-navy-900">Febrero</option>
                   <option value="3" class="text-navy-900">Marzo</option>
@@ -610,18 +610,16 @@
                   <option value="12" class="text-navy-900">Diciembre</option>
                 </select>
               </div>
-              <div class="flex items-end">
-                <div id="shareLoadedPeriodsInfo" class="w-full px-3 py-2 rounded-xl bg-teal-500/15 border border-teal-400/30 text-[11px] font-bold text-teal-200 truncate">
-                  Cortes en memoria: 0
-                </div>
-              </div>
             </div>
           </div>
 
-          <!-- Panel de Captura Manual y Edición de Cortes -->
-          <div id="shareEditorPanel" class="no-snapshot bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <!-- Panel de Captura Manual Temporal (Avance rápido sin guardado en memoria) -->
+          <div id="shareEditorPanel" class="no-snapshot hidden bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-5">
             <div class="lg:col-span-4 space-y-3 bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-              <h4 class="text-xs font-extrabold uppercase text-navy-900">1. Datos del Corte</h4>
+              <div>
+                <h4 class="text-xs font-extrabold uppercase text-navy-900">1. Corte Rápido (Temporal)</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Captura manual para compartir avances sin sobreescribir la base de Excel.</p>
+              </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
                   <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Fecha Inicial</label>
@@ -636,23 +634,6 @@
                 <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Etiqueta de Periodo</label>
                 <input type="text" id="sharePeriodLabel" value="1-17 NOV 2026" oninput="renderShareSlide()" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-bold text-teal-800 uppercase" />
               </div>
-              <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Tipo de Corte</label>
-                <select id="shareReportType" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold">
-                  <option value="mensual">Cierre Mensual Definitivo</option>
-                  <option value="parcial">Corte Parcial</option>
-                  <option value="acumulado">Acumulado Anual</option>
-                </select>
-              </div>
-
-              <div class="pt-2 border-t border-slate-200 space-y-2">
-                <button onclick="saveCurrentShareReport()" class="w-full py-2 px-3 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-xs font-extrabold transition">
-                  Guardar / Actualizar este Mes en Memoria
-                </button>
-                <select id="shareSavedSelect" onchange="loadSavedShareReport(this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold">
-                  <option value="">— Seleccionar corte guardado —</option>
-                </select>
-              </div>
             </div>
 
             <div class="lg:col-span-8 space-y-2.5">
@@ -660,7 +641,7 @@
                 <h4 class="text-xs font-extrabold uppercase text-navy-900">2. Ventas por Marca (Pesos MXN sin IVA)</h4>
                 <div class="flex items-center gap-2">
                   <button onclick="clearShareAmounts()" class="text-[11px] font-bold text-rose-600 hover:underline">Limpiar montos</button>
-                  <button onclick="renderShareSlide()" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold">Actualizar Gráfica</button>
+                  <button onclick="renderShareSlide()" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold">Calcular Corte</button>
                 </div>
               </div>
               <div id="shareBrandInputsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
@@ -749,8 +730,8 @@
               <p id="shareRoundedSumNote" class="text-xs text-slate-500 mt-1">Suma visual redondeada: 99%</p>
             </div>
             <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comparativo vs Corte Anterior</span>
-              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Guarda o importa al menos 2 cortes para ver variación en puntos porcentuales (pp).</div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comparativo vs Mes Anterior</span>
+              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Carga tu archivo Excel con pestaña Share para comparar meses.</div>
             </div>
           </div>
         </section>
@@ -769,7 +750,7 @@
                 <button onclick="applyPivotPreset('zone_model')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Zona × Modelo</button>
                 <button onclick="applyPivotPreset('store_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Sucursal × Mes</button>
               </div>
-              <button onclick="exportPivotToExcel()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Exportar Matriz (.xlsx)</button>
+              <button id="pivotExportExcelBtn" onclick="exportPivotToExcel()" class="export-action-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Exportar Matriz (.xlsx)</button>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 border-t border-slate-100">
@@ -935,7 +916,7 @@
                 <h3 class="text-sm font-extrabold text-navy-900">Búsqueda Puntual por Fecha, Sucursal o Modelo</h3>
                 <p class="text-[11px] text-slate-500">Filtra por fecha exacta o palabra clave para consultar operaciones específicas</p>
               </div>
-              <button onclick="exportExplorerCSV()" class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">Exportar CSV</button>
+              <button id="explorerExportCsvBtn" onclick="exportExplorerCSV()" class="export-action-btn px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">Exportar CSV</button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
@@ -1045,23 +1026,22 @@
   <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
 
   <!-- ========================================================= -->
-  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.6)              -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.9)              -->
   <!-- ========================================================= -->
   <script>
     // ---------------------------------------------------------
-    // 1. USUARIOS AUTORIZADOS Y SESIÓN
+    // 1. USUARIOS AUTORIZADOS Y PERMISOS POR PERFIL
     // ---------------------------------------------------------
     const AUTHORIZED_USERS = [
-      { user: 'VENTAS1.MOSS',  pass: 'America.24$',   role: 'Direccion/Ejecutivo', cred: '3001', name: 'MOSSES AVILA',     canEdit: true },
-      { user: 'ADMIN1.MOSS',   pass: 'America.24$',   role: 'Administrador',       cred: '9999', name: 'ADMINISTRADOR',    canEdit: true },
-      { user: 'GERENTE1.DANY', pass: 'America.2026$', role: 'Direccion/Ejecutivo', cred: '3001', name: 'DANIEL OCHOA',     canEdit: true },
-      { user: 'DIREC1.TEMOC',  pass: 'America.2026$', role: 'Direccion/Ejecutivo', cred: '3001', name: 'CUAUTEMOC GARCÍA', canEdit: true },
-      { user: 'SUPER1.ISRAEL', pass: 'America.2026$', role: 'Supervisor',          cred: '2001', name: 'ISRAEL SOLANO',    canEdit: false },
-      { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',          cred: '2001', name: 'JONATHAN MORALES', canEdit: false }
+      { user: 'ADMIN1.MOSS',   pass: 'America.24$',   role: 'Administrador', cred: '9999', name: 'ADMINISTRADOR',    canEdit: true,  canDownload: true  },
+      { user: 'VENTAS1.MOSS',  pass: 'America.24$',   role: 'Ejecutivo',     cred: '3001', name: 'MOSSES AVILA',     canEdit: true,  canDownload: true  },
+      { user: 'DIREC1.TEMOC',  pass: 'America.2026$', role: 'Dirección',     cred: '3001', name: 'CUAUTEMOC GARCÍA', canEdit: false, canDownload: true  },
+      { user: 'GERENTE1.DANY', pass: 'America.2026$', role: 'Gerente',       cred: '3001', name: 'DANIEL OCHOA',     canEdit: false, canDownload: true  },
+      { user: 'SUPER1.ISRAEL', pass: 'America.2026$', role: 'Supervisor',    cred: '2001', name: 'ISRAEL SOLANO',    canEdit: false, canDownload: false },
+      { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',    cred: '2001', name: 'JONATHAN MORALES', canEdit: false, canDownload: false }
     ];
 
-    const SESSION_KEY = 'colchoboard_session_v36';
-    const SHARE_STORAGE_KEY = 'colchoboard_share_history_v2';
+    const SESSION_KEY = 'colchoboard_session_v39';
     let currentUser = null;
     let activeModule = 'resumen';
     let allRecords = [];
@@ -1134,12 +1114,46 @@
       }
     }
 
+    async function saveShareReportsToDB(reports) {
+      try {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(reports, 'share_reports');
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (e) {
+        console.warn('Error guardando Share en IndexedDB:', e);
+      }
+    }
+
+    async function loadShareReportsFromDB() {
+      try {
+        const db = await openDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get('share_reports');
+          req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : []);
+          req.onerror = () => resolve([]);
+        });
+      } catch (e) {
+        return [];
+      }
+    }
+
     async function clearSavedDatabase() {
+      if (!currentUser || !currentUser.canEdit) {
+        return showToast('Tu perfil es de solo lectura y descarga.');
+      }
       allRecords = [];
       stagedRecords = [];
       stagedShareReports = [];
+      shareExcelReports = [];
       await saveRecordsToDB([]);
+      await saveShareReportsToDB([]);
       populateFilterDropdowns();
+      refreshShareYearSelector();
       renderActiveModule();
       showToast('Base de datos limpiada correctamente');
     }
@@ -1181,13 +1195,28 @@
 
       const adminBlock = document.getElementById('adminNavBlock');
       const headerExcel = document.getElementById('headerExcelBtn');
+      const scUpdateBtn = document.getElementById('scUpdateExcelBtn');
+      const shareImpLbl = document.getElementById('shareImportExcelLabel');
+      const emptyBtn = document.getElementById('emptyBannerExcelBtn');
+
       if (!user.canEdit) {
-        adminBlock.classList.add('hidden');
-        headerExcel.classList.add('hidden');
+        adminBlock?.classList.add('hidden');
+        headerExcel?.classList.add('hidden');
+        scUpdateBtn?.classList.add('hidden');
+        shareImpLbl?.classList.add('hidden');
+        emptyBtn?.classList.add('hidden');
       } else {
-        adminBlock.classList.remove('hidden');
-        headerExcel.classList.remove('hidden');
+        adminBlock?.classList.remove('hidden');
+        headerExcel?.classList.remove('hidden');
+        scUpdateBtn?.classList.remove('hidden');
+        shareImpLbl?.classList.remove('hidden');
+        emptyBtn?.classList.remove('hidden');
       }
+
+      document.querySelectorAll('.export-action-btn').forEach(btn => {
+        if (!user.canDownload) btn.classList.add('hidden');
+        else btn.classList.remove('hidden');
+      });
 
       populateFilterDropdowns();
       initShareModuleUI();
@@ -1221,6 +1250,9 @@
     }
 
     function switchModule(mod) {
+      if (mod === 'excel' && currentUser && !currentUser.canEdit) {
+        return showToast('Tu perfil tiene permisos de visualización y descarga únicamente.');
+      }
       activeModule = mod;
       document.querySelectorAll('.module-section').forEach(s => s.classList.add('hidden'));
       const target = document.getElementById(`module-${mod}`);
@@ -1967,13 +1999,14 @@
       container.innerHTML = [
         buildBlock({ title: 'Sell In Piezas', channel: 'SELL_IN', field: 'units', isCur: false, headerBg: 'bg-teal-800', withTicket: false, lastM: lastIn }),
         buildBlock({ title: 'Sell In Importes', channel: 'SELL_IN', field: 'amount', isCur: true, headerBg: 'bg-teal-700', withTicket: true, lastM: lastIn }),
-        buildBlock({ title: 'Sell Out Piezas', channel: 'SELL_OUT', field: 'units', isCur: false, headerBg: 'bg-emerald-700', withTicket: false, lastM: lastOut }),
-        buildBlock({ title: 'Sell Out Importes', channel: 'SELL_OUT', field: 'amount', isCur: true, headerBg: 'bg-emerald-600', withTicket: true, lastM: lastOut })
+        buildBlock({ title: 'Sell Out Piezas', channel: 'SELL_OUT', field: 'units', isCur: false, headerBg: 'bg-emerald-800', withTicket: false, lastM: lastOut }),
+        buildBlock({ title: 'Sell Out Importes', channel: 'SELL_OUT', field: 'amount', isCur: true, headerBg: 'bg-emerald-700', withTicket: true, lastM: lastOut })
       ].join('');
     }
 
     function exportScorecardToExcel() {
-      if (!lastScorecardExportRows.length) return showToast('No hay datos en Scorecard para exportar');
+      if (!currentUser || !currentUser.canDownload) return showToast('Tu perfil es de solo visualización.');
+      if (lastScorecardExportRows.length <= 2) return showToast('No hay datos en el Scorecard para exportar');
       const ws = XLSX.utils.aoa_to_sheet(lastScorecardExportRows);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Scorecard');
@@ -1982,99 +2015,59 @@
     }
 
     // ---------------------------------------------------------
-    // 8. MÓDULO 3: SHARE X MARCA (DINÁMICO POR AÑO / MES)
+    // 8. MÓDULO 3: SHARE X MARCA (DINÁMICO POR AÑO Y MES / ACUMULADO)
     // ---------------------------------------------------------
     const OFFICIAL_SHARE_BRANDS = [
       {
-        id: 'spring_air',
-        name: 'SPRING AIR',
-        color: '#0866CC',
-        textColorOnWhite: '#0866CC',
-        darkText: false,
-        aliases: ['spring air', 'spring', 'springair'],
-        logoFiles: ['LOGO_SPRING AIR.png', 'LOGO_SPRING AIR_2.png', 'logos/LOGO_SPRING AIR.png'],
-        defaultVal: 16097738,
-        fallbackSvg: `<svg viewBox="0 0 110 74" class="h-9 w-auto"><path d="M36 22 C33 10 46 4 60 6 C72 8 82 14 80 24 C78 30 68 31 62 28 C58 31 50 28 49 23 C45 25 38 25 36 22 Z" fill="#FFFFFF" stroke="#0B2D63" stroke-width="2.5"/><path d="M55 70 C36 60 12 46 12 31 C12 20 26 16 40 20 C48 22 62 22 70 20 C84 16 98 20 98 31 C98 46 74 60 55 70 Z" fill="#0B2D63" stroke="#FFFFFF" stroke-width="2"/><text x="55" y="42" text-anchor="middle" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="14">SPRING</text><text x="55" y="56" text-anchor="middle" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="14">AIR</text></svg>`
+        id: 'spring_air', name: 'SPRING AIR', color: '#0866CC', textColorOnWhite: '#0866CC', darkText: false, defaultVal: 16097738,
+        aliases: ['spring air', 'springair', 'spring'],
+        logoFiles: ['LOGO_SPRING AIR_2.png', 'LOGO_SPRING AIR.png', 'logos/LOGO_SPRING AIR_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 88 54" class="h-9 w-auto"><path d="M44 10 C35 2, 16 6, 16 20 C16 33, 33 43, 44 50 C55 43, 72 33, 72 20 C72 6, 53 2, 44 10 Z" fill="#0B2D63"/><text x="44" y="26" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="11.5" text-anchor="middle">SPRING</text><text x="44" y="38" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="11.5" text-anchor="middle">AIR</text></svg>`
       },
       {
-        id: 'colchones_america',
-        name: 'COLCHONES AMÉRICA',
-        color: '#FFC400',
-        textColorOnWhite: '#C49000',
-        darkText: true,
-        aliases: ['colchones america', 'america', 'américa', 'colchones américa'],
+        id: 'colchones_america', name: 'COLCHONES AMÉRICA', color: '#FFC400', textColorOnWhite: '#D99B00', darkText: true, defaultVal: 4147219,
+        aliases: ['colchones america', 'colchones américa', 'america', 'américa'],
         logoFiles: ['LOGO COLCHONES AMERICA_Tu Lugar Favorito.jpg', 'LOGO_AMERICA.png', 'logos/LOGO COLCHONES AMERICA_Tu Lugar Favorito.jpg'],
-        defaultVal: 4147219,
-        fallbackSvg: `<svg viewBox="0 0 116 92" class="h-10 w-auto"><rect x="6" y="4" width="104" height="68" rx="14" fill="#1A1A1A"/><text x="58" y="23" text-anchor="middle" fill="#FFFFFF" font-family="Arial,sans-serif" font-style="italic" font-weight="900" font-size="14">Colchones</text><ellipse cx="58" cy="48" rx="42" ry="17" fill="none" stroke="#FFFFFF" stroke-width="3"/><ellipse cx="58" cy="48" rx="37" ry="13.5" fill="none" stroke="#FFFFFF" stroke-width="1"/><text x="58" y="53" text-anchor="middle" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="900" font-size="13.5" letter-spacing="1">AMERICA</text><text x="58" y="86" text-anchor="middle" fill="#1A1A1A" font-family="Arial,sans-serif" font-weight="800" font-size="11">Tu lugar favorito</text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 92 60" class="h-10 w-auto"><rect x="8" y="3" width="76" height="44" rx="9" fill="#1C1C1C"/><text x="46" y="15" fill="#FFFFFF" font-family="Arial,sans-serif" font-style="italic" font-weight="900" font-size="9.5" text-anchor="middle">Colchones</text><ellipse cx="46" cy="31" rx="31" ry="12" fill="none" stroke="#FFFFFF" stroke-width="2.2"/><ellipse cx="46" cy="31" rx="27" ry="9.5" fill="none" stroke="#FFFFFF" stroke-width="1"/><text x="46" y="34" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="900" font-size="8.8" text-anchor="middle">AMERICA</text><text x="46" y="56" fill="#1C1C1C" font-family="Arial,sans-serif" font-weight="700" font-size="7.2" text-anchor="middle">Tu lugar favorito</text></svg>`
       },
       {
-        id: 'sealy',
-        name: 'SEALY',
-        color: '#0B2D63',
-        textColorOnWhite: '#0B2D63',
-        darkText: false,
+        id: 'sealy', name: 'SEALY', color: '#0B2D63', textColorOnWhite: '#0B2D63', darkText: false, defaultVal: 4088459,
         aliases: ['sealy'],
-        logoFiles: ['LOGO_SEALY.png', 'LOGO_SEALY_2.png', 'logos/LOGO_SEALY.png'],
-        defaultVal: 4088459,
-        fallbackSvg: `<svg viewBox="0 0 100 64" class="h-9 w-auto"><path d="M12 10 Q50 22 88 10 Q94 32 88 54 Q50 42 12 54 Q6 32 12 10 Z" fill="#0D4F9B"/><ellipse cx="50" cy="32" rx="33" ry="18" fill="#FFFFFF"/><text x="50" y="39" text-anchor="middle" fill="#111827" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="22">Sealy</text></svg>`
+        logoFiles: ['LOGO_SEALY_2.png', 'LOGO_SEALY.png', 'logos/LOGO_SEALY_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 88 54" class="h-9 w-auto"><rect x="14" y="6" width="60" height="42" rx="8" fill="#0B5394"/><ellipse cx="44" cy="27" rx="27" ry="15" fill="#FFFFFF"/><text x="44" y="32" fill="#111827" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="17" text-anchor="middle">Sealy</text></svg>`
       },
       {
-        id: 'restonic',
-        name: 'RESTONIC',
-        color: '#00A878',
-        textColorOnWhite: '#00A878',
-        darkText: false,
-        aliases: ['restonic', 'regiomontana', 'regiomontana / restonic'],
-        logoFiles: ['LOGO_RESTONIC.png', 'LOGO_RESTONIC_2.png', 'logos/LOGO_RESTONIC.png'],
-        defaultVal: 3416247,
-        fallbackSvg: `<svg viewBox="0 0 136 46" class="h-7 w-auto"><text x="68" y="27" text-anchor="middle" fill="#0B3B66" font-family="Georgia,serif" font-weight="bold" font-size="24" letter-spacing="1">resTONIC</text><text x="68" y="40" text-anchor="middle" fill="#0B3B66" font-family="Arial,sans-serif" font-weight="800" font-size="7.5" letter-spacing="0.8">EL COLCHÓN DE TUS SUEÑOS</text></svg>`
+        id: 'restonic', name: 'RESTONIC', color: '#00A878', textColorOnWhite: '#00A878', darkText: false, defaultVal: 3416247,
+        aliases: ['restonic', 'regiomontana', 'regio'],
+        logoFiles: ['LOGO_RESTONIC_2.png', 'LOGO_RESTONIC.png', 'logos/LOGO_RESTONIC_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 104 46" class="h-8 w-auto"><text x="52" y="25" fill="#0D3B66" font-family="Georgia,serif" font-weight="bold" font-size="18" text-anchor="middle">resTOnic</text><text x="52" y="38" fill="#0D3B66" font-family="Arial,sans-serif" font-weight="800" font-size="5.6" text-anchor="middle">EL COLCHÓN DE TUS SUEÑOS</text></svg>`
       },
       {
-        id: 'therapedic',
-        name: 'THERAPEDIC',
-        color: '#793BAE',
-        textColorOnWhite: '#793BAE',
-        darkText: false,
+        id: 'therapedic', name: 'THERAPEDIC', color: '#793BAE', textColorOnWhite: '#793BAE', darkText: false, defaultVal: 1575507,
         aliases: ['therapedic', 'thera'],
-        logoFiles: ['LOGO_THERAPEDIC.png', 'LOGO_THERAPEDIC_2.png', 'logos/LOGO_THERAPEDIC.png'],
-        defaultVal: 1575507,
-        fallbackSvg: `<svg viewBox="0 0 136 46" class="h-7 w-auto"><text x="68" y="10" text-anchor="middle" fill="#60A5FA" font-family="Arial,sans-serif" font-weight="700" font-size="6.5" letter-spacing="1.5">COLCHONES</text><path d="M12 20 Q68 9 124 20" fill="none" stroke="#60A5FA" stroke-width="2.6"/><circle cx="104" cy="14" r="4.5" fill="#FACC15"/><text x="68" y="36" text-anchor="middle" fill="#0F294A" font-family="Arial,sans-serif" font-weight="900" font-size="16">THERA<tspan fill="#60A5FA">PEDIC</tspan></text></svg>`
+        logoFiles: ['LOGO_THERAPEDIC_2.png', 'LOGO_THERAPEDIC.png', 'logos/LOGO_THERAPEDIC_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 104 46" class="h-8 w-auto"><text x="52" y="13" fill="#5B8EC9" font-family="Arial,sans-serif" font-weight="700" font-size="6.5" letter-spacing="1.5" text-anchor="middle">COLCHONES</text><path d="M12 22 Q52 14 92 22" fill="none" stroke="#5B8EC9" stroke-width="2"/><circle cx="76" cy="17" r="4" fill="#FACC15"/><text x="52" y="35" fill="#0F2C59" font-family="Arial,sans-serif" font-weight="900" font-size="12.5" text-anchor="middle">THERA<tspan fill="#6B9ED4">PEDIC</tspan></text></svg>`
       },
       {
-        id: 'blancos_milenium',
-        name: 'BLANCOS MILENIUM',
-        color: '#08BBD0',
-        textColorOnWhite: '#0891B2',
-        darkText: false,
+        id: 'blancos_milenium', name: 'BLANCOS MILENIUM', color: '#08BBD0', textColorOnWhite: '#08BBD0', darkText: false, defaultVal: 1156587,
         aliases: ['blancos milenium', 'milenium', 'millenium'],
-        logoFiles: ['LOGO_MILENIUM.png', 'LOGO_MILENIUM_2.png', 'logos/LOGO_MILENIUM.png'],
-        defaultVal: 1156587,
-        fallbackSvg: `<svg viewBox="0 0 124 46" class="h-7 w-auto"><rect x="2" y="3" width="120" height="40" rx="8" fill="#312E6B"/><path d="M22 15 Q42 7 60 15" fill="none" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/><path d="M64 33 Q82 40 102 32" fill="none" stroke="#06B6D4" stroke-width="3" stroke-linecap="round"/><text x="62" y="28" text-anchor="middle" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="900" font-size="14" letter-spacing="1.8">MILENIUM</text></svg>`
+        logoFiles: ['LOGO_MILENIUM_2.png', 'LOGO_MILENIUM.png', 'logos/LOGO_MILENIUM_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 96 48" class="h-8 w-auto"><rect x="6" y="4" width="84" height="40" rx="6" fill="#2A295C"/><path d="M18 16 Q34 8 48 16" fill="none" stroke="#7DD3FC" stroke-width="2.5"/><text x="48" y="28" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="800" font-size="11.5" letter-spacing="1" text-anchor="middle">MILENIUM</text><path d="M48 32 Q64 40 78 32" fill="none" stroke="#08BBD0" stroke-width="2.5"/></svg>`
       },
       {
-        id: 'atlas_descanso',
-        name: 'ATLAS DEL DESCANSO',
-        color: '#EF2845',
-        textColorOnWhite: '#EF2845',
-        darkText: false,
+        id: 'atlas_descanso', name: 'ATLAS DEL DESCANSO', color: '#EF2845', textColorOnWhite: '#EF2845', darkText: false, defaultVal: 346448,
         aliases: ['atlas del descanso', 'atlas'],
-        logoFiles: ['LOGO_ATLAS DEL DESCANSO.png', 'LOGO_ATLAS DEL DESCANSO_2.png', 'logos/LOGO_ATLAS DEL DESCANSO.png'],
-        defaultVal: 346448,
-        fallbackSvg: `<svg viewBox="0 0 124 56" class="h-8 w-auto"><text x="62" y="24" text-anchor="middle" fill="#C8102E" font-family="Georgia,serif" font-weight="bold" font-size="23" letter-spacing="2">ATLAS</text><path d="M22 36 C32 30 48 34 62 30 C76 26 92 34 104 36 C88 40 42 40 22 36 Z" fill="#C8102E"/><text x="62" y="50" text-anchor="middle" fill="#C8102E" font-family="Arial,sans-serif" font-weight="700" font-size="8.5" letter-spacing="1.2">— DEL DESCANSO —</text></svg>`
+        logoFiles: ['LOGO_ATLAS DEL DESCANSO_2.png', 'LOGO_ATLAS DEL DESCANSO.png', 'logos/LOGO_ATLAS DEL DESCANSO_2.png'],
+        fallbackSvg: `<svg viewBox="0 0 96 52" class="h-9 w-auto"><text x="48" y="22" fill="#D90429" font-family="Georgia,serif" font-weight="bold" font-size="19" text-anchor="middle">ATLAS</text><path d="M22 33 Q46 27 74 34" stroke="#D90429" stroke-width="3.5" fill="none" stroke-linecap="round"/><text x="48" y="45" fill="#D90429" font-family="Arial,sans-serif" font-weight="700" font-size="6.8" text-anchor="middle">— DEL DESCANSO —</text></svg>`
       }
     ];
 
-    let shareHistory = [];
+    let shareExcelReports = [];
     let shareUiInitialized = false;
 
     function initShareModuleUI() {
       if (shareUiInitialized) return;
       shareUiInitialized = true;
-
-      try {
-        const saved = localStorage.getItem(SHARE_STORAGE_KEY);
-        shareHistory = saved ? JSON.parse(saved) : [];
-      } catch (e) { shareHistory = []; }
 
       const grid = document.getElementById('shareBrandInputsGrid');
       grid.innerHTML = OFFICIAL_SHARE_BRANDS.map(b => `
@@ -2089,9 +2082,9 @@
         </div>
       `).join('');
 
-      refreshSavedShareDropdown();
-      if (shareHistory.length > 0) {
-        const latest = shareHistory[0];
+      refreshShareYearSelector();
+      if (shareExcelReports.length > 0) {
+        const latest = shareExcelReports[0];
         const selY = document.getElementById('shareFilterYear');
         const selM = document.getElementById('shareFilterMonth');
         if (selY && latest.year) selY.value = String(latest.year);
@@ -2106,7 +2099,7 @@
       const panel = document.getElementById('shareEditorPanel');
       const btn = document.getElementById('btnToggleShareEditor');
       const isHidden = panel.classList.toggle('hidden');
-      btn.textContent = isHidden ? 'Mostrar Captura' : 'Ocultar Captura';
+      btn.textContent = isHidden ? 'Captura Rápida' : 'Ocultar Captura';
     }
 
     function clearShareAmounts() {
@@ -2145,20 +2138,30 @@
       renderShareSlide();
     }
 
-    // Selector dinámico de Año y Mes en Share (Mes puntual o Todos los meses = Acumulado)
+    function refreshShareYearSelector() {
+      const yrSel = document.getElementById('shareFilterYear');
+      if (!yrSel) return;
+      const yrs = [...new Set(shareExcelReports.map(h => Number(h.year)).filter(Boolean))].sort((a, b) => b - a);
+      const list = yrs.length ? yrs : [2026, 2025];
+      const prev = yrSel.value;
+      yrSel.innerHTML = list.map(y => `<option value="${y}" class="text-navy-900">${y}</option>`).join('');
+      if (list.includes(Number(prev))) yrSel.value = prev;
+    }
+
+    // Selector dinámico de Año y Mes en Share (Mes puntual o Acumulado Anual)
     function applyDynamicShareSelection(silent = false) {
       const yr = Number(document.getElementById('shareFilterYear')?.value || 2026);
       const moVal = document.getElementById('shareFilterMonth')?.value || 'ALL';
 
-      if (!shareHistory.length) {
+      if (!shareExcelReports.length) {
         renderShareSlide();
         return;
       }
 
       if (moVal === 'ALL') {
-        const matching = shareHistory.filter(h => Number(h.year) === yr && h.reportType !== 'acumulado');
+        const matching = shareExcelReports.filter(h => Number(h.year) === yr);
         if (!matching.length) {
-          if (!silent) showToast(`No hay cortes guardados para el año ${yr}`);
+          if (!silent) showToast(`No hay datos de Share cargados para el año ${yr}`);
           return;
         }
         const totals = {};
@@ -2180,17 +2183,24 @@
         document.getElementById('shareStartDate').value = sorted[0].startDate || `${yr}-01-01`;
         document.getElementById('shareEndDate').value = sorted[sorted.length - 1].endDate || `${yr}-12-31`;
         document.getElementById('sharePeriodLabel').value = `ACUMULADO ${MONTH_SHORT_ES[firstM].toUpperCase()} - ${MONTH_SHORT_ES[lastM].toUpperCase()} ${yr}`;
-        document.getElementById('shareReportType').value = 'acumulado';
         renderShareSlide();
-        if (!silent) showToast(`Mostrando acumulado ${yr} (${matching.length} meses)`);
+        if (!silent) showToast(`Acumulado ${yr} (${matching.length} meses)`);
       } else {
         const mo = Number(moVal);
-        const found = shareHistory.find(h => Number(h.year) === yr && Number(h.month) === mo);
+        const found = shareExcelReports.find(h => Number(h.year) === yr && Number(h.month) === mo);
         if (!found) {
           if (!silent) showToast(`No hay datos cargados para ${MONTH_NAMES_ES[mo]} ${yr}`);
           return;
         }
-        loadSavedShareReport(found.id, silent);
+        document.getElementById('shareStartDate').value = found.startDate || '';
+        document.getElementById('shareEndDate').value = found.endDate || '';
+        document.getElementById('sharePeriodLabel').value = found.periodLabel || `${MONTH_SHORT_ES[mo].toUpperCase()} ${yr}`;
+        OFFICIAL_SHARE_BRANDS.forEach(b => {
+          const inp = document.getElementById(`shareInput_${b.id}`);
+          if (inp) inp.value = Math.round(found.brands[b.id] || 0);
+        });
+        renderShareSlide();
+        if (!silent) showToast(`Mostrando ${found.periodLabel}`);
       }
     }
 
@@ -2323,87 +2333,13 @@
       renderSharePrevComparison(computed);
     }
 
-    function saveCurrentShareReport() {
-      const entries = getCurrentShareEntries();
-      const total = entries.reduce((s, e) => s + e.sales, 0);
-      if (total <= 0) return showToast('Captura montos válidos antes de guardar');
-
-      const endDate = document.getElementById('shareEndDate').value;
-      const parts = endDate ? endDate.split('-').map(Number) : [new Date().getFullYear(), new Date().getMonth() + 1, 1];
-      const yr = parts[0];
-      const mo = parts[1];
-
-      const record = {
-        id: `sh_${yr}_${String(mo).padStart(2, '0')}`,
-        periodLabel: document.getElementById('sharePeriodLabel').value.trim().toUpperCase(),
-        startDate: document.getElementById('shareStartDate').value,
-        endDate,
-        year: yr,
-        month: mo,
-        reportType: document.getElementById('shareReportType').value,
-        brands: Object.fromEntries(entries.map(e => [e.id, e.sales]))
-      };
-
-      shareHistory = shareHistory.filter(h => !(Number(h.year) === yr && Number(h.month) === mo));
-      shareHistory.unshift(record);
-      shareHistory.sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
-      localStorage.setItem(SHARE_STORAGE_KEY, JSON.stringify(shareHistory));
-      refreshSavedShareDropdown();
-      renderShareSlide();
-      showToast(`Corte "${record.periodLabel}" guardado en memoria`);
-    }
-
-    function refreshSavedShareDropdown() {
-      const sel = document.getElementById('shareSavedSelect');
-      if (sel) {
-        sel.innerHTML = `<option value="">— Cortes en memoria (${shareHistory.length}) —</option>` +
-          shareHistory.map(h => `<option value="${h.id}">${h.periodLabel}</option>`).join('');
-      }
-
-      const info = document.getElementById('shareLoadedPeriodsInfo');
-      if (info) {
-        const labels = [...shareHistory].reverse().map(h => h.periodLabel).join(', ');
-        info.textContent = shareHistory.length ? `Meses cargados (${shareHistory.length}): ${labels}` : 'Sin cortes cargados aún';
-      }
-
-      const yrSel = document.getElementById('shareFilterYear');
-      if (yrSel) {
-        const yrs = [...new Set(shareHistory.map(h => Number(h.year)).filter(Boolean))].sort((a, b) => b - a);
-        const list = yrs.length ? yrs : [2026, 2025];
-        const prev = yrSel.value;
-        yrSel.innerHTML = list.map(y => `<option value="${y}" class="text-navy-900">${y}</option>`).join('');
-        if (list.includes(Number(prev))) yrSel.value = prev;
-      }
-    }
-
-    function loadSavedShareReport(id, silent = false) {
-      const item = shareHistory.find(h => h.id === id);
-      if (!item) return;
-      document.getElementById('shareStartDate').value = item.startDate || '';
-      document.getElementById('shareEndDate').value = item.endDate || '';
-      document.getElementById('sharePeriodLabel').value = item.periodLabel || '';
-      document.getElementById('shareReportType').value = item.reportType || 'mensual';
-
-      const selY = document.getElementById('shareFilterYear');
-      const selM = document.getElementById('shareFilterMonth');
-      if (selY && item.year) selY.value = String(item.year);
-      if (selM && item.month) selM.value = String(item.month);
-
-      OFFICIAL_SHARE_BRANDS.forEach(b => {
-        const inp = document.getElementById(`shareInput_${b.id}`);
-        if (inp) inp.value = Math.round(item.brands[b.id] || 0);
-      });
-      renderShareSlide();
-      if (!silent) showToast(`Mostrando ${item.periodLabel}`);
-    }
-
     function renderSharePrevComparison(currentComputed) {
       const box = document.getElementById('sharePrevDiffSummary');
       if (!box) return;
       const currLabel = (document.getElementById('sharePeriodLabel').value || '').trim().toUpperCase();
-      const prev = shareHistory.find(h => h.periodLabel !== currLabel);
+      const prev = shareExcelReports.find(h => h.periodLabel !== currLabel);
       if (!prev) {
-        box.textContent = 'Guarda o importa al menos 2 cortes para ver variación en puntos porcentuales (pp).';
+        box.textContent = 'Carga tu archivo Excel con pestaña Share (2 o más meses) para ver la variación en puntos porcentuales (pp).';
         return;
       }
       const prevTotal = Object.values(prev.brands).reduce((s, v) => s + Number(v || 0), 0);
@@ -2570,29 +2506,36 @@
         });
       }
 
-      return [...reportsByKey.values()]
-        .filter(rep => Object.values(rep.brands).reduce((s, v) => s + v, 0) > 0)
-        .sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
+      return [...reportsByKey.values()].filter(r => Object.values(r.brands).some(v => v > 0));
     }
 
-    function mergeShareReportsIntoHistory(newReports) {
+    async function mergeShareReportsFromExcel(newReports) {
       if (!newReports || !newReports.length) return;
       const map = new Map();
-      shareHistory.forEach(h => map.set(`${h.year}-${h.month}`, h));
+      shareExcelReports.forEach(h => map.set(`${h.year}-${h.month}`, h));
       newReports.forEach(rep => map.set(`${rep.year}-${rep.month}`, rep));
-      shareHistory = [...map.values()].sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
-      localStorage.setItem(SHARE_STORAGE_KEY, JSON.stringify(shareHistory));
-      refreshSavedShareDropdown();
-      if (shareHistory.length) {
-        loadSavedShareReport(shareHistory[0].id, true);
+      shareExcelReports = [...map.values()].sort((a, b) => (b.endDate || '').localeCompare(a.endDate || ''));
+      await saveShareReportsToDB(shareExcelReports);
+      refreshShareYearSelector();
+      if (shareExcelReports.length) {
+        const latest = shareExcelReports[0];
+        const selY = document.getElementById('shareFilterYear');
+        const selM = document.getElementById('shareFilterMonth');
+        if (selY) selY.value = String(latest.year);
+        if (selM) selM.value = String(latest.month);
+        applyDynamicShareSelection(true);
       }
     }
 
     function handleShareExcelUpload(event) {
+      if (!currentUser || !currentUser.canEdit) {
+        event.target.value = '';
+        return showToast('Tu perfil no tiene permiso para cargar archivos Excel.');
+      }
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
           const targetSheet = wb.SheetNames.find(n => normalizeText(n).includes('share') || normalizeText(n).includes('marca')) || wb.SheetNames[0];
@@ -2600,8 +2543,8 @@
           if (!reports.length) {
             return showToast('No se detectaron marcas oficiales con importes en el archivo.');
           }
-          mergeShareReportsIntoHistory(reports);
-          showToast(`Share actualizado: ${reports.length} corte(s) importado(s) desde "${targetSheet}"`);
+          await mergeShareReportsFromExcel(reports);
+          showToast(`Share actualizado: ${reports.length} mes(es) cargado(s) desde "${targetSheet}"`);
         } catch (err) {
           console.error(err);
           showToast('Error al leer Excel de Share');
@@ -2612,6 +2555,7 @@
     }
 
     async function downloadShareSlidePng() {
+      if (!currentUser || !currentUser.canDownload) return showToast('Tu perfil es de solo visualización.');
       const el = document.getElementById('shareSlideExportArea');
       if (!el || typeof html2canvas === 'undefined') {
         return showToast('Librería de exportación no disponible');
@@ -2768,6 +2712,7 @@
     }
 
     function exportPivotToExcel() {
+      if (!currentUser || !currentUser.canDownload) return showToast('Tu perfil es de solo visualización.');
       if (lastPivotExportRows.length <= 1) return showToast('No hay datos en la matriz para exportar');
       const ws = XLSX.utils.aoa_to_sheet(lastPivotExportRows);
       const wb = XLSX.utils.book_new();
@@ -2925,6 +2870,7 @@
     }
 
     function exportExplorerCSV() {
+      if (!currentUser || !currentUser.canDownload) return showToast('Tu perfil es de solo visualización.');
       if (!lastExplorerRows.length) return showToast('No hay registros para exportar');
       const headers = ['Fecha', 'Flujo', 'Segmento', 'Cliente', 'No_Sucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
       const csv = [
@@ -3096,90 +3042,46 @@
           });
 
           dirSheets.forEach(sn => {
-            const { headers, rows } = sheetToSmartData(wb.Sheets[sn], ['sucursal', 'tienda', 'uen', 'zona', 'plaza', 'ciudad', 'numero', 'no', 'nombre']);
+            const aoaDir = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
             let cnt = 0;
 
-            rows.forEach(rr => {
-              const keys = Object.keys(rr);
+            aoaDir.forEach((rawArr) => {
+              if (!rawArr || !rawArr.some(c => String(c ?? '').trim() !== '')) return;
+              // Columna C (índice 2) = # Sucursal | Columna D (índice 3) = Nombre de Sucursal
+              const sId = normalizeStoreKey(rawArr[2]);
+              const rawColD = String(rawArr[3] ?? '').trim();
+              if (!sId) return; // Ignora encabezado si Col C no es número de sucursal
 
-              // A) # Sucursal
-              let sId = '';
-              let sIdKey = '';
-              const idCandidates = ['no. sucursal', 'no sucursal', 'numero de sucursal', 'num sucursal', 'no. de sucursal', 'no de tienda', 'no tienda', 'no. tienda', 'id sucursal', 'id tienda', 'clave sucursal', 'no.', 'num', 'sucursal', 'almacen'];
-              for (const cand of idCandidates) {
-                const k = keys.find(key => normalizeText(key) === cand || normalizeText(key).includes(cand));
-                if (k && !normalizeText(k).includes('uen') && !normalizeText(k).includes('zona')) {
-                  const numKey = normalizeStoreKey(rr[k]);
-                  if (numKey) { sId = numKey; sIdKey = k; break; }
-                }
-              }
-
-              // B) Código numérico de UEN y Nombre Real de Zona
               let uenNum = '';
               let zoneName = '';
-              let zoneKey = '';
-              const zoneTextCandidates = ['nombre uen', 'nombre de uen', 'descripcion uen', 'zona', 'nombre zona', 'plaza', 'ciudad', 'region', 'territorio', 'estado', 'uen', 'u.e.n.'];
-              for (const cand of zoneTextCandidates) {
-                const matchingKeys = keys.filter(key => {
-                  const kn = normalizeText(key);
-                  return kn === cand || (cand !== 'uen' && kn.includes(cand));
-                });
-                for (const k of matchingKeys) {
-                  const val = String(rr[k] ?? '').trim();
-                  if (!val) continue;
-                  if (isPureNumber(val)) {
-                    if (!uenNum) uenNum = String(Number(val));
-                  } else if (!isNumericLike(val)) {
-                    if (!zoneName) { zoneName = normalizeZoneLabel(val); zoneKey = k; }
+              rawArr.forEach((cell, cIdx) => {
+                if (cIdx === 2 || cIdx === 3) return;
+                const val = String(cell ?? '').trim();
+                if (!val) return;
+                if (isPureNumber(val) && Number(val) >= 1 && Number(val) <= 30) {
+                  if (!uenNum) uenNum = String(Number(val));
+                } else if (!isNumericLike(val) && isValidZoneName(val)) {
+                  const zCand = normalizeZoneLabel(val);
+                  if (!zCand.includes('SUPER COLCHONES') && !zCand.includes('CORPORAT') && !zCand.includes('HORIZONTAL')) {
+                    if (!zoneName) zoneName = zCand;
                   }
                 }
-              }
+              });
 
               if (uenNum && zoneName) uenIdToZoneName.set(uenNum, zoneName);
               const finalZone = zoneName || (uenNum && uenIdToZoneName.get(uenNum)) || '';
               if (isValidZoneName(finalZone)) validZones.add(finalZone);
 
-              // C) Nombre Real de Tienda
-              let sName = '';
-              const nameCandidates = ['nombre de tienda', 'nombre tienda', 'nombre sucursal', 'nombre de sucursal', 'nombre oficial', 'tienda', 'sucursal', 'descripcion', 'desc sucursal', 'punto de venta', 'pdv', 'nombre', 'alias'];
-              for (const cand of nameCandidates) {
-                const matchingKeys = keys.filter(key => normalizeText(key) === cand || normalizeText(key).includes(cand));
-                for (const k of matchingKeys) {
-                  if (k === sIdKey || k === zoneKey) continue;
-                  const kn = normalizeText(k);
-                  if (kn.includes('uen') || kn.includes('zona') || kn.includes('plaza') || kn.includes('ciudad') || kn.includes('estado') || kn.includes('cadena') || kn.includes('cliente') || kn.includes('segmento')) continue;
-                  const val = String(rr[k] ?? '').trim();
-                  if (val && !isNumericLike(val) && !isLikelySku(val)) {
-                    sName = val;
-                    break;
-                  }
-                }
-                if (sName) break;
-              }
-
-              if (!sName && sId) {
-                const skipWords = ['activa', 'activo', 'inactiva', 'inactivo', 'cerrada', 'abierta', 'gnc', 'super colchones', 'cuentas corporativas', 'canal horizontal'];
-                for (const k of keys) {
-                  if (k === sIdKey || k === zoneKey) continue;
-                  const val = String(rr[k] ?? '').trim();
-                  const vn = normalizeText(val);
-                  if (val.length >= 2 && !isNumericLike(val) && !isLikelySku(val) && normalizeZoneLabel(val) !== finalZone && !skipWords.includes(vn)) {
-                    sName = val;
-                    break;
-                  }
-                }
-              }
-
-              if (sId) {
-                const cleanName = sName || `Sucursal ${sId}`;
-                const entry = { storeId: sId, storeName: cleanName, uenNum, zone: isValidZoneName(finalZone) ? finalZone : 'SIN ZONA' };
-                storeDirById.set(sId, entry);
-                storeDirByName.set(normalizeText(cleanName), entry);
-                cnt++;
-              } else if (sName && isValidZoneName(finalZone)) {
-                storeDirByName.set(normalizeText(sName), { storeId: '', storeName: sName, uenNum, zone: finalZone });
-                cnt++;
-              }
+              const cleanName = (rawColD && !isNumericLike(rawColD) && !isLikelySku(rawColD)) ? rawColD : `Sucursal ${sId}`;
+              const entry = {
+                storeId: sId,
+                storeName: cleanName,
+                uenNum,
+                zone: isValidZoneName(finalZone) ? finalZone : 'SIN ZONA'
+              };
+              storeDirById.set(sId, entry);
+              storeDirByName.set(normalizeText(cleanName), entry);
+              cnt++;
             });
 
             storeDirById.forEach(entry => {
@@ -3189,7 +3091,7 @@
             });
 
             const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName} (${s.zone})`).join(' | ');
-            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
+            diagLines.push(`• Directorio [${sn}] (Col C=#Suc, Col D=Nombre): ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
           });
 
           const resolveZone = (rawUenOrZone, dirMatch, isSellIn = false) => {
@@ -3289,10 +3191,33 @@
           });
 
           outSheets.forEach(sn => {
-            const { headers, rows } = sheetToSmartData(wb.Sheets[sn], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'cantidad', 'importe', 'uen', 'zona', 'segmento']);
+            const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'cantidad', 'importe', 'uen', 'zona', 'segmento']);
             let cnt = 0, totPcs = 0, totAmt = 0;
 
-            rows.forEach(r => {
+            // Detectar índice de columna de # Sucursal por encabezado o por frecuencia de coincidencia contra Directorio
+            let detectedStoreColIdx = headers.findIndex(h => {
+              const hn = normalizeText(h);
+              return (hn.includes('sucursal') || hn.includes('tienda') || hn === 'no.' || hn === 'no' || hn === 'num') && !hn.includes('nombre');
+            });
+
+            if (detectedStoreColIdx < 0 && storeDirById.size > 0 && rawRows.length > 0) {
+              let bestCol = -1, bestHits = 0;
+              const sampleLimit = Math.min(80, rawRows.length);
+              headers.forEach((h, cIdx) => {
+                const hn = normalizeText(h);
+                if (hn.includes('pieza') || hn.includes('cant') || hn.includes('costo') || hn.includes('importe') || hn.includes('precio') || hn.includes('ano') || hn.includes('mes') || hn.includes('dia') || hn.includes('fecha') || hn.includes('uen')) return;
+                let hits = 0;
+                for (let i = 0; i < sampleLimit; i++) {
+                  const cand = normalizeStoreKey((rawRows[i] || [])[cIdx]);
+                  if (cand && storeDirById.has(cand)) hits++;
+                }
+                if (hits > bestHits) { bestHits = hits; bestCol = cIdx; }
+              });
+              if (bestHits >= 3) detectedStoreColIdx = bestCol;
+            }
+
+            rows.forEach((r, rIdx) => {
+              const rawArr = rawRows[rIdx] || [];
               const vals = Object.values(r).map(v => normalizeText(v));
               if (vals.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) return;
 
@@ -3303,31 +3228,17 @@
               const rawSeg = getSmartCell(r, ['Segmento', 'Tipo de Cliente', 'Tipo Cliente', 'Clasificacion', 'Canal Cliente'], ['segmento', 'tipo de cliente', 'tipo cliente']);
               const cInfo = normalizeClientInfo(rawClient, rawSeg);
 
-              // Buscar # Sucursal en todas las variantes posibles de columna
-              let rawStoreId = getSmartCell(r, [
+              let rawStoreId = detectedStoreColIdx >= 0 ? rawArr[detectedStoreColIdx] : getSmartCell(r, [
                 'No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Número de Sucursal', 'Num Sucursal', 'No. de Sucursal',
-                'No de Tienda', 'No Tienda', 'No. Tienda', 'Numero de Tienda', 'ID Sucursal', 'ID Tienda', 'Clave Tienda', 'Sucursal', 'Almacen'
+                'No de Tienda', 'No Tienda', 'No. Tienda', 'Numero de Tienda', 'ID Sucursal', 'ID Tienda', 'Clave Tienda', 'Sucursal', 'Almacen', 'No.'
               ], ['no sucursal', 'num sucursal', 'numero sucursal', 'no tienda', 'num tienda', 'id sucursal', 'id tienda', 'sucursal']);
 
               let rawStoreName = String(getSmartCell(r, [
                 'Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Nombre de Sucursal', 'Punto de Venta', 'PDV'
               ], ['nombre tienda', 'nombre sucursal', 'tienda'])).trim();
 
-              // Si todavía no tiene ID, revisar si alguna columna sin encabezado (Col_X) contiene el número de sucursal
-              if (!normalizeStoreKey(rawStoreId)) {
-                for (const h of headers) {
-                  if (normalizeText(h).startsWith('col_')) {
-                    const candidate = normalizeStoreKey(r[h]);
-                    if (candidate && storeDirById.has(candidate)) {
-                      rawStoreId = candidate;
-                      break;
-                    }
-                  }
-                }
-              }
-
+              let normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
               const cleanRawName = (isLikelySku(rawStoreName) || isNumericLike(rawStoreName)) ? '' : rawStoreName;
-              const normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
               const dirMatch = (normId && storeDirById.get(normId)) || (cleanRawName && storeDirByName.get(normalizeText(cleanRawName))) || null;
 
               const storeId = (dirMatch && dirMatch.storeId) || normId || '';
@@ -3399,6 +3310,9 @@
     }
 
     async function commitStagedExcel() {
+      if (!currentUser || !currentUser.canEdit) {
+        return showToast('Tu perfil no tiene permiso para actualizar la base.');
+      }
       if (!stagedRecords.length && !stagedShareReports.length) {
         return showToast('No hay registros preparados para aplicar');
       }
@@ -3408,7 +3322,7 @@
         await saveRecordsToDB(allRecords);
       }
       if (stagedShareReports.length) {
-        mergeShareReportsIntoHistory(stagedShareReports);
+        await mergeShareReportsFromExcel(stagedShareReports);
       }
 
       const shareCount = stagedShareReports.length;
@@ -3418,7 +3332,7 @@
       populateFilterDropdowns();
       document.getElementById('filterMonth').value = 'ALL';
       switchModule('resumen');
-      showToast(`Dashboard actualizado (${fmtInt.format(allRecords.length)} reg.${shareCount ? ` + ${shareCount} cortes Share` : ''})`);
+      showToast(`Dashboard actualizado (${fmtInt.format(allRecords.length)} reg.${shareCount ? ` + ${shareCount} meses Share` : ''})`);
     }
 
     // ---------------------------------------------------------
@@ -3474,6 +3388,7 @@
     // ---------------------------------------------------------
     window.addEventListener('DOMContentLoaded', async () => {
       allRecords = await loadRecordsFromDB();
+      shareExcelReports = await loadShareReportsFromDB();
       try {
         const savedUser = sessionStorage.getItem(SESSION_KEY);
         if (savedUser) {
