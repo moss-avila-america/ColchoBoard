@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.9 | Colchones América</title>
+  <title>ColchoBoard v3.10 | Colchones América</title>
 
   <!-- Manifiesto PWA y Favicon -->
   <link rel="manifest" href="./manifest.json" />
@@ -108,7 +108,7 @@
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
           <img src="./icon.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.9</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.10</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -169,7 +169,7 @@
             <img src="./icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.9</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.10</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
@@ -3024,13 +3024,18 @@
           const normalizeStoreKey = (val) => {
             const raw = String(val ?? '').trim();
             if (!raw || isLikelySku(raw)) return '';
-            const pure = raw.match(/^0*(\d+)$/);
+            // 1. Número puro (ej. "48" o "048")
+            const pure = raw.match(/^0*(\d{1,5})$/);
             if (pure) return pure[1];
-            const pref = raw.match(/^(?:suc(?:ursal)?|tda|tienda|no\.?)?\s*#?\s*0*(\d+)\b/i);
-            return pref ? pref[1] : '';
+            // 2. Número al inicio de cadena (ej. "48 - GDL CENTRO", "0318 VALLARTA", "SUC 48 ...")
+            const lead = raw.match(/^(?:suc(?:ursal)?|tda|tienda|pdv|no\.?|num\.?|#)?\s*[-.:]?\s*0*(\d{1,5})(?:\b|[-_\s/])/i);
+            if (lead) return lead[1];
+            // 3. Número precedido por palabra clave en cualquier parte (ej. "TIENDA 48", "SUC. 318")
+            const mid = raw.match(/\b(?:suc(?:ursal)?|tda|tienda|pdv|no\.?|num\.?|#)\s*0*(\d{1,5})\b/i);
+            return mid ? mid[1] : '';
           };
 
-          // 1) DIRECTORIO DE TIENDAS (Extrae # Sucursal, Nombre Oficial de Tienda y Zona/UEN)
+          // 1) DIRECTORIO DE TIENDAS (Columna C = # Sucursal | Columna D = Nombre de Sucursal)
           const storeDirById = new Map();
           const storeDirByName = new Map();
           const uenIdToZoneName = new Map();
@@ -3050,7 +3055,7 @@
               // Columna C (índice 2) = # Sucursal | Columna D (índice 3) = Nombre de Sucursal
               const sId = normalizeStoreKey(rawArr[2]);
               const rawColD = String(rawArr[3] ?? '').trim();
-              if (!sId) return; // Ignora encabezado si Col C no es número de sucursal
+              if (!sId) return;
 
               let uenNum = '';
               let zoneName = '';
@@ -3194,15 +3199,21 @@
             const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'cantidad', 'importe', 'uen', 'zona', 'segmento']);
             let cnt = 0, totPcs = 0, totAmt = 0;
 
-            // Detectar índice de columna de # Sucursal por encabezado o por frecuencia de coincidencia contra Directorio
+            // Detectar índice de columna de Sucursal/Tienda por encabezado o por coincidencia contra Directorio
             let detectedStoreColIdx = headers.findIndex(h => {
               const hn = normalizeText(h);
-              return (hn.includes('sucursal') || hn.includes('tienda') || hn === 'no.' || hn === 'no' || hn === 'num') && !hn.includes('nombre');
+              return (hn.includes('sucursal') || hn.includes('tienda') || hn.includes('pdv') || hn === 'no.' || hn === 'no' || hn === 'num') && !hn.includes('nombre');
             });
+            if (detectedStoreColIdx < 0) {
+              detectedStoreColIdx = headers.findIndex(h => {
+                const hn = normalizeText(h);
+                return hn.includes('tienda') || hn.includes('sucursal') || hn.includes('pdv');
+              });
+            }
 
-            if (detectedStoreColIdx < 0 && storeDirById.size > 0 && rawRows.length > 0) {
+            if (storeDirById.size > 0 && rawRows.length > 0) {
               let bestCol = -1, bestHits = 0;
-              const sampleLimit = Math.min(80, rawRows.length);
+              const sampleLimit = Math.min(120, rawRows.length);
               headers.forEach((h, cIdx) => {
                 const hn = normalizeText(h);
                 if (hn.includes('pieza') || hn.includes('cant') || hn.includes('costo') || hn.includes('importe') || hn.includes('precio') || hn.includes('ano') || hn.includes('mes') || hn.includes('dia') || hn.includes('fecha') || hn.includes('uen')) return;
@@ -3213,7 +3224,7 @@
                 }
                 if (hits > bestHits) { bestHits = hits; bestCol = cIdx; }
               });
-              if (bestHits >= 3) detectedStoreColIdx = bestCol;
+              if (bestHits >= 2) detectedStoreColIdx = bestCol;
             }
 
             rows.forEach((r, rIdx) => {
@@ -3235,10 +3246,20 @@
 
               let rawStoreName = String(getSmartCell(r, [
                 'Nombre de Tienda', 'Nombre Tienda', 'Tienda', 'Nombre Sucursal', 'Nombre de Sucursal', 'Punto de Venta', 'PDV'
-              ], ['nombre tienda', 'nombre sucursal', 'tienda'])).trim();
+              ], ['nombre tienda', 'nombre sucursal', 'tienda', 'pdv'])).trim();
 
               let normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
-              const cleanRawName = (isLikelySku(rawStoreName) || isNumericLike(rawStoreName)) ? '' : rawStoreName;
+              // Respaldo: buscar en cualquier celda no numérica-de-importe de la fila si aún no se detecta el # de sucursal
+              if (!normId && storeDirById.size > 0) {
+                for (let c = 0; c < rawArr.length; c++) {
+                  const hn = normalizeText(headers[c] || '');
+                  if (hn.includes('pieza') || hn.includes('cant') || hn.includes('costo') || hn.includes('importe') || hn.includes('precio') || hn.includes('ano') || hn.includes('mes') || hn.includes('dia') || hn.includes('fecha') || hn.includes('uen')) continue;
+                  const cand = normalizeStoreKey(rawArr[c]);
+                  if (cand && storeDirById.has(cand)) { normId = cand; break; }
+                }
+              }
+
+              const cleanRawName = (isLikelySku(rawStoreName) || isNumericLike(rawStoreName)) ? '' : rawStoreName.replace(/^\d+\s*[-–]\s*/, '').trim();
               const dirMatch = (normId && storeDirById.get(normId)) || (cleanRawName && storeDirByName.get(normalizeText(cleanRawName))) || null;
 
               const storeId = (dirMatch && dirMatch.storeId) || normId || '';
@@ -3275,7 +3296,9 @@
               cnt++;
             });
             const withStoreCnt = parsed.filter(x => x.channel === 'SELL_OUT' && x.storeId).length;
-            diagLines.push(`• SELL OUT [${sn}]: ${cnt} filas (${withStoreCnt} con # sucursal) | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
+            const sampleMatched = parsed.find(x => x.channel === 'SELL_OUT' && x.storeId);
+            const matchNote = sampleMatched ? ` | Ej cruce: #${sampleMatched.storeId} → ${sampleMatched.storeName}` : '';
+            diagLines.push(`• SELL OUT [${sn}] (Col tienda: "${headers[detectedStoreColIdx] || 'auto'}"): ${cnt} filas (${withStoreCnt} cruzadas)${matchNote} | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
           // 4) PESTAÑA SHARE
