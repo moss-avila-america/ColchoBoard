@@ -7,22 +7,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.10.1 | Colchones América</title>
+  <title>ColchoBoard v3.12 | Colchones América</title>
 
-  <!-- Manifiesto PWA y Favicon -->
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="./icon.png" />
-  <link rel="apple-touch-icon" href="./icon.png" />
+  <link rel="icon" type="image/png" href="./ColchoBoard_icon_app.png" />
+  <link rel="apple-touch-icon" href="./ColchoBoard_icon_app.png" />
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-  <!-- SheetJS (XLSX) -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <!-- html2canvas para exportar Share en PNG HD -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -64,7 +58,6 @@
     .yoy-card-navy {
       background: linear-gradient(135deg, #16284C 0%, #0B162C 100%);
     }
-    /* Modo Captura WhatsApp */
     body.snapshot-mode #sidebar,
     body.snapshot-mode #sidebarOverlay,
     body.snapshot-mode #filtersBar,
@@ -78,7 +71,6 @@
       max-width: 1240px !important;
       padding: 1rem !important;
     }
-    /* Contenedor Ejecutivo Share x Marca */
     .share-slide-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -99,16 +91,14 @@
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased selection:bg-teal-500 selection:text-white">
 
-  <!-- ========================================================= -->
-  <!-- PANTALLA DE LOGIN CORPORATIVO                             -->
-  <!-- ========================================================= -->
+  <!-- PANTALLA DE LOGIN CORPORATIVO -->
   <div id="loginScreen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#070E1A] via-[#0F1E3C] to-[#0B2A3D] flex items-center justify-center p-4 overflow-y-auto">
     <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-auto">
       <div class="bg-[#0B1117] px-7 pt-8 pb-6 text-center">
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
-          <img src="./icon.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); };" />
+          <img src="./ColchoBoard_icon_app.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.png'; this.onerror=function(){ this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); }; };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.10.1</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.12</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -152,29 +142,23 @@
     </div>
   </div>
 
-  <!-- ========================================================= -->
-  <!-- CONTENEDOR PRINCIPAL DE LA APLICACIÓN                     -->
-  <!-- ========================================================= -->
+  <!-- CONTENEDOR PRINCIPAL -->
   <div id="appShell" class="hidden min-h-screen flex-col lg:flex-row">
-
-    <!-- Overlay móvil -->
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-30 hidden lg:hidden"></div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-[#0B1117] text-slate-300 flex flex-col justify-between border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 shrink-0">
       <div class="flex flex-col min-h-0">
-        <!-- Marca -->
         <div class="px-4 py-4 border-b border-slate-800/80 flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl overflow-hidden bg-[#0F1419] ring-1 ring-teal-400/40 shrink-0 flex items-center justify-center">
-            <img src="./icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); };" />
+            <img src="./ColchoBoard_icon_app.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.png'; this.onerror=function(){ this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); }; };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.10.1</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.12</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
 
-        <!-- Perfil Usuario -->
         <div class="px-4 py-3 border-b border-slate-800/80 bg-white/[0.02]">
           <div class="flex items-center justify-between gap-2 mb-1">
             <span id="sidebarUserBadge" class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-blue-500/20 text-sky-300 border border-sky-500/30">PERFIL</span>
@@ -184,7 +168,6 @@
           <p id="sidebarUserLogin" class="text-[10px] text-slate-400 font-mono truncate">---</p>
         </div>
 
-        <!-- Navegación -->
         <nav class="p-3 space-y-1 overflow-y-auto flex-1">
           <button onclick="switchModule('resumen')" data-nav="resumen" class="nav-btn tab-active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-navy-800 hover:text-white transition text-left">
             <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
@@ -237,7 +220,6 @@
         </nav>
       </div>
 
-      <!-- Pie Sidebar -->
       <div class="p-3 border-t border-slate-800/80 space-y-2 bg-black/20">
         <div class="flex items-center justify-between text-[10px] text-slate-400 px-1">
           <span>Registros reales:</span>
@@ -282,14 +264,14 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 <span>Modo Captura</span>
               </button>
-              <button onclick="copyWhatsAppExecutiveText()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition">
+              <button onclick="copyWhatsAppExecutiveText()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition">
                 <span>Compartir WhatsApp</span>
               </button>
             </div>
           </div>
 
           <!-- Filtros Globales -->
-          <div id="filtersBar" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
+          <div id="filtersBar" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 pt-2 border-t border-slate-100">
             <select id="filterYear" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
               <option value="ALL">Año: Todos</option>
             </select>
@@ -310,6 +292,14 @@
             </select>
             <select id="filterZone" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
               <option value="ALL">Zona: Todas</option>
+            </select>
+            <select id="filterCategory" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Categoría: Todas</option>
+              <option value="COLCHONES">Colchones</option>
+              <option value="BLANCOS">Blancos</option>
+            </select>
+            <select id="filterAgent" onchange="applyGlobalFilters()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500">
+              <option value="ALL">Agente: Todos</option>
             </select>
             <button onclick="resetGlobalFilters()" class="py-1.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition">
               Limpiar Filtros
@@ -334,10 +324,9 @@
         </div>
 
         <!-- ======================================================= -->
-        <!-- MÓDULO 1: DASHBOARD EJECUTIVO (ALINEACIÓN HORIZONTAL)   -->
+        <!-- MÓDULO 1: DASHBOARD EJECUTIVO                           -->
         <!-- ======================================================= -->
         <section id="module-resumen" class="module-section space-y-5">
-          <!-- Banner Ejecutivo -->
           <div class="bg-[#081226] text-white rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div>
               <h2 id="coverBannerTitle" class="text-base sm:text-lg font-black tracking-tight">Dashboard Ejecutivo • Sell In | Sell Out</h2>
@@ -390,12 +379,18 @@
           <!-- FILA 2 SIMÉTRICA: BARRAS SELL IN | BARRAS SELL OUT | ACUMULADOS ANUALES YOY -->
           <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
             <div class="xl:col-span-4 bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs flex flex-col justify-between">
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In × Modelo ($)</h3>
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800">Sell In × Modelo ($)</h3>
+                <span id="sellInBarsYoYBadge" class="text-[10px] font-bold text-slate-400">vs Año Ant.</span>
+              </div>
               <div class="relative h-60 w-full"><canvas id="chartSellInBars"></canvas></div>
             </div>
 
             <div class="xl:col-span-4 sellout-card text-white rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300 mb-2">Sell Out × Modelo ($)</h3>
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-300">Sell Out × Modelo ($)</h3>
+                <span id="sellOutBarsYoYBadge" class="text-[10px] font-bold text-slate-400">vs Año Ant.</span>
+              </div>
               <div class="relative h-60 w-full"><canvas id="chartSellOutBars"></canvas></div>
             </div>
 
@@ -406,7 +401,6 @@
               </div>
 
               <div class="space-y-3 my-auto py-1">
-                <!-- Bloque Sell In YoY -->
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Sell In Acumulado</span>
@@ -426,7 +420,6 @@
                   </div>
                 </div>
 
-                <!-- Bloque Sell Out YoY -->
                 <div class="space-y-1.5 pt-2 border-t border-slate-100">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-navy-900">Sell Out Acumulado</span>
@@ -449,7 +442,7 @@
             </div>
           </div>
 
-          <!-- FILA 3 SIMÉTRICA: 3 GRÁFICAS DE DONA EXACTAMENTE A LA MISMA ALTURA -->
+          <!-- FILA 3 SIMÉTRICA: 3 GRÁFICAS DE DONA -->
           <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
             <div class="xl:col-span-4 bg-white rounded-2xl p-4 border border-teal-200/80 shadow-xs flex flex-col justify-between">
               <h3 class="text-xs font-extrabold uppercase tracking-wider text-teal-800 mb-2">Sell In Share × Modelo</h3>
@@ -470,14 +463,32 @@
             </div>
           </div>
 
-          <!-- COMPARATIVO SELL OUT MISMO DÍA AÑO ANTERIOR POR MODELO -->
+          <!-- COMPARATIVO SELL OUT MISMO DÍA AÑO ANTERIOR POR MODELO (DINÁMICO POR FECHA O RANGO) -->
           <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-            <div class="px-5 py-3.5 bg-[#081226] text-white flex flex-wrap items-center justify-between gap-2">
+            <div class="px-5 py-3.5 bg-[#081226] text-white flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h3 class="text-sm font-black tracking-tight">Comparativo Sell Out Mismo Día Año Anterior por Modelo</h3>
                 <p id="sameDaySubtitle" class="text-[11px] text-teal-300">Basado en la última fecha de carga de Sell Out</p>
               </div>
-              <span id="sameDayPeriodTag" class="px-3 py-1 rounded-lg bg-amber-400 text-navy-950 text-xs font-black uppercase tracking-wide">--</span>
+              <div class="no-snapshot flex flex-wrap items-center gap-2">
+                <select id="sameDayMode" onchange="handleSameDayModeChange()" class="bg-white/10 border border-white/20 text-white text-[11px] font-bold rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400">
+                  <option value="mtd" class="text-navy-900">Acumulado 1 al día</option>
+                  <option value="exact" class="text-navy-900">Día Exacto</option>
+                  <option value="range" class="text-navy-900">Rango (Hot Sale / Temporada)</option>
+                </select>
+                <div id="sameDayStartWrap" class="hidden items-center gap-1">
+                  <span class="text-[10px] text-slate-400 font-bold">Del:</span>
+                  <input type="date" id="sameDayStartDate" onchange="renderSameDaySellOutTable()" class="bg-white/10 border border-white/20 text-white text-[11px] font-bold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                </div>
+                <div class="flex items-center gap-1">
+                  <span id="sameDayEndLbl" class="text-[10px] text-slate-400 font-bold">Corte:</span>
+                  <input type="date" id="sameDayEndDate" onchange="renderSameDaySellOutTable()" class="bg-white/10 border border-white/20 text-white text-[11px] font-bold rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                </div>
+                <button onclick="resetSameDayToLatest()" title="Volver a la última fecha cargada" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-teal-300 text-[10px] font-extrabold border border-white/15 transition">
+                  Último corte
+                </button>
+                <span id="sameDayPeriodTag" class="px-3 py-1 rounded-lg bg-amber-400 text-navy-950 text-xs font-black uppercase tracking-wide">--</span>
+              </div>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs tabular-nums">
@@ -559,7 +570,6 @@
         <!-- MÓDULO 3: SHARE X MARCA (DINÁMICO POR MES Y ACUMULADO)  -->
         <!-- ======================================================= -->
         <section id="module-share" class="module-section hidden space-y-4">
-          <!-- Banner + Selector Dinámico Año / Mes -->
           <div class="no-snapshot bg-[#081226] text-white rounded-2xl px-5 py-4 space-y-3 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -583,7 +593,6 @@
               </div>
             </div>
 
-            <!-- Barra de Consulta Dinámica Share (Solo Año y Mes / Acumulado) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-white/10">
               <div>
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Año</label>
@@ -613,7 +622,7 @@
             </div>
           </div>
 
-          <!-- Panel de Captura Manual Temporal (Avance rápido sin guardado en memoria) -->
+          <!-- Panel de Captura Manual Temporal -->
           <div id="shareEditorPanel" class="no-snapshot hidden bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-5">
             <div class="lg:col-span-4 space-y-3 bg-slate-50 rounded-xl p-4 border border-slate-200/80">
               <div>
@@ -634,104 +643,108 @@
                 <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Etiqueta de Periodo</label>
                 <input type="text" id="sharePeriodLabel" value="1-17 NOV 2026" oninput="renderShareSlide()" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-bold text-teal-800 uppercase" />
               </div>
-            </div>
-
-            <div class="lg:col-span-8 space-y-2.5">
-              <div class="flex items-center justify-between">
-                <h4 class="text-xs font-extrabold uppercase text-navy-900">2. Ventas por Marca (Pesos MXN sin IVA)</h4>
+              <div class="pt-2 border-t border-slate-200 space-y-1.5">
+                <label class="block text-[10px] font-extrabold uppercase text-navy-900">Logotipos Oficiales (.PNG / .JPG)</label>
+                <p class="text-[10px] text-slate-500">Si tus PNG aún no están en GitHub, selecciónalos aquí una sola vez para guardarlos en alta calidad sin distorsión.</p>
                 <div class="flex items-center gap-2">
-                  <button onclick="clearShareAmounts()" class="text-[11px] font-bold text-rose-600 hover:underline">Limpiar montos</button>
-                  <button onclick="renderShareSlide()" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold">Calcular Corte</button>
+                  <label class="cursor-pointer flex-1 text-center px-2.5 py-1.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-[11px] font-bold transition">
+                    <span>Cargar Logos PNG</span>
+                    <input type="file" id="shareCustomLogosInput" accept="image/png,image/jpeg,image/webp" multiple onchange="handleCustomShareLogosUpload(event)" class="hidden" />
+                  </label>
+                  <button type="button" onclick="clearCustomShareLogos()" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold border border-rose-200 transition">
+                    Restaurar
+                  </button>
                 </div>
               </div>
-              <div id="shareBrandInputsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
-              <div id="shareValidationAlert" class="hidden p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold"></div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-extrabold uppercase text-navy-900">2. Ventas por Marca (Pesos MXN sin IVA)</h4>
+                <button type="button" onclick="clearShareAmounts()" class="text-[11px] font-bold text-rose-600 hover:underline">Limpiar montos</button>
+              </div>
+              <div id="shareBrandInputsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
             </div>
           </div>
 
-          <!-- REPORTE EJECUTIVO: SHARE X MARCA -->
-          <div class="share-slide-wrapper">
-            <div id="shareSlideExportArea" class="share-slide-canvas rounded-2xl shadow-lg border border-slate-200/90 overflow-hidden mx-auto max-w-[1240px]">
+          <div id="shareValidationAlert" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold"></div>
 
-              <!-- 1. ENCABEZADO HOMOLOGADO -->
-              <div class="bg-[#081226] text-white px-7 py-5 flex items-center justify-between gap-4 border-b-4 border-teal-400">
+          <!-- FILMINA EJECUTIVA SHARE X MARCA -->
+          <div class="share-slide-wrapper">
+            <div id="shareSlideExportArea" class="share-slide-canvas rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
+              <!-- Encabezado Filmina -->
+              <div class="bg-[#081226] text-white px-8 py-5 flex items-center justify-between border-b-4 border-teal-400">
                 <div>
-                  <span class="block text-[10px] font-bold uppercase tracking-widest text-teal-300">Colchones América • Inteligencia de Mercado</span>
-                  <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight mt-0.5">SHARE X MARCA</h2>
-                  <p id="slidePeriodSubtitle" class="text-sm sm:text-base font-extrabold text-sky-300 mt-0.5">1-17 NOV 2026</p>
+                  <span class="block text-[10px] font-extrabold uppercase tracking-widest text-teal-400">COLCHONES AMÉRICA • INTELIGENCIA DE MERCADO</span>
+                  <h2 class="text-2xl sm:text-3xl font-black tracking-tight mt-0.5">SHARE X MARCA</h2>
+                  <p id="slidePeriodSubtitle" class="text-sm font-extrabold text-sky-400 mt-0.5 uppercase">1-17 NOV 2026</p>
                 </div>
-                <div class="flex items-center gap-3 pl-5 border-l border-white/15">
-                  <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-teal-300 shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <rect x="3" y="4" width="18" height="17" rx="2" />
-                      <path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
-                    </svg>
-                  </div>
-                  <div class="text-left">
-                    <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-300">CORTE</span>
-                    <span id="slideCutDateText" class="block text-lg sm:text-xl font-black text-white leading-tight">17 NOV 2026</span>
+                <div class="flex items-center gap-3.5 bg-white/5 border border-white/15 rounded-2xl px-4 py-2.5">
+                  <svg class="w-8 h-8 text-teal-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <div class="text-right">
+                    <span class="block text-[10px] font-extrabold uppercase tracking-widest text-slate-400">CORTE</span>
+                    <span id="slideCutDateText" class="block text-base sm:text-lg font-black text-white">17 NOV 2026</span>
                   </div>
                 </div>
               </div>
 
-              <!-- 2. CONTENIDO CENTRAL (DONA CIRCULAR | RANKING EJECUTIVO) -->
-              <div class="grid grid-cols-12 gap-6 items-center px-7 py-6 bg-white">
+              <!-- Cuerpo Filmina: Dona + Ranking -->
+              <div class="grid grid-cols-12 gap-6 px-8 py-6 items-center bg-white">
                 <div class="col-span-5 flex items-center justify-center">
-                  <div class="relative w-[340px] h-[340px] sm:w-[385px] sm:h-[385px]">
+                  <div class="w-full max-w-[360px] aspect-square relative">
                     <canvas id="chartShareBrandDonut"></canvas>
                   </div>
                 </div>
 
                 <div class="col-span-7">
-                  <div class="overflow-hidden rounded-xl border border-slate-200/80">
-                    <table class="w-full border-collapse tabular-nums">
+                  <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                    <table class="w-full text-left border-collapse tabular-nums">
                       <thead>
-                        <tr class="bg-[#0F1E3C] text-white text-xs uppercase tracking-wider">
-                          <th class="py-2.5 pl-4 pr-2 text-left font-extrabold">MARCA</th>
-                          <th class="py-2.5 px-3 text-right font-extrabold">VENTAS ($)</th>
-                          <th class="py-2.5 pl-2 pr-4 text-right font-extrabold">SHARE (%)</th>
+                        <tr class="bg-[#081226] text-white text-[11px] uppercase tracking-wider">
+                          <th class="py-3 pl-4 pr-2 font-extrabold">MARCA</th>
+                          <th class="py-3 px-3 text-right font-extrabold">VENTAS ($)</th>
+                          <th class="py-3 pl-2 pr-4 text-right font-extrabold">SHARE (%)</th>
                         </tr>
                       </thead>
-                      <tbody id="shareRankingTableBody" class="divide-y divide-slate-200/80 bg-white"></tbody>
+                      <tbody id="shareRankingTableBody" class="divide-y divide-slate-200/80"></tbody>
                     </table>
                   </div>
                 </div>
               </div>
 
-              <!-- 3. FRANJA INFORMATIVA INFERIOR -->
-              <div class="mx-7 mb-6 bg-slate-50 border border-slate-200/90 rounded-xl px-5 py-3 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3.5">
-                  <div class="w-9 h-9 rounded-full bg-[#0F1E3C] text-teal-300 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H9M17 7v8" />
-                    </svg>
+              <!-- Franja Inferior Ejecutiva -->
+              <div class="mx-8 mb-6 px-5 py-3.5 rounded-2xl bg-slate-100 border border-slate-200/80 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-[#081226] text-teal-400 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                   </div>
                   <div>
-                    <p id="slideLeaderHeadline" class="text-sm sm:text-base font-black text-[#0F1E3C] uppercase tracking-tight leading-tight">SPRING AIR LIDERA EL MERCADO</p>
-                    <p id="slideLeaderSubline" class="text-xs text-slate-600 font-medium mt-0.5">con el 52% de participación en ventas al 17 de noviembre de 2026.</p>
+                    <p id="slideLeaderHeadline" class="text-xs sm:text-sm font-black text-[#081226] uppercase">SPRING AIR LIDERA EL MERCADO</p>
+                    <p id="slideLeaderSubline" class="text-xs text-slate-600 font-medium">con el 52% de participación en ventas al 17 de noviembre de 2026.</p>
                   </div>
                 </div>
-                <span class="text-[11px] font-medium text-slate-500 whitespace-nowrap self-end">Sell out en precios público sin IVA</span>
+                <span class="text-[11px] font-semibold text-slate-500">Sell out en precios público sin IVA</span>
               </div>
-
             </div>
           </div>
 
-          <!-- Panel Analítico Complementario -->
-          <div id="shareAnalyticsExtras" class="no-snapshot grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <!-- Tarjetas Analíticas Complementarias -->
+          <div class="no-snapshot grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Posición Colchones América</span>
-              <p id="shareAmericaPos" class="text-2xl font-black text-navy-900 mt-1">#2 • 13.46%</p>
-              <p id="shareAmericaGap" class="text-xs text-slate-500 mt-1">Distancia vs líder: --</p>
+              <span class="block text-[10px] font-extrabold uppercase tracking-wider text-amber-600">Posición Colchones América</span>
+              <p id="shareAmericaPos" class="text-lg font-black text-navy-900 mt-1">--</p>
+              <p id="shareAmericaGap" class="text-xs text-slate-500 mt-0.5">--</p>
             </div>
             <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Validación Matemática Exacta</span>
-              <p id="shareMathCheck" class="text-sm font-extrabold text-teal-700 mt-1">Suma exacta: 100.00%</p>
-              <p id="shareRoundedSumNote" class="text-xs text-slate-500 mt-1">Suma visual redondeada: 99%</p>
+              <span class="block text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Variación vs Corte Anterior</span>
+              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1 space-y-0.5">--</div>
             </div>
             <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs">
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comparativo vs Mes Anterior</span>
-              <div id="sharePrevDiffSummary" class="text-xs text-slate-600 mt-1.5 space-y-1">Carga tu archivo Excel con pestaña Share para comparar meses.</div>
+              <span class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Validación Matemática</span>
+              <p id="shareMathCheck" class="text-sm font-extrabold text-navy-900 mt-1">--</p>
+              <p id="shareRoundedSumNote" class="text-[11px] text-slate-500 mt-0.5">--</p>
             </div>
           </div>
         </section>
@@ -741,60 +754,61 @@
         <!-- ======================================================= -->
         <section id="module-pivote" class="module-section hidden space-y-4">
           <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
               <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-[11px] font-extrabold uppercase text-slate-400 mr-1">Vistas Rápidas:</span>
-                <button onclick="applyPivotPreset('model_channel')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Modelo × Flujo</button>
-                <button onclick="applyPivotPreset('model_size')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Modelo × Medida</button>
-                <button onclick="applyPivotPreset('client_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Cliente × Mes</button>
-                <button onclick="applyPivotPreset('zone_model')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Zona × Modelo</button>
-                <button onclick="applyPivotPreset('store_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-[11px] font-bold text-slate-700 transition">Sucursal × Mes</button>
+                <span class="text-[10px] font-extrabold uppercase text-slate-400 mr-1">Vistas rápidas:</span>
+                <button onclick="applyPivotPreset('model_channel')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy-900 hover:text-white text-[11px] font-bold transition">Modelo × Flujo</button>
+                <button onclick="applyPivotPreset('model_size')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy-900 hover:text-white text-[11px] font-bold transition">Modelo × Medida</button>
+                <button onclick="applyPivotPreset('client_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy-900 hover:text-white text-[11px] font-bold transition">Cliente × Mes</button>
+                <button onclick="applyPivotPreset('zone_model')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy-900 hover:text-white text-[11px] font-bold transition">Zona × Modelo</button>
+                <button onclick="applyPivotPreset('store_month')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy-900 hover:text-white text-[11px] font-bold transition">Sucursal × Mes</button>
               </div>
-              <button id="pivotExportExcelBtn" onclick="exportPivotToExcel()" class="export-action-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Exportar Matriz (.xlsx)</button>
+              <button onclick="exportPivotToExcel()" class="export-action-btn px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                Exportar Matriz (.xlsx)
+              </button>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 border-t border-slate-100">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
               <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Filas</label>
-                <select id="pivotRowDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Filas</label>
+                <select id="pivotRowDim" onchange="renderPivotMaster()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold">
                   <option value="model">Modelo</option>
                   <option value="client">Cliente</option>
                   <option value="zone">Zona</option>
                   <option value="store">Sucursal / Tienda</option>
                   <option value="size">Medida</option>
                   <option value="month">Mes</option>
-                  <option value="year">Año</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Columnas</label>
-                <select id="pivotColDim" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Columnas</label>
+                <select id="pivotColDim" onchange="renderPivotMaster()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold">
                   <option value="channel">Sell In / Sell Out</option>
                   <option value="month">Mes</option>
                   <option value="year">Año</option>
                   <option value="size">Medida</option>
                   <option value="zone">Zona</option>
-                  <option value="client">Cliente</option>
+                  <option value="model">Modelo</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Flujo</label>
-                <select id="pivotFlow" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Flujo</label>
+                <select id="pivotFlow" onchange="renderPivotMaster()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold">
                   <option value="ALL">Sell In + Sell Out</option>
                   <option value="SELL_IN">Solo Sell In</option>
                   <option value="SELL_OUT">Solo Sell Out</option>
                 </select>
               </div>
               <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Métrica</label>
-                <select id="pivotMetric" onchange="renderPivotMaster()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-bold">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Métrica</label>
+                <select id="pivotMetric" onchange="renderPivotMaster()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold">
                   <option value="amount">Importe ($ MXN)</option>
                   <option value="units">Piezas (Pzas)</option>
                 </select>
               </div>
-              <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-400 mb-0.5">Buscar Fila</label>
-                <input type="text" id="pivotSearch" oninput="renderPivotMaster()" placeholder="Filtrar..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold" />
+              <div class="col-span-2 sm:col-span-1">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Buscar Fila</label>
+                <input type="text" id="pivotSearch" oninput="renderPivotMaster()" placeholder="Filtrar..." class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold" />
               </div>
             </div>
           </div>
@@ -907,18 +921,17 @@
         </section>
 
         <!-- ======================================================= -->
-        <!-- MÓDULO 7: CONSULTA POR FECHA (COLUMNA # SUC Y TIENDA)   -->
+        <!-- MÓDULO 7: CONSULTA POR FECHA                            -->
         <!-- ======================================================= -->
         <section id="module-explorador" class="module-section hidden space-y-4">
           <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <h3 class="text-sm font-extrabold text-navy-900">Búsqueda Puntual por Fecha, Sucursal o Modelo</h3>
-                <p class="text-[11px] text-slate-500">Filtra por fecha exacta o palabra clave para consultar operaciones específicas</p>
-              </div>
-              <button id="explorerExportCsvBtn" onclick="exportExplorerCSV()" class="export-action-btn px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">Exportar CSV</button>
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-xs font-extrabold text-navy-900">Búsqueda Puntual por Fecha, Sucursal, Tipo o Modelo</span>
+              <button onclick="exportExplorerCSV()" class="export-action-btn px-3.5 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">
+                Exportar CSV
+              </button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
                 <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Fecha Específica</label>
                 <input type="date" id="explorerDate" onchange="renderExplorer()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold" />
@@ -929,6 +942,12 @@
                   <option value="ALL">Todos (Sell In y Sell Out)</option>
                   <option value="SELL_IN">Solo Sell In</option>
                   <option value="SELL_OUT">Solo Sell Out</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Tipo de Producto</label>
+                <select id="explorerType" onchange="renderExplorer()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                  <option value="ALL">Todos los tipos</option>
                 </select>
               </div>
               <div>
@@ -949,6 +968,7 @@
                     <th class="py-2.5 px-3"># Sucursal</th>
                     <th class="py-2.5 px-3">Nombre de Tienda</th>
                     <th class="py-2.5 px-3">Zona</th>
+                    <th class="py-2.5 px-3">Tipo</th>
                     <th class="py-2.5 px-3">Modelo / Medida</th>
                     <th class="py-2.5 px-3 text-right">Piezas</th>
                     <th class="py-2.5 px-4 text-right">Importe ($)</th>
@@ -972,7 +992,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 class="text-base font-black text-navy-900">Cargar Información Real desde Excel (.xlsx)</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong>, <strong>BD Sell In</strong> (Columnas N y S), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (Col C, D y CADENA), <strong>BD Sell In</strong> (Col D Vendedor, N Pzas, S Neto, V Categoría), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
               </div>
               <button onclick="clearSavedDatabase()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
                 Limpiar Base Guardada
@@ -1002,7 +1022,6 @@
               <p class="text-xs text-slate-500 mt-1">Procesa automáticamente BD Sell In, Sell Out, Directorio de tiendas y Share</p>
             </label>
 
-            <!-- Panel de Diagnóstico y Botón de Aplicar -->
             <div id="excelStatusPanel" class="hidden rounded-2xl bg-slate-900 text-white p-5 space-y-3">
               <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -1026,12 +1045,9 @@
   <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
 
   <!-- ========================================================= -->
-  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.9)              -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.12)             -->
   <!-- ========================================================= -->
   <script>
-    // ---------------------------------------------------------
-    // 1. USUARIOS AUTORIZADOS Y PERMISOS POR PERFIL
-    // ---------------------------------------------------------
     const AUTHORIZED_USERS = [
       { user: 'ADMIN1.MOSS',   pass: 'America.24$',   role: 'Administrador', cred: '9999', name: 'ADMINISTRADOR',    canEdit: true,  canDownload: true  },
       { user: 'VENTAS1.MOSS',  pass: 'America.24$',   role: 'Ejecutivo',     cred: '3001', name: 'MOSSES AVILA',     canEdit: true,  canDownload: true  },
@@ -1041,7 +1057,7 @@
       { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',    cred: '2001', name: 'JONATHAN MORALES', canEdit: false, canDownload: false }
     ];
 
-    const SESSION_KEY = 'colchoboard_session_v39';
+    const SESSION_KEY = 'colchoboard_session_v312';
     let currentUser = null;
     let activeModule = 'resumen';
     let allRecords = [];
@@ -1066,6 +1082,101 @@
       box.classList.remove('hidden');
       clearTimeout(box._timer);
       box._timer = setTimeout(() => box.classList.add('hidden'), 3800);
+    }
+
+    function togglePasswordVisibility() {
+      const inp = document.getElementById('loginPassword');
+      if (inp) inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebarOverlay');
+      if (!sb || !ov) return;
+      sb.classList.toggle('-translate-x-full');
+      ov.classList.toggle('hidden');
+    }
+
+    function toggleSnapshotMode(enable) {
+      if (enable) {
+        document.body.classList.add('snapshot-mode');
+        showToast('Vista limpia activa para captura de pantalla');
+      } else {
+        document.body.classList.remove('snapshot-mode');
+      }
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const u = (document.getElementById('loginUsername')?.value || '').trim().toUpperCase();
+      const p = (document.getElementById('loginPassword')?.value || '').trim();
+      const errBox = document.getElementById('loginErrorBox');
+      const found = AUTHORIZED_USERS.find(acc => acc.user.toUpperCase() === u && acc.pass === p);
+      if (!found) {
+        errBox?.classList.remove('hidden');
+        return;
+      }
+      errBox?.classList.add('hidden');
+      currentUser = found;
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(found));
+      enterAppSession(found);
+    }
+
+    function enterAppSession(userObj) {
+      document.getElementById('loginScreen')?.classList.add('hidden');
+      const shell = document.getElementById('appShell');
+      if (shell) {
+        shell.classList.remove('hidden');
+        shell.classList.add('flex');
+      }
+
+      document.getElementById('sidebarUserBadge').textContent = userObj.role.toUpperCase();
+      document.getElementById('sidebarUserCred').textContent = `CRED: ${userObj.cred}`;
+      document.getElementById('sidebarUserName').textContent = userObj.name;
+      document.getElementById('sidebarUserLogin').textContent = userObj.user;
+
+      // Control estricto de permisos por perfil
+      const adminBlock = document.getElementById('adminNavBlock');
+      const hdrExcel = document.getElementById('headerExcelBtn');
+      const emptyExcel = document.getElementById('emptyBannerExcelBtn');
+      const scUpdateBtn = document.getElementById('scUpdateExcelBtn');
+      const shareExcelLbl = document.getElementById('shareImportExcelLabel');
+
+      if (!userObj.canEdit) {
+        adminBlock?.classList.add('hidden');
+        hdrExcel?.classList.add('hidden');
+        emptyExcel?.classList.add('hidden');
+        scUpdateBtn?.classList.add('hidden');
+        shareExcelLbl?.classList.add('hidden');
+      } else {
+        adminBlock?.classList.remove('hidden');
+        hdrExcel?.classList.remove('hidden');
+        emptyExcel?.classList.remove('hidden');
+        scUpdateBtn?.classList.remove('hidden');
+        shareExcelLbl?.classList.remove('hidden');
+      }
+
+      document.querySelectorAll('.export-action-btn').forEach(btn => {
+        if (!userObj.canDownload) btn.classList.add('hidden');
+        else btn.classList.remove('hidden');
+      });
+
+      populateFilterDropdowns();
+      document.getElementById('filterMonth').value = 'ALL';
+      switchModule('resumen');
+      showToast(`Bienvenido, ${userObj.name}`);
+    }
+
+    function logoutUser() {
+      sessionStorage.removeItem(SESSION_KEY);
+      currentUser = null;
+      toggleSnapshotMode(false);
+      const shell = document.getElementById('appShell');
+      shell?.classList.add('hidden');
+      shell?.classList.remove('flex');
+      const pw = document.getElementById('loginPassword');
+      if (pw) pw.value = '';
+      document.getElementById('loginScreen')?.classList.remove('hidden');
     }
 
     // ---------------------------------------------------------
@@ -1095,9 +1206,7 @@
           tx.oncomplete = () => resolve();
           tx.onerror = () => reject(tx.error);
         });
-      } catch (e) {
-        console.warn('Error guardando en IndexedDB:', e);
-      }
+      } catch (e) { console.warn(e); }
     }
 
     async function loadRecordsFromDB() {
@@ -1109,9 +1218,7 @@
           req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : []);
           req.onerror = () => resolve([]);
         });
-      } catch (e) {
-        return [];
-      }
+      } catch (e) { return []; }
     }
 
     async function saveShareReportsToDB(reports) {
@@ -1123,9 +1230,7 @@
           tx.oncomplete = () => resolve();
           tx.onerror = () => reject(tx.error);
         });
-      } catch (e) {
-        console.warn('Error guardando Share en IndexedDB:', e);
-      }
+      } catch (e) { console.warn(e); }
     }
 
     async function loadShareReportsFromDB() {
@@ -1137,121 +1242,49 @@
           req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : []);
           req.onerror = () => resolve([]);
         });
-      } catch (e) {
-        return [];
-      }
+      } catch (e) { return []; }
+    }
+
+    async function saveCustomLogosToDB(logoMapObj) {
+      try {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(logoMapObj, 'share_custom_logos');
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (e) { console.warn(e); }
+    }
+
+    async function loadCustomLogosFromDB() {
+      try {
+        const db = await openDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const req = tx.objectStore(IDB_STORE).get('share_custom_logos');
+          req.onsuccess = () => resolve(req.result && typeof req.result === 'object' ? req.result : {});
+          req.onerror = () => resolve({});
+        });
+      } catch (e) { return {}; }
     }
 
     async function clearSavedDatabase() {
-      if (!currentUser || !currentUser.canEdit) {
-        return showToast('Tu perfil es de solo lectura y descarga.');
-      }
+      if (!currentUser || !currentUser.canEdit) return showToast('Sin permisos para borrar la base.');
       allRecords = [];
       stagedRecords = [];
-      stagedShareReports = [];
-      shareExcelReports = [];
       await saveRecordsToDB([]);
-      await saveShareReportsToDB([]);
       populateFilterDropdowns();
-      refreshShareYearSelector();
       renderActiveModule();
       showToast('Base de datos limpiada correctamente');
     }
 
     // ---------------------------------------------------------
-    // 3. AUTENTICACIÓN Y NAVEGACIÓN
+    // 3. NAVEGACIÓN ENTRE MÓDULOS
     // ---------------------------------------------------------
-    function togglePasswordVisibility() {
-      const inp = document.getElementById('loginPassword');
-      inp.type = inp.type === 'password' ? 'text' : 'password';
-    }
-
-    function handleLoginSubmit(e) {
-      e.preventDefault();
-      const u = document.getElementById('loginUsername').value.trim().toUpperCase();
-      const p = document.getElementById('loginPassword').value.trim();
-      const found = AUTHORIZED_USERS.find(acc => acc.user.toUpperCase() === u && acc.pass === p);
-      const errBox = document.getElementById('loginErrorBox');
-      if (!found) {
-        errBox.classList.remove('hidden');
-        return;
-      }
-      errBox.classList.add('hidden');
-      currentUser = found;
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(found));
-      enterAppSession(found);
-    }
-
-    function enterAppSession(user) {
-      document.getElementById('loginScreen').classList.add('hidden');
-      const shell = document.getElementById('appShell');
-      shell.classList.remove('hidden');
-      shell.classList.add('flex');
-
-      document.getElementById('sidebarUserBadge').textContent = user.role;
-      document.getElementById('sidebarUserCred').textContent = `CRED: ${user.cred}`;
-      document.getElementById('sidebarUserName').textContent = user.name;
-      document.getElementById('sidebarUserLogin').textContent = user.user;
-
-      const adminBlock = document.getElementById('adminNavBlock');
-      const headerExcel = document.getElementById('headerExcelBtn');
-      const scUpdateBtn = document.getElementById('scUpdateExcelBtn');
-      const shareImpLbl = document.getElementById('shareImportExcelLabel');
-      const emptyBtn = document.getElementById('emptyBannerExcelBtn');
-
-      if (!user.canEdit) {
-        adminBlock?.classList.add('hidden');
-        headerExcel?.classList.add('hidden');
-        scUpdateBtn?.classList.add('hidden');
-        shareImpLbl?.classList.add('hidden');
-        emptyBtn?.classList.add('hidden');
-      } else {
-        adminBlock?.classList.remove('hidden');
-        headerExcel?.classList.remove('hidden');
-        scUpdateBtn?.classList.remove('hidden');
-        shareImpLbl?.classList.remove('hidden');
-        emptyBtn?.classList.remove('hidden');
-      }
-
-      document.querySelectorAll('.export-action-btn').forEach(btn => {
-        if (!user.canDownload) btn.classList.add('hidden');
-        else btn.classList.remove('hidden');
-      });
-
-      populateFilterDropdowns();
-      initShareModuleUI();
-      renderActiveModule();
-    }
-
-    function logoutUser() {
-      sessionStorage.removeItem(SESSION_KEY);
-      currentUser = null;
-      toggleSnapshotMode(false);
-      document.getElementById('appShell').classList.add('hidden');
-      document.getElementById('appShell').classList.remove('flex');
-      document.getElementById('loginPassword').value = '';
-      document.getElementById('loginScreen').classList.remove('hidden');
-    }
-
-    function toggleSidebar() {
-      const sb = document.getElementById('sidebar');
-      const ov = document.getElementById('sidebarOverlay');
-      sb.classList.toggle('-translate-x-full');
-      ov.classList.toggle('hidden');
-    }
-
-    function toggleSnapshotMode(enable) {
-      if (enable) {
-        document.body.classList.add('snapshot-mode');
-        showToast('Modo Captura activo: toma screenshot limpio para WhatsApp');
-      } else {
-        document.body.classList.remove('snapshot-mode');
-      }
-    }
-
     function switchModule(mod) {
       if (mod === 'excel' && currentUser && !currentUser.canEdit) {
-        return showToast('Tu perfil tiene permisos de visualización y descarga únicamente.');
+        return showToast('Tu perfil tiene permisos de visualización únicamente.');
       }
       activeModule = mod;
       document.querySelectorAll('.module-section').forEach(s => s.classList.add('hidden'));
@@ -1270,7 +1303,7 @@
         pivote: ['Matriz Dinámica BI', 'Cruces interactivos por Cliente, Modelo, Medida, Zona, Sucursal, Mes y Año'],
         clientes: ['Clientes & Tiendas', 'Desempeño por cliente y ranking por No. de Sucursal'],
         modelos: ['Modelos & Zonas', 'Distribución detallada por zona geográfica y portafolio'],
-        explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, # sucursal, tienda o modelo'],
+        explorador: ['Consulta por Fecha', 'Búsqueda puntual por día exacto, # sucursal, tienda, tipo o modelo'],
         excel: ['Cargar Excel', 'Actualización ágil desde BD Sell In, SELL OUT, Directorio de tiendas y Share']
       };
       const meta = titles[mod] || titles.resumen;
@@ -1282,8 +1315,8 @@
       else filtersBar.classList.remove('hidden');
 
       if (window.innerWidth < 1024) {
-        document.getElementById('sidebar').classList.add('-translate-x-full');
-        document.getElementById('sidebarOverlay').classList.add('hidden');
+        document.getElementById('sidebar')?.classList.add('-translate-x-full');
+        document.getElementById('sidebarOverlay')?.classList.add('hidden');
       }
 
       renderActiveModule();
@@ -1325,6 +1358,9 @@
       const clients = [...new Set(allRecords.map(r => r.client).filter(Boolean))].sort();
       const segments = [...new Set(allRecords.map(r => r.segment).filter(Boolean))].sort();
       const zones = [...new Set(allRecords.map(r => r.zone).filter(isValidZoneName))].sort();
+      const categories = [...new Set(allRecords.map(r => r.category).filter(Boolean))].sort();
+      const agents = [...new Set(allRecords.map(r => r.agent).filter(Boolean))].sort();
+      const productTypes = [...new Set(allRecords.map(r => r.productType).filter(Boolean))].sort();
 
       const selY = document.getElementById('filterYear');
       const prevY = selY.value;
@@ -1347,6 +1383,28 @@
       const prevZ = selZ.value;
       selZ.innerHTML = `<option value="ALL">Zona: Todas</option>` + zones.map(z => `<option value="${z}">${z}</option>`).join('');
       if (zones.includes(prevZ)) selZ.value = prevZ;
+
+      const selCat = document.getElementById('filterCategory');
+      if (selCat) {
+        const prevCat = selCat.value;
+        const catList = categories.length ? categories : ['COLCHONES', 'BLANCOS'];
+        selCat.innerHTML = `<option value="ALL">Categoría: Todas</option>` + catList.map(c => `<option value="${c}">${c}</option>`).join('');
+        if (catList.includes(prevCat)) selCat.value = prevCat;
+      }
+
+      const selAg = document.getElementById('filterAgent');
+      if (selAg) {
+        const prevAg = selAg.value;
+        selAg.innerHTML = `<option value="ALL">Agente: Todos</option>` + agents.map(a => `<option value="${a}">${a}</option>`).join('');
+        if (agents.includes(prevAg)) selAg.value = prevAg;
+      }
+
+      const selType = document.getElementById('explorerType');
+      if (selType) {
+        const prevT = selType.value;
+        selType.innerHTML = `<option value="ALL">Todos los tipos</option>` + productTypes.map(t => `<option value="${t}">${t}</option>`).join('');
+        if (productTypes.includes(prevT)) selType.value = prevT;
+      }
     }
 
     function getGlobalFilters() {
@@ -1355,7 +1413,9 @@
         month: document.getElementById('filterMonth').value,
         segment: document.getElementById('filterSegment').value,
         client: document.getElementById('filterClient').value,
-        zone: document.getElementById('filterZone').value
+        zone: document.getElementById('filterZone').value,
+        category: document.getElementById('filterCategory')?.value || 'ALL',
+        agent: document.getElementById('filterAgent')?.value || 'ALL'
       };
     }
 
@@ -1367,6 +1427,8 @@
         if (f.segment !== 'ALL' && r.segment !== f.segment) return false;
         if (f.client !== 'ALL' && r.client !== f.client) return false;
         if (f.zone !== 'ALL' && r.zone !== f.zone) return false;
+        if (f.category !== 'ALL' && (r.category || 'COLCHONES') !== f.category) return false;
+        if (f.agent !== 'ALL' && (r.agent || '') !== f.agent) return false;
         return true;
       });
     }
@@ -1382,6 +1444,8 @@
       document.getElementById('filterSegment').value = 'ALL';
       document.getElementById('filterClient').value = 'ALL';
       document.getElementById('filterZone').value = 'ALL';
+      if (document.getElementById('filterCategory')) document.getElementById('filterCategory').value = 'ALL';
+      if (document.getElementById('filterAgent')) document.getElementById('filterAgent').value = 'ALL';
       renderActiveModule();
       showToast('Filtros restablecidos');
     }
@@ -1555,15 +1619,55 @@
       const paletteTeal = ['#0F766E', '#14B8A6', '#0284C7', '#0EA5E9', '#1E3A8A', '#6366F1', '#F59E0B', '#64748B', '#94A3B8'];
       const paletteNavy = ['#38BDF8', '#2DD4BF', '#60A5FA', '#818CF8', '#FBBF24', '#34D399', '#A78BFA', '#FB7185', '#94A3B8'];
 
+      const allYrsCov = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018))].sort((a, b) => a - b);
+      const refCurrY = f.year !== 'ALL' ? Number(f.year) : (allYrsCov[allYrsCov.length - 1] || new Date().getFullYear());
+      const refPrevY = refCurrY - 1;
+      const prevPeriodRows = getFilteredRecords({ year: String(refPrevY) });
+      const prevInMap = new Map();
+      const prevOutMap = new Map();
+      prevPeriodRows.forEach(r => {
+        if (r.channel === 'SELL_IN') prevInMap.set(r.model, (prevInMap.get(r.model) || 0) + r.amount);
+        else prevOutMap.set(r.model, (prevOutMap.get(r.model) || 0) + r.amount);
+      });
+
+      const periodSuffix = f.month === 'ALL' ? '' : ` ${MONTH_SHORT_ES[Number(f.month)].toUpperCase()}`;
+      const badgeInYoY = document.getElementById('sellInBarsYoYBadge');
+      const badgeOutYoY = document.getElementById('sellOutBarsYoYBadge');
+      if (badgeInYoY) badgeInYoY.textContent = `${refPrevY}${periodSuffix} vs ${refCurrY}${periodSuffix}`;
+      if (badgeOutYoY) badgeOutYoY.textContent = `${refPrevY}${periodSuffix} vs ${refCurrY}${periodSuffix}`;
+
       renderChart('chartSellInBars', {
         type: 'bar',
         data: {
           labels: inModels.map(m => m.model),
-          datasets: [{ label: 'Sell In ($)', data: inModels.map(m => m.amount), backgroundColor: '#0D9488', borderRadius: 6 }]
+          datasets: [
+            {
+              label: `Sell In ${refPrevY}${periodSuffix}`,
+              data: inModels.map(m => prevInMap.get(m.model) || 0),
+              backgroundColor: 'rgba(148, 163, 184, 0.42)',
+              borderColor: 'rgba(100, 116, 139, 0.55)',
+              borderWidth: 1,
+              borderRadius: 5,
+              barPercentage: 0.82,
+              categoryPercentage: 0.72
+            },
+            {
+              label: `Sell In ${refCurrY}${periodSuffix}`,
+              data: inModels.map(m => m.amount),
+              backgroundColor: '#0D9488',
+              borderRadius: 6,
+              barPercentage: 0.9,
+              categoryPercentage: 0.72
+            }
+          ]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMXN.format(c.raw) } } },
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 10, font: { size: 10, weight: '700' }, color: '#475569' } },
+            tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${fmtMXN.format(c.raw)}` } }
+          },
           scales: {
             y: { grid: { color: '#F1F5F9' }, ticks: { font: { size: 10 }, callback: v => `$${Math.round(v / 1000)}k` } },
             x: { grid: { display: false }, ticks: { font: { size: 9, weight: '700' } } }
@@ -1592,11 +1696,34 @@
         type: 'bar',
         data: {
           labels: outModels.map(m => m.model),
-          datasets: [{ label: 'Sell Out ($)', data: outModels.map(m => m.amount), backgroundColor: '#38BDF8', borderRadius: 6 }]
+          datasets: [
+            {
+              label: `Sell Out ${refPrevY}${periodSuffix}`,
+              data: outModels.map(m => prevOutMap.get(m.model) || 0),
+              backgroundColor: 'rgba(148, 163, 184, 0.30)',
+              borderColor: 'rgba(203, 213, 225, 0.45)',
+              borderWidth: 1,
+              borderRadius: 5,
+              barPercentage: 0.82,
+              categoryPercentage: 0.72
+            },
+            {
+              label: `Sell Out ${refCurrY}${periodSuffix}`,
+              data: outModels.map(m => m.amount),
+              backgroundColor: '#38BDF8',
+              borderRadius: 6,
+              barPercentage: 0.9,
+              categoryPercentage: 0.72
+            }
+          ]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMXN.format(c.raw) } } },
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 10, font: { size: 10, weight: '700' }, color: '#CBD5E1' } },
+            tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${fmtMXN.format(c.raw)}` } }
+          },
           scales: {
             y: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#CBD5E1', font: { size: 10 }, callback: v => `$${Math.round(v / 1000)}k` } },
             x: { grid: { display: false }, ticks: { color: '#E2E8F0', font: { size: 9, weight: '700' } } }
@@ -1621,7 +1748,7 @@
         }
       });
 
-      // Acumulados Anuales YoY (Dual: Sell In + Sell Out)
+      // Acumulados Anuales YoY
       const years = [...new Set(allRecords.map(r => r.year).filter(y => y >= 2018))].sort((a, b) => a - b);
       const currY = f.year !== 'ALL' ? Number(f.year) : (years[years.length - 1] || new Date().getFullYear());
       const prevY = currY - 1;
@@ -1676,7 +1803,7 @@
       elOutInline.textContent = `${pctStr(currOutM, prevOutM)} MXN · ${pctStr(currOutP, prevOutP)} PCS`;
       elOutInline.className = `text-[11px] font-black tabular-nums ${gOutM >= 0 ? 'text-emerald-600' : 'text-rose-600'}`;
 
-      // Desempeño por Zona en DONA con Nombres Reales y Porcentajes
+      // Desempeño por Zona en DONA
       const zoneMap = new Map();
       outRows.forEach(r => {
         if (!isValidZoneName(r.zone)) return;
@@ -1721,6 +1848,36 @@
       renderSameDaySellOutTable();
     }
 
+    function handleSameDayModeChange() {
+      const mode = document.getElementById('sameDayMode')?.value || 'mtd';
+      const startWrap = document.getElementById('sameDayStartWrap');
+      const endLbl = document.getElementById('sameDayEndLbl');
+      if (mode === 'range') {
+        startWrap?.classList.remove('hidden');
+        startWrap?.classList.add('flex');
+        if (endLbl) endLbl.textContent = 'Al:';
+      } else {
+        startWrap?.classList.add('hidden');
+        startWrap?.classList.remove('flex');
+        if (endLbl) endLbl.textContent = mode === 'exact' ? 'Fecha:' : 'Corte:';
+      }
+      renderSameDaySellOutTable();
+    }
+
+    function resetSameDayToLatest() {
+      const outAll = getFilteredRecords({ year: 'ALL', month: 'ALL' }).filter(r => r.channel === 'SELL_OUT');
+      if (!outAll.length) return;
+      const maxDate = outAll.map(r => r.date).sort().pop();
+      const [yStr, mStr] = maxDate.split('-');
+      const modeSel = document.getElementById('sameDayMode');
+      if (modeSel) modeSel.value = 'mtd';
+      const endInp = document.getElementById('sameDayEndDate');
+      const startInp = document.getElementById('sameDayStartDate');
+      if (endInp) endInp.value = maxDate;
+      if (startInp) startInp.value = `${yStr}-${mStr}-01`;
+      handleSameDayModeChange();
+    }
+
     function renderSameDaySellOutTable() {
       const tbody = document.getElementById('sameDayComparisonBody');
       const tfoot = document.getElementById('sameDayComparisonFoot');
@@ -1734,12 +1891,43 @@
       }
 
       const maxDate = outAll.map(r => r.date).sort().pop();
-      const [yStr, mStr, dStr] = maxDate.split('-');
-      const cy = Number(yStr), cm = Number(mStr), cd = Number(dStr);
+      const endInp = document.getElementById('sameDayEndDate');
+      const startInp = document.getElementById('sameDayStartDate');
+      const mode = document.getElementById('sameDayMode')?.value || 'mtd';
+
+      if (endInp && !endInp.value) endInp.value = maxDate;
+      const endDateStr = (endInp && endInp.value) ? endInp.value : maxDate;
+      const [cy, cm, cd] = endDateStr.split('-').map(Number);
       const py = cy - 1;
 
-      document.getElementById('sameDayPeriodTag').textContent = `1-${cd} ${MONTH_NAMES_ES[cm].toUpperCase()} (${py} vs ${cy})`;
-      document.getElementById('sameDaySubtitle').textContent = `Corte automático al ${cd} de ${MONTH_NAMES_ES[cm]} de ${cy} contra mismo periodo de ${py}`;
+      if (startInp && !startInp.value) {
+        startInp.value = `${cy}-${String(cm).padStart(2, '0')}-01`;
+      }
+      const startDateStr = (startInp && startInp.value) ? startInp.value : `${cy}-${String(cm).padStart(2, '0')}-01`;
+      const [, sm, sd] = startDateStr.split('-').map(Number);
+
+      const mmdd = (m, d) => m * 100 + d;
+      let startKey = mmdd(cm, 1);
+      let endKey = mmdd(cm, cd);
+
+      if (mode === 'exact') {
+        startKey = mmdd(cm, cd);
+        endKey = mmdd(cm, cd);
+        document.getElementById('sameDayPeriodTag').textContent = `${cd} ${MONTH_NAMES_ES[cm].toUpperCase()} (${py} vs ${cy})`;
+        document.getElementById('sameDaySubtitle').textContent = `Comparativo exacto del ${cd} de ${MONTH_NAMES_ES[cm]} de ${cy} contra ${cd} de ${MONTH_NAMES_ES[cm]} de ${py}`;
+      } else if (mode === 'range') {
+        startKey = mmdd(sm, sd);
+        endKey = mmdd(cm, cd);
+        if (startKey > endKey) { const tmp = startKey; startKey = endKey; endKey = tmp; }
+        const lblStart = `${sd} ${MONTH_SHORT_ES[sm].toUpperCase()}`;
+        const lblEnd = `${cd} ${MONTH_SHORT_ES[cm].toUpperCase()}`;
+        document.getElementById('sameDayPeriodTag').textContent = `${lblStart} – ${lblEnd} (${py} vs ${cy})`;
+        document.getElementById('sameDaySubtitle').textContent = `Rango personalizado del ${lblStart} al ${lblEnd} (${cy} vs ${py}) • Ideal para Hot Sale / Buen Fin`;
+      } else {
+        document.getElementById('sameDayPeriodTag').textContent = `1-${cd} ${MONTH_NAMES_ES[cm].toUpperCase()} (${py} vs ${cy})`;
+        document.getElementById('sameDaySubtitle').textContent = `Acumulado del 1 al ${cd} de ${MONTH_NAMES_ES[cm]} de ${cy} contra mismo periodo de ${py}`;
+      }
+
       document.getElementById('thPrevPcs').textContent = `Pzas ${py}`;
       document.getElementById('thCurrPcs').textContent = `Pzas ${cy}`;
       document.getElementById('thPrevAmt').textContent = `Importe ${py}`;
@@ -1747,8 +1935,9 @@
 
       const map = new Map();
       outAll.forEach(r => {
-        if (r.month !== cm || r.day > cd) return;
         if (r.year !== cy && r.year !== py) return;
+        const rk = mmdd(r.month, r.day);
+        if (rk < startKey || rk > endKey) return;
         const entry = map.get(r.model) || { pPcs: 0, cPcs: 0, pAmt: 0, cAmt: 0 };
         if (r.year === py) { entry.pPcs += r.units; entry.pAmt += r.amount; }
         else { entry.cPcs += r.units; entry.cAmt += r.amount; }
@@ -1757,6 +1946,12 @@
 
       const list = [...map.entries()].map(([model, v]) => ({ model, ...v })).sort((a, b) => b.cAmt - a.cAmt || b.pAmt - a.pAmt);
       let tPP = 0, tCP = 0, tPA = 0, tCA = 0;
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400">Sin ventas Sell Out registradas en la fecha o rango seleccionado.</td></tr>`;
+        tfoot.innerHTML = '';
+        return;
+      }
 
       const fmtTrend = (c, p) => {
         if (p === 0 && c === 0) return '<span class="text-slate-400">0%</span>';
@@ -2064,7 +2259,9 @@
 
     let shareExcelReports = [];
     let shareUiInitialized = false;
+    let customBrandLogosMap = {};
     const processedLogoDataCache = new Map();
+
     function initShareModuleUI() {
       if (shareUiInitialized) return;
       shareUiInitialized = true;
@@ -2093,6 +2290,77 @@
       } else {
         syncSharePeriodLabels();
       }
+    }
+
+    function refreshShareYearSelector() {
+      const selY = document.getElementById('shareFilterYear');
+      if (!selY) return;
+      const yrs = [...new Set([2026, 2025, ...shareExcelReports.map(r => r.year).filter(Boolean)])].sort((a, b) => b - a);
+      const prev = selY.value;
+      selY.innerHTML = yrs.map(y => `<option value="${y}" class="text-navy-900">${y}</option>`).join('');
+      if (yrs.includes(Number(prev))) selY.value = prev;
+    }
+
+    function applyDynamicShareSelection(silent = false) {
+      const yr = Number(document.getElementById('shareFilterYear')?.value || 2026);
+      const mo = document.getElementById('shareFilterMonth')?.value || 'ALL';
+
+      if (!shareExcelReports.length) {
+        if (!silent) showToast('Carga un archivo Excel con pestaña Share o usa Captura Rápida');
+        renderShareSlide();
+        return;
+      }
+
+      if (mo === 'ALL') {
+        const yrReps = shareExcelReports.filter(r => r.year === yr);
+        if (!yrReps.length) {
+          if (!silent) showToast(`Sin cortes de Share cargados para ${yr}`);
+          renderShareSlide();
+          return;
+        }
+        const sumBrands = {};
+        OFFICIAL_SHARE_BRANDS.forEach(b => sumBrands[b.id] = 0);
+        yrReps.forEach(rep => {
+          OFFICIAL_SHARE_BRANDS.forEach(b => {
+            sumBrands[b.id] += Number(rep.brands[b.id] || 0);
+          });
+        });
+        const sortedReps = [...yrReps].sort((a, b) => (a.endDate || '').localeCompare(b.endDate || ''));
+        const firstRep = sortedReps[0];
+        const lastRep = sortedReps[sortedReps.length - 1];
+
+        document.getElementById('shareStartDate').value = firstRep.startDate;
+        document.getElementById('shareEndDate').value = lastRep.endDate;
+        document.getElementById('sharePeriodLabel').value = `ACUMULADO ${yr} (${MONTH_SHORT_ES[firstRep.month].toUpperCase()}-${MONTH_SHORT_ES[lastRep.month].toUpperCase()})`;
+        OFFICIAL_SHARE_BRANDS.forEach(b => {
+          const inp = document.getElementById(`shareInput_${b.id}`);
+          if (inp) inp.value = Math.round(sumBrands[b.id] || 0);
+        });
+        renderShareSlide();
+      } else {
+        const mNum = Number(mo);
+        const found = shareExcelReports.find(r => r.year === yr && r.month === mNum);
+        if (!found) {
+          if (!silent) showToast(`No hay datos de Share para ${MONTH_NAMES_ES[mNum]} ${yr}`);
+          return;
+        }
+        document.getElementById('shareStartDate').value = found.startDate;
+        document.getElementById('shareEndDate').value = found.endDate;
+        document.getElementById('sharePeriodLabel').value = found.periodLabel;
+        OFFICIAL_SHARE_BRANDS.forEach(b => {
+          const inp = document.getElementById(`shareInput_${b.id}`);
+          if (inp) inp.value = Math.round(Number(found.brands[b.id] || 0));
+        });
+        renderShareSlide();
+      }
+    }
+
+    function getCurrentShareEntries() {
+      return OFFICIAL_SHARE_BRANDS.map(b => {
+        const inp = document.getElementById(`shareInput_${b.id}`);
+        const sales = inp ? Math.max(0, parseNum(inp.value)) : b.defaultVal;
+        return { ...b, sales };
+      });
     }
 
     function toggleShareEditorPanel() {
@@ -2126,102 +2394,17 @@
     function syncSharePeriodLabels() {
       const sIso = document.getElementById('shareStartDate').value;
       const eIso = document.getElementById('shareEndDate').value;
-      if (sIso && eIso) {
-        const s = formatSpanishDateParts(sIso);
-        const e = formatSpanishDateParts(eIso);
-        if (s.m === e.m && s.y === e.y) {
-          document.getElementById('sharePeriodLabel').value = `${s.d}-${e.d} ${e.mShort} ${e.y}`;
-        } else {
-          document.getElementById('sharePeriodLabel').value = `${s.mShort} - ${e.mShort} ${e.y}`;
-        }
+      const s = formatSpanishDateParts(sIso);
+      const e = formatSpanishDateParts(eIso);
+      if (s.m && e.m) {
+        document.getElementById('sharePeriodLabel').value = s.m === e.m && s.y === e.y
+          ? `${s.d}-${e.d} ${e.mShort} ${e.y}`
+          : `${s.mShort}-${e.mShort} ${e.y}`;
       }
       renderShareSlide();
     }
 
-    function refreshShareYearSelector() {
-      const yrSel = document.getElementById('shareFilterYear');
-      if (!yrSel) return;
-      const yrs = [...new Set(shareExcelReports.map(h => Number(h.year)).filter(Boolean))].sort((a, b) => b - a);
-      const list = yrs.length ? yrs : [2026, 2025];
-      const prev = yrSel.value;
-      yrSel.innerHTML = list.map(y => `<option value="${y}" class="text-navy-900">${y}</option>`).join('');
-      if (list.includes(Number(prev))) yrSel.value = prev;
-    }
-
-    // Selector dinámico de Año y Mes en Share (Mes puntual o Acumulado Anual)
-    function applyDynamicShareSelection(silent = false) {
-      const yr = Number(document.getElementById('shareFilterYear')?.value || 2026);
-      const moVal = document.getElementById('shareFilterMonth')?.value || 'ALL';
-
-      if (!shareExcelReports.length) {
-        renderShareSlide();
-        return;
-      }
-
-      if (moVal === 'ALL') {
-        const matching = shareExcelReports.filter(h => Number(h.year) === yr);
-        if (!matching.length) {
-          if (!silent) showToast(`No hay datos de Share cargados para el año ${yr}`);
-          return;
-        }
-        const totals = {};
-        OFFICIAL_SHARE_BRANDS.forEach(b => totals[b.id] = 0);
-        matching.forEach(rep => {
-          OFFICIAL_SHARE_BRANDS.forEach(b => {
-            totals[b.id] += Number(rep.brands[b.id] || 0);
-          });
-        });
-
-        OFFICIAL_SHARE_BRANDS.forEach(b => {
-          const inp = document.getElementById(`shareInput_${b.id}`);
-          if (inp) inp.value = Math.round(totals[b.id]);
-        });
-
-        const sorted = [...matching].sort((a, b) => (a.endDate || '').localeCompare(b.endDate || ''));
-        const firstM = sorted[0].month || 1;
-        const lastM = sorted[sorted.length - 1].month || 12;
-        document.getElementById('shareStartDate').value = sorted[0].startDate || `${yr}-01-01`;
-        document.getElementById('shareEndDate').value = sorted[sorted.length - 1].endDate || `${yr}-12-31`;
-        document.getElementById('sharePeriodLabel').value = `ACUMULADO ${MONTH_SHORT_ES[firstM].toUpperCase()} - ${MONTH_SHORT_ES[lastM].toUpperCase()} ${yr}`;
-        renderShareSlide();
-        if (!silent) showToast(`Acumulado ${yr} (${matching.length} meses)`);
-      } else {
-        const mo = Number(moVal);
-        const found = shareExcelReports.find(h => Number(h.year) === yr && Number(h.month) === mo);
-        if (!found) {
-          if (!silent) showToast(`No hay datos cargados para ${MONTH_NAMES_ES[mo]} ${yr}`);
-          return;
-        }
-        document.getElementById('shareStartDate').value = found.startDate || '';
-        document.getElementById('shareEndDate').value = found.endDate || '';
-        document.getElementById('sharePeriodLabel').value = found.periodLabel || `${MONTH_SHORT_ES[mo].toUpperCase()} ${yr}`;
-        OFFICIAL_SHARE_BRANDS.forEach(b => {
-          const inp = document.getElementById(`shareInput_${b.id}`);
-          if (inp) inp.value = Math.round(found.brands[b.id] || 0);
-        });
-        renderShareSlide();
-        if (!silent) showToast(`Mostrando ${found.periodLabel}`);
-      }
-    }
-
-    function getCurrentShareEntries() {
-      return OFFICIAL_SHARE_BRANDS.map(b => {
-        const inp = document.getElementById(`shareInput_${b.id}`);
-        const val = parseFloat(inp ? inp.value : 0);
-        return { ...b, sales: isNaN(val) || val < 0 ? 0 : val };
-      });
-    }
-
-    // Procesa la imagen cargada para quitar fondo blanco/cuadriculado y recortar márgenes vacíos sin deformar
-    window.processLoadedBrandLogo = function(imgEl, brandId) {
-      if (!imgEl || imgEl.dataset.processed === '1') return;
-      imgEl.dataset.processed = '1';
-
-      if (processedLogoDataCache.has(brandId)) {
-        imgEl.src = processedLogoDataCache.get(brandId);
-        return;
-      }
-
+    function cleanImageDataUrlOnCanvas(imgEl, brandId, onDone) {
       try {
         const w = imgEl.naturalWidth;
         const h = imgEl.naturalHeight;
@@ -2236,23 +2419,45 @@
         const imgData = ctx.getImageData(0, 0, w, h);
         const d = imgData.data;
 
-        // Detectar color de fondo en esquinas (blanco o gris claro de cuadrícula transparente)
-        const isBgPixel = (r, g, b, a) => {
-          if (a < 25) return true;
-          if (r > 236 && g > 236 && b > 236) return true;
-          // Cuadrícula típica gris claro (#CCCCCC / #E5E5E5 / #F0F0F0) en imágenes falsas transparentes
-          const isNeutralGray = Math.abs(r - g) <= 6 && Math.abs(g - b) <= 6 && r >= 195 && r <= 236;
-          return isNeutralGray;
+        const isOuterBg = (idx) => {
+          const r = d[idx], g = d[idx + 1], b = d[idx + 2], a = d[idx + 3];
+          if (a < 20) return true;
+          if (r > 240 && g > 240 && b > 240) return true;
+          return Math.abs(r - g) <= 5 && Math.abs(g - b) <= 5 && r >= 198 && r <= 240;
         };
+
+        const visited = new Uint8Array(w * h);
+        const queue = new Int32Array(w * h);
+        let head = 0, tail = 0;
+
+        const tryPush = (x, y) => {
+          const p = y * w + x;
+          if (visited[p]) return;
+          if (isOuterBg(p * 4)) {
+            visited[p] = 1;
+            queue[tail++] = p;
+          }
+        };
+
+        for (let x = 0; x < w; x++) { tryPush(x, 0); tryPush(x, h - 1); }
+        for (let y = 0; y < h; y++) { tryPush(0, y); tryPush(w - 1, y); }
+
+        while (head < tail) {
+          const p = queue[head++];
+          d[p * 4 + 3] = 0;
+          const x = p % w;
+          const y = (p - x) / w;
+          if (x > 0) tryPush(x - 1, y);
+          if (x < w - 1) tryPush(x + 1, y);
+          if (y > 0) tryPush(x, y - 1);
+          if (y < h - 1) tryPush(x, y + 1);
+        }
 
         let minX = w, minY = h, maxX = 0, maxY = 0, hasContent = false;
         for (let y = 0; y < h; y++) {
           for (let x = 0; x < w; x++) {
             const idx = (y * w + x) * 4;
-            const r = d[idx], g = d[idx + 1], b = d[idx + 2], a = d[idx + 3];
-            if (isBgPixel(r, g, b, a)) {
-              d[idx + 3] = 0;
-            } else {
+            if (d[idx + 3] > 20) {
               hasContent = true;
               if (x < minX) minX = x;
               if (x > maxX) maxX = x;
@@ -2265,7 +2470,7 @@
         if (!hasContent) return;
         ctx.putImageData(imgData, 0, 0);
 
-        const pad = 4;
+        const pad = 2;
         const sx = Math.max(0, minX - pad);
         const sy = Math.max(0, minY - pad);
         const sw = Math.min(w - sx, (maxX - minX + 1) + pad * 2);
@@ -2278,11 +2483,72 @@
 
         const cleanDataUrl = out.toDataURL('image/png');
         processedLogoDataCache.set(brandId, cleanDataUrl);
-        imgEl.src = cleanDataUrl;
-      } catch (e) {
-        // Si el navegador restringe pixel reading, mantiene la imagen original sin deformar
+        if (onDone) onDone(cleanDataUrl);
+      } catch (e) {}
+    }
+
+    window.processLoadedBrandLogo = function(imgEl, brandId) {
+      if (!imgEl || imgEl.dataset.processed === '1') return;
+      imgEl.dataset.processed = '1';
+
+      if (processedLogoDataCache.has(brandId)) {
+        imgEl.src = processedLogoDataCache.get(brandId);
+        return;
       }
+      cleanImageDataUrlOnCanvas(imgEl, brandId, (url) => { imgEl.src = url; });
     };
+
+    async function handleCustomShareLogosUpload(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      let matchedCount = 0;
+
+      for (const file of files) {
+        const fn = normalizeText(file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' '));
+        const brand = OFFICIAL_SHARE_BRANDS.find(b => b.aliases.some(al => fn.includes(al)));
+        if (!brand) continue;
+
+        const dataUrl = await new Promise((resolve) => {
+          const rd = new FileReader();
+          rd.onload = () => resolve(rd.result);
+          rd.onerror = () => resolve(null);
+          rd.readAsDataURL(file);
+        });
+        if (!dataUrl) continue;
+
+        const cleaned = await new Promise((resolve) => {
+          const tmpImg = new Image();
+          tmpImg.onload = () => {
+            let resolved = false;
+            cleanImageDataUrlOnCanvas(tmpImg, brand.id, (url) => { resolved = true; resolve(url); });
+            if (!resolved) resolve(dataUrl);
+          };
+          tmpImg.onerror = () => resolve(dataUrl);
+          tmpImg.src = dataUrl;
+        });
+
+        customBrandLogosMap[brand.id] = cleaned;
+        processedLogoDataCache.set(brand.id, cleaned);
+        matchedCount++;
+      }
+
+      if (matchedCount > 0) {
+        await saveCustomLogosToDB(customBrandLogosMap);
+        renderShareSlide();
+        showToast(`${matchedCount} logotipo(s) oficial(es) guardado(s) en alta calidad`);
+      } else {
+        showToast('Nombra los archivos con la marca (ej. LOGO_AMERICA.png, LOGO_SEALY.png)');
+      }
+      event.target.value = '';
+    }
+
+    async function clearCustomShareLogos() {
+      customBrandLogosMap = {};
+      processedLogoDataCache.clear();
+      await saveCustomLogosToDB({});
+      renderShareSlide();
+      showToast('Logotipos restaurados a archivos del repositorio');
+    }
 
     window.handleBrandLogoError = function(imgEl, brandId, step) {
       const brand = OFFICIAL_SHARE_BRANDS.find(x => x.id === brandId);
@@ -2298,6 +2564,13 @@
     };
 
     function buildBrandLogoHtml(b) {
+      if (customBrandLogosMap[b.id]) {
+        return `
+          <div class="w-24 h-11 flex items-center justify-center shrink-0">
+            <img src="${customBrandLogosMap[b.id]}" alt="${b.name}" class="max-h-10 max-w-24 w-auto h-auto object-contain" />
+          </div>
+        `;
+      }
       return `
         <div class="w-24 h-11 flex items-center justify-center shrink-0">
           <img src="./${encodeURI(b.logoFiles[0])}" alt="${b.name}"
@@ -2436,7 +2709,6 @@
       return OFFICIAL_SHARE_BRANDS.find(b => b.aliases.some(al => norm === al || norm.includes(al)));
     }
 
-    // Lector de pestaña SHARE (soporta Matriz Marca x Mes, Matriz Mes x Marca y Tabular)
     function parseShareWorksheet(ws) {
       const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
       if (!aoa.length) return [];
@@ -2468,7 +2740,6 @@
         return reportsByKey.get(key);
       };
 
-      // Caso A: Columnas son Meses (Ene, Feb, Mar... Nov) y Filas son Marcas
       let headerRowIdx = -1;
       let monthCols = [];
       for (let i = 0; i < Math.min(12, aoa.length); i++) {
@@ -2522,7 +2793,6 @@
         }
       }
 
-      // Caso B: Filas son Meses y Columnas son Marcas
       if (reportsByKey.size === 0) {
         for (let i = 0; i < Math.min(12, aoa.length); i++) {
           const row = aoa[i] || [];
@@ -2558,7 +2828,6 @@
         }
       }
 
-      // Caso C: Formato Tabular (Marca | Mes | Año | Ventas)
       if (reportsByKey.size === 0) {
         const smart = sheetToSmartData(ws, ['marca', 'mes', 'fecha', 'venta', 'importe', 'monto', 'sell out', 'ano', 'año']);
         smart.rows.forEach(r => {
@@ -2909,14 +3178,16 @@
     function renderExplorer() {
       const exactDate = document.getElementById('explorerDate').value;
       const flow = document.getElementById('explorerFlow').value;
+      const prodType = document.getElementById('explorerType')?.value || 'ALL';
       const q = normalizeText(document.getElementById('explorerSearch').value);
 
       let rows = getFilteredRecords();
       if (exactDate) rows = rows.filter(r => r.date === exactDate);
       if (flow !== 'ALL') rows = rows.filter(r => r.channel === flow);
+      if (prodType !== 'ALL') rows = rows.filter(r => (r.productType || 'COLCHÓN') === prodType);
       if (q) {
         rows = rows.filter(r =>
-          normalizeText(`${r.client} ${r.storeId} ${r.storeName} ${r.zone} ${r.model} ${r.size}`).includes(q)
+          normalizeText(`${r.client} ${r.storeId} ${r.storeName} ${r.zone} ${r.productType || ''} ${r.model} ${r.size} ${r.agent || ''}`).includes(q)
         );
       }
 
@@ -2936,22 +3207,23 @@
             <td class="py-2 px-3 font-mono font-bold text-teal-700">${r.storeId || '—'}</td>
             <td class="py-2 px-3 font-semibold text-slate-800">${r.storeName || '—'}</td>
             <td class="py-2 px-3 text-slate-600 font-semibold">${r.zone}</td>
+            <td class="py-2 px-3"><span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700">${r.productType || 'COLCHÓN'}</span></td>
             <td class="py-2 px-3"><strong class="text-navy-900">${r.model}</strong> <span class="text-slate-400 text-[10px]">${r.size}</span></td>
             <td class="py-2 px-3 text-right font-bold">${fmtInt.format(r.units)}</td>
             <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(r.amount)}</td>
           </tr>
         `;
-      }).join('') || `<tr><td colspan="9" class="py-8 text-center text-slate-400">Sin operaciones para este criterio</td></tr>`;
+      }).join('') || `<tr><td colspan="10" class="py-8 text-center text-slate-400">Sin operaciones para este criterio</td></tr>`;
     }
 
     function exportExplorerCSV() {
       if (!currentUser || !currentUser.canDownload) return showToast('Tu perfil es de solo visualización.');
       if (!lastExplorerRows.length) return showToast('No hay registros para exportar');
-      const headers = ['Fecha', 'Flujo', 'Segmento', 'Cliente', 'No_Sucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
+      const headers = ['Fecha', 'Flujo', 'Segmento', 'Cliente', 'Agente', 'Categoria', 'Tipo', 'No_Sucursal', 'Tienda', 'Zona', 'Modelo', 'Medida', 'Piezas', 'Importe'];
       const csv = [
         headers.join(','),
         ...lastExplorerRows.map(r => [
-          r.date, r.channel, `"${r.segment}"`, `"${r.client}"`, `"${r.storeId}"`, `"${r.storeName}"`, `"${r.zone}"`, `"${r.model}"`, `"${r.size}"`, r.units, r.amount
+          r.date, r.channel, `"${r.segment}"`, `"${r.client}"`, `"${r.agent || ''}"`, `"${r.category || ''}"`, `"${r.productType || ''}"`, `"${r.storeId}"`, `"${r.storeName}"`, `"${r.zone}"`, `"${r.model}"`, `"${r.size}"`, r.units, r.amount
         ].join(','))
       ].join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2965,7 +3237,7 @@
     }
 
     // ---------------------------------------------------------
-    // 11. MOTOR DE LECTURA DE EXCEL (DIRECTORIO, SELL IN/OUT Y SHARE)
+    // 11. MOTOR DE LECTURA DE EXCEL
     // ---------------------------------------------------------
     function parseNum(v) {
       if (typeof v === 'number') return isFinite(v) ? v : 0;
@@ -3061,6 +3333,25 @@
       return /^\d+$/.test(String(val ?? '').trim());
     }
 
+    function isLikelySku(val) {
+      return /^[A-Z]\d{4,}[A-Z0-9]*$/i.test(String(val ?? '').trim());
+    }
+
+    function normalizeStoreKey(val) {
+      const s = String(val ?? '').trim();
+      if (!s || isLikelySku(s)) return '';
+      if (/^\d+(\.0+)?$/.test(s)) {
+        const n = parseInt(s, 10);
+        return (n >= 1 && n <= 99999) ? String(n) : '';
+      }
+      const m = s.match(/^(?:suc(?:ursal)?|tda|tienda|pdv)?\s*#?\s*0*(\d{1,5})(?:\s*[-–:|/.\s]|$)/i);
+      if (m) {
+        const n = parseInt(m[1], 10);
+        return (n >= 1 && n <= 99999) ? String(n) : '';
+      }
+      return '';
+    }
+
     function normalizeSegmentLabel(rawSeg, rawClient) {
       const s = normalizeText(rawSeg);
       if (s.includes('horizontal') || s.includes('muebler') || s.includes('indep')) return 'Canal Horizontal';
@@ -3082,7 +3373,45 @@
       return { client, segment };
     }
 
+    function normalizeCategoryLabel(rawCat, rawType, model) {
+      const s = normalizeText(rawCat);
+      if (s.includes('blanco') || s.includes('accesor') || s.includes('almohad') || s.includes('saban') || s.includes('protector')) return 'BLANCOS';
+      if (s.includes('colchon') || s.includes('box') || s.includes('base') || s.includes('cama')) return 'COLCHONES';
+      if (rawCat && String(rawCat).trim() && !isNumericLike(rawCat)) return String(rawCat).trim().toUpperCase();
+
+      const mix = normalizeText(`${rawType || ''} ${model || ''}`);
+      if (mix.includes('protector') || mix.includes('sabana') || mix.includes('almohada') || mix.includes('blanco') || mix.includes('edredon') || mix.includes('coj')) return 'BLANCOS';
+      return 'COLCHONES';
+    }
+
+    function normalizeProductTypeLabel(rawType, model, rawCat) {
+      const t = String(rawType || '').trim();
+      const tn = normalizeText(t);
+      if (tn) {
+        if (tn.includes('colch')) return 'COLCHÓN';
+        if (tn.includes('box') || tn.includes('base')) return 'BOX';
+        if (tn.includes('protector')) return 'PROTECTOR';
+        if (tn.includes('saban')) return 'SÁBANAS';
+        if (tn.includes('almohad')) return 'ALMOHADAS';
+        if (tn.includes('blanco')) return 'BLANCOS';
+        if (tn.includes('bonif') || tn.includes('desc')) return 'BONIFICACIÓN';
+        if (!isNumericLike(t)) return t.toUpperCase();
+      }
+      const mn = normalizeText(`${model || ''} ${rawCat || ''}`);
+      if (mn.includes('box') || mn.includes('base')) return 'BOX';
+      if (mn.includes('protector')) return 'PROTECTOR';
+      if (mn.includes('saban')) return 'SÁBANAS';
+      if (mn.includes('almohad')) return 'ALMOHADAS';
+      if (mn.includes('blanco')) return 'BLANCOS';
+      if (mn.includes('bonif') || mn.includes('desc')) return 'BONIFICACIÓN';
+      return 'COLCHÓN';
+    }
+
     function handleMainExcelFile(event) {
+      if (!currentUser || !currentUser.canEdit) {
+        event.target.value = '';
+        return showToast('Tu perfil no tiene permisos para importar archivos Excel.');
+      }
       const file = event.target.files[0];
       if (!file) return;
 
@@ -3090,27 +3419,12 @@
       reader.onload = (e) => {
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const diagLines = [`Archivo: ${file.name}`, `Pestañas: ${wb.SheetNames.join(', ')}`];
           const parsed = [];
           const shareParsed = [];
-          const diagLines = [`Archivo: ${file.name} | Pestañas: ${wb.SheetNames.join(', ')}`];
           let seq = 1;
 
-          const isLikelySku = (val) => /^[A-Z]{1,3}\d{4,}[A-Z0-9]*$/.test(String(val ?? '').trim().toUpperCase());
-          const normalizeStoreKey = (val) => {
-            const raw = String(val ?? '').trim();
-            if (!raw || isLikelySku(raw)) return '';
-            // 1. Número puro (ej. "48" o "048")
-            const pure = raw.match(/^0*(\d{1,5})$/);
-            if (pure) return pure[1];
-            // 2. Número al inicio de cadena (ej. "48 - GDL CENTRO", "0318 VALLARTA", "SUC 48 ...")
-            const lead = raw.match(/^(?:suc(?:ursal)?|tda|tienda|pdv|no\.?|num\.?|#)?\s*[-.:]?\s*0*(\d{1,5})(?:\b|[-_\s/])/i);
-            if (lead) return lead[1];
-            // 3. Número precedido por palabra clave en cualquier parte (ej. "TIENDA 48", "SUC. 318")
-            const mid = raw.match(/\b(?:suc(?:ursal)?|tda|tienda|pdv|no\.?|num\.?|#)\s*0*(\d{1,5})\b/i);
-            return mid ? mid[1] : '';
-          };
-
-          // 1) DIRECTORIO DE TIENDAS (Columna C = # Sucursal | Columna D = Nombre de Sucursal)
+          // 1) DIRECTORIO DE TIENDAS (Columna C = # Sucursal | Columna D = Nombre de Sucursal | Columna CADENA)
           const storeDirById = new Map();
           const storeDirByName = new Map();
           const uenIdToZoneName = new Map();
@@ -3124,18 +3438,25 @@
           dirSheets.forEach(sn => {
             const aoaDir = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
             let cnt = 0;
+            let chainColIdx = -1;
+
+            for (let i = 0; i < Math.min(8, aoaDir.length); i++) {
+              const hdr = aoaDir[i] || [];
+              const foundIdx = hdr.findIndex(c => normalizeText(c) === 'cadena' || normalizeText(c).includes('cadena'));
+              if (foundIdx >= 0) { chainColIdx = foundIdx; break; }
+            }
 
             aoaDir.forEach((rawArr) => {
               if (!rawArr || !rawArr.some(c => String(c ?? '').trim() !== '')) return;
-              // Columna C (índice 2) = # Sucursal | Columna D (índice 3) = Nombre de Sucursal
               const sId = normalizeStoreKey(rawArr[2]);
               const rawColD = String(rawArr[3] ?? '').trim();
               if (!sId) return;
 
+              const rawChain = chainColIdx >= 0 ? String(rawArr[chainColIdx] ?? '').trim() : '';
               let uenNum = '';
               let zoneName = '';
               rawArr.forEach((cell, cIdx) => {
-                if (cIdx === 2 || cIdx === 3) return;
+                if (cIdx === 2 || cIdx === 3 || cIdx === chainColIdx) return;
                 const val = String(cell ?? '').trim();
                 if (!val) return;
                 if (isPureNumber(val) && Number(val) >= 1 && Number(val) <= 30) {
@@ -3156,6 +3477,7 @@
               const entry = {
                 storeId: sId,
                 storeName: cleanName,
+                chain: rawChain,
                 uenNum,
                 zone: isValidZoneName(finalZone) ? finalZone : 'SIN ZONA'
               };
@@ -3170,35 +3492,37 @@
               }
             });
 
-            const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName} (${s.zone})`).join(' | ');
-            diagLines.push(`• Directorio [${sn}] (Col C=#Suc, Col D=Nombre): ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
+            const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName}${s.chain ? ` [${s.chain}]` : ''} (${s.zone})`).join(' | ');
+            diagLines.push(`• Directorio [${sn}] (Col C=#Suc, Col D=Nombre${chainColIdx >= 0 ? ', CADENA detectada' : ''}): ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
           });
 
-          const resolveZone = (rawUenOrZone, dirMatch, isSellIn = false) => {
+          const resolveZone = (rawUen, dirMatch, isSellIn = false) => {
             if (dirMatch && isValidZoneName(dirMatch.zone)) return dirMatch.zone;
-            const raw = String(rawUenOrZone ?? '').trim();
-            if (!raw) return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
-            if (isPureNumber(raw)) {
-              const key = String(Number(raw));
-              if (uenIdToZoneName.has(key)) return uenIdToZoneName.get(key);
-              return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
+            const s = String(rawUen ?? '').trim();
+            if (isPureNumber(s)) {
+              const mapped = uenIdToZoneName.get(String(Number(s)));
+              if (mapped && isValidZoneName(mapped)) return mapped;
             }
-            if (isNumericLike(raw)) return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
-            const clean = normalizeZoneLabel(raw);
-            return isValidZoneName(clean) ? clean : (isSellIn ? 'CORPORATIVO' : 'SIN ZONA');
+            const up = normalizeZoneLabel(s);
+            if (isValidZoneName(up)) {
+              if (validZones.size === 0 || validZones.has(up)) return up;
+            }
+            return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
           };
 
-          // 2) BD SELL IN / SELL IN
+          // 2) BD SELL IN / SELL IN (Col D = Vendedor, Col N = Piezas, Col S = Neto, Col V = Categoría)
           const inSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             return u.includes('sellin') || u === 'sin' || u.includes('facturacion');
           });
 
           inSheets.forEach(sn => {
-            const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pcs', 'segmento']);
+            const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pcs', 'segmento', 'vendedor', 'categoria']);
             const isBdSellIn = normalizeText(sn).includes('bd') || headers.length >= 19;
+            const colDHeader = headers[3] || 'Col D';
             const colNHeader = headers[13] || 'Col N';
             const colSHeader = headers[18] || 'Col S';
+            const colVHeader = headers[21] || 'Col V';
 
             let cnt = 0, totPcs = 0, totAmt = 0;
             let lastClient = 'Super Colchones (GNC)', lastSeg = '', lastYear = new Date().getFullYear(), lastMonth = 1;
@@ -3229,6 +3553,18 @@
               if (!model) return;
 
               const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
+              const rawType = getSmartCell(r, ['Tipo', 'Tipo Producto', 'Tipo de Producto', 'Subcategoria', 'Subcategoría', 'Familia'], ['tipo', 'subcateg']);
+
+              const rawAgent = (isBdSellIn && rawArr.length > 3 && String(rawArr[3] ?? '').trim())
+                ? String(rawArr[3]).trim()
+                : String(getSmartCell(r, ['Vendedor', 'Agente', 'Agente de Ventas', 'Ejecutivo'], ['vendedor', 'agente'])).trim();
+
+              const rawCat = (isBdSellIn && rawArr.length > 21 && String(rawArr[21] ?? '').trim())
+                ? String(rawArr[21]).trim()
+                : String(getSmartCell(r, ['Categoría', 'Categoria', 'Division', 'División'], ['categor'])).trim();
+
+              const category = normalizeCategoryLabel(rawCat, rawType, model);
+              const productType = normalizeProductTypeLabel(rawType, model, rawCat);
 
               let units = 0;
               let amount = 0;
@@ -3254,19 +3590,21 @@
                 date: `${lastYear}-${String(lastMonth).padStart(2, '0')}-${String(dayVal).padStart(2, '0')}`,
                 year: lastYear, month: lastMonth, day: dayVal,
                 client: cInfo.client, segment: cInfo.segment,
+                agent: rawAgent, category, productType,
                 storeId: '', storeName: '', zone: resolvedZ,
                 model, size, units,
                 amount: Math.round(amount * 100) / 100
               });
               cnt++;
             });
-            const colInfo = (isBdSellIn && headers.length > 18) ? ` [Col N: "${colNHeader}" | Col S: "${colSHeader}"]` : '';
+            const colInfo = (isBdSellIn && headers.length > 18) ? ` [D:"${colDHeader}" | N:"${colNHeader}" | S:"${colSHeader}" | V:"${colVHeader}"]` : '';
             diagLines.push(`• SELL IN [${sn}]${colInfo}: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
-          // 3) SELL OUT (Extrae # Sucursal y Nombre de Tienda por separado)
+          // 3) SELL OUT (Excluye pestañas de resumen como "sell out mismo dia LY" para no duplicar registros)
           const outSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
+            if (u.includes('mismodia') || u.endsWith('ly') || u.includes('comparativo') || u.includes('resumen')) return false;
             return u.includes('sellout') || u === 'so' || u === 'sout' || u.includes('desplazamiento') || u.includes('pos');
           });
 
@@ -3274,7 +3612,6 @@
             const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['modelo', 'piezas', 'costo', 'tienda', 'sucursal', 'mes', 'ano', 'fecha', 'cliente', 'cantidad', 'importe', 'uen', 'zona', 'segmento']);
             let cnt = 0, totPcs = 0, totAmt = 0;
 
-            // Detectar índice de columna de Sucursal/Tienda por encabezado o por coincidencia contra Directorio
             let detectedStoreColIdx = headers.findIndex(h => {
               const hn = normalizeText(h);
               return (hn.includes('sucursal') || hn.includes('tienda') || hn.includes('pdv') || hn === 'no.' || hn === 'no' || hn === 'num') && !hn.includes('nombre');
@@ -3312,7 +3649,6 @@
 
               const rawClient = getSmartCell(r, ['Cliente', 'Nombre Cliente', 'Nombre de Cadena', 'Cadena', 'Razon Social'], ['cliente', 'cadena']);
               const rawSeg = getSmartCell(r, ['Segmento', 'Tipo de Cliente', 'Tipo Cliente', 'Clasificacion', 'Canal Cliente'], ['segmento', 'tipo de cliente', 'tipo cliente']);
-              const cInfo = normalizeClientInfo(rawClient, rawSeg);
 
               let rawStoreId = detectedStoreColIdx >= 0 ? rawArr[detectedStoreColIdx] : getSmartCell(r, [
                 'No. Sucursal', 'No Sucursal', 'Numero de Sucursal', 'Número de Sucursal', 'Num Sucursal', 'No. de Sucursal',
@@ -3324,7 +3660,6 @@
               ], ['nombre tienda', 'nombre sucursal', 'tienda', 'pdv'])).trim();
 
               let normId = normalizeStoreKey(rawStoreId) || normalizeStoreKey(rawStoreName);
-              // Respaldo: buscar en cualquier celda no numérica-de-importe de la fila si aún no se detecta el # de sucursal
               if (!normId && storeDirById.size > 0) {
                 for (let c = 0; c < rawArr.length; c++) {
                   const hn = normalizeText(headers[c] || '');
@@ -3336,6 +3671,8 @@
 
               const cleanRawName = (isLikelySku(rawStoreName) || isNumericLike(rawStoreName)) ? '' : rawStoreName.replace(/^\d+\s*[-–]\s*/, '').trim();
               const dirMatch = (normId && storeDirById.get(normId)) || (cleanRawName && storeDirByName.get(normalizeText(cleanRawName))) || null;
+
+              const cInfo = normalizeClientInfo(rawClient || (dirMatch && dirMatch.chain) || '', rawSeg);
 
               const storeId = (dirMatch && dirMatch.storeId) || normId || '';
               const storeName = (dirMatch && dirMatch.storeName) || cleanRawName || (storeId ? `Sucursal ${storeId}` : '');
@@ -3349,6 +3686,12 @@
               const dVal = pDate ? pDate.day : (parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15);
 
               const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
+              const rawType = getSmartCell(r, ['Tipo', 'Tipo Producto', 'Tipo de Producto', 'Subcategoria', 'Subcategoría', 'Familia', 'Linea', 'Línea'], ['tipo', 'subcateg']);
+              const rawCat = getSmartCell(r, ['Categoría', 'Categoria', 'Division', 'División'], ['categor']);
+              const rawAgent = String(getSmartCell(r, ['Vendedor', 'Agente', 'Ejecutivo'], ['vendedor', 'agente'])).trim();
+              const category = normalizeCategoryLabel(rawCat, rawType, model);
+              const productType = normalizeProductTypeLabel(rawType, model, rawCat);
+
               const units = Math.round(parseNum(getSmartCell(r, ['Piezas', 'Cantidad', 'Unidades', 'Pzas', 'PCS'], ['pieza', 'cant', 'unid', 'pcs'])));
               const unitCost = parseNum(getSmartCell(r, ['Costo', 'Precio', 'Precio Unitario', 'Costo Unitario'], ['costo', 'precio']));
               const rawImporte = parseNum(getSmartCell(r, ['Importe', 'Total', 'Monto', 'Venta'], ['importe', 'total', 'monto', 'venta']));
@@ -3364,6 +3707,7 @@
                 date: `${yVal}-${String(mVal).padStart(2, '0')}-${String(dVal).padStart(2, '0')}`,
                 year: yVal, month: mVal, day: dVal,
                 client: cInfo.client, segment: cInfo.segment,
+                agent: rawAgent, category, productType,
                 storeId, storeName, zone,
                 model, size, units,
                 amount: Math.round(amount * 100) / 100
@@ -3487,6 +3831,7 @@
     window.addEventListener('DOMContentLoaded', async () => {
       allRecords = await loadRecordsFromDB();
       shareExcelReports = await loadShareReportsFromDB();
+      customBrandLogosMap = await loadCustomLogosFromDB();
       try {
         const savedUser = sessionStorage.getItem(SESSION_KEY);
         if (savedUser) {
