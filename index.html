@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.14.1 | Colchones América</title>
+  <title>ColchoBoard v3.15 | Colchones América</title>
 
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/png" href="./ColchoBoard_icon_app_3.png" />
@@ -98,7 +98,7 @@
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
           <img src="./ColchoBoard_icon_app_3.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./ColchoBoard_icon_app_2.png'; this.onerror=function(){ this.src='./ColchoBoard_icon_app.png'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); }; };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.14.1</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.15</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -154,7 +154,7 @@
             <img src="./ColchoBoard_icon_app_3.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./ColchoBoard_icon_app_2.png'; this.onerror=function(){ this.src='./ColchoBoard_icon_app.png'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); }; };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.14.1</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.15</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
@@ -992,7 +992,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 class="text-base font-black text-navy-900">Cargar Información Real desde Excel (.xlsx)</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (Col C # Sucursal, Col D Nombre, Col G CADENA), <strong>BD Sell In</strong> (Col D Agente, Col F Tipo, Col O Piezas, Col P Neto, Col V Categoría), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (# Sucursal, Nombre de Tienda, Zona/UEN y Cadena), <strong>BD Sell In</strong> (Col D Agente, Col F Tipo, Col O Piezas, Col T Neto, Col V Categoría), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
               </div>
               <button onclick="clearSavedDatabase()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
                 Limpiar Base Guardada
@@ -1018,7 +1018,7 @@
 
             <label class="block border-2 border-dashed border-slate-300 hover:border-teal-500 hover:bg-teal-50/30 rounded-2xl p-8 text-center cursor-pointer transition">
               <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" onchange="handleMainExcelFile(event)" class="hidden" />
-              <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_10.xlsx)</p>
+              <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_11.xlsx)</p>
               <p class="text-xs text-slate-500 mt-1">Procesa automáticamente BD Sell In, Sell Out, Directorio de tiendas y Share</p>
             </label>
 
@@ -1045,7 +1045,7 @@
   <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
 
   <!-- ========================================================= -->
-  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.14.1)           -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.15)             -->
   <!-- ========================================================= -->
   <script>
     const AUTHORIZED_USERS = [
@@ -1057,7 +1057,7 @@
       { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',    cred: '2001', name: 'JONATHAN MORALES', canEdit: false, canDownload: false }
     ];
 
-    const SESSION_KEY = 'colchoboard_session_v314';
+    const SESSION_KEY = 'colchoboard_session_v315';
     let currentUser = null;
     let activeModule = 'resumen';
     let allRecords = [];
@@ -1337,10 +1337,23 @@
       return /^[-+$]?\d+([.,]\d+)?%?$/.test(s);
     }
 
+    const KNOWN_REGIONAL_ZONES = new Set([
+      'GUADALAJARA', 'PUERTO VALLARTA', 'MANZANILLO', 'TEPIC', 'CULIACAN', 'COLIMA',
+      'MAZATLAN', 'MOCHIS', 'LOS MOCHIS', 'ZAPOPAN', 'TLAJOMULCO', 'TLAQUEPAQUE',
+      'TONALA', 'CDMX', 'MONTERREY', 'LEON', 'AGUASCALIENTES', 'MORELIA', 'QUERETARO',
+      'VALLARTA', 'JALISCO', 'SINALOA', 'NAYARIT', 'MICHOACAN', 'BAJIO', 'OCCIDENTE', 'NORTE', 'CENTRO', 'SUR'
+    ]);
+
+    function isKnownRegionalZone(z) {
+      const s = normalizeText(z).toUpperCase().replace(/\s+/g, ' ').trim();
+      return KNOWN_REGIONAL_ZONES.has(s);
+    }
+
     function isValidZoneName(z) {
       const s = String(z ?? '').trim().toUpperCase();
       if (!s) return false;
       if (s === 'SIN ZONA' || s === 'SIN UEN' || s === 'CORPORATIVO' || s === 'GENERAL') return false;
+      if (s.includes('SUPER COLCHONES') || s.includes('CORPORAT') || s.includes('HORIZONTAL')) return false;
       if (isNumericLike(s)) return false;
       if (/^ZONA\s+\d+/.test(s)) return false;
       return /[A-ZÁÉÍÓÚÑ]{3,}/.test(s);
@@ -1355,6 +1368,10 @@
     }
 
     function normalizeZoneLabel(raw) {
+      return String(raw ?? '').trim().replace(/\s+/g, ' ').toUpperCase();
+    }
+
+    function normalizeModelLabel(raw) {
       return String(raw ?? '').trim().replace(/\s+/g, ' ').toUpperCase();
     }
 
@@ -1613,10 +1630,11 @@
       const groupByModel = (arr) => {
         const map = new Map();
         arr.forEach(r => {
-          const cur = map.get(r.model) || { amount: 0, units: 0 };
+          const key = normalizeModelLabel(r.model);
+          const cur = map.get(key) || { amount: 0, units: 0 };
           cur.amount += r.amount;
           cur.units += r.units;
-          map.set(r.model, cur);
+          map.set(key, cur);
         });
         return [...map.entries()].map(([model, v]) => ({ model, ...v })).sort((a, b) => b.amount - a.amount);
       };
@@ -1633,8 +1651,9 @@
       const prevInMap = new Map();
       const prevOutMap = new Map();
       prevPeriodRows.forEach(r => {
-        if (r.channel === 'SELL_IN') prevInMap.set(r.model, (prevInMap.get(r.model) || 0) + r.amount);
-        else prevOutMap.set(r.model, (prevOutMap.get(r.model) || 0) + r.amount);
+        const mKey = normalizeModelLabel(r.model);
+        if (r.channel === 'SELL_IN') prevInMap.set(mKey, (prevInMap.get(mKey) || 0) + r.amount);
+        else prevOutMap.set(mKey, (prevOutMap.get(mKey) || 0) + r.amount);
       });
 
       const periodSuffix = f.month === 'ALL' ? '' : ` ${MONTH_SHORT_ES[Number(f.month)].toUpperCase()}`;
@@ -1945,10 +1964,11 @@
         if (r.year !== cy && r.year !== py) return;
         const rk = mmdd(r.month, r.day);
         if (rk < startKey || rk > endKey) return;
-        const entry = map.get(r.model) || { pPcs: 0, cPcs: 0, pAmt: 0, cAmt: 0 };
+        const mKey = normalizeModelLabel(r.model);
+        const entry = map.get(mKey) || { pPcs: 0, cPcs: 0, pAmt: 0, cAmt: 0 };
         if (r.year === py) { entry.pPcs += r.units; entry.pAmt += r.amount; }
         else { entry.cPcs += r.units; entry.cAmt += r.amount; }
-        map.set(r.model, entry);
+        map.set(mKey, entry);
       });
 
       const list = [...map.entries()].map(([model, v]) => ({ model, ...v })).sort((a, b) => b.cAmt - a.cAmt || b.pAmt - a.pAmt);
@@ -3076,19 +3096,28 @@
     // 10. MÓDULOS CLIENTES, MODELOS/ZONAS Y CONSULTA POR FECHA
     // ---------------------------------------------------------
     function renderClientsModule() {
-      const allPeriodClients = getFilteredRecords({ client: 'ALL' });
+      const f = getGlobalFilters();
       const filteredRows = getFilteredRecords();
       const cMap = new Map();
       const sMap = new Map();
 
-      allPeriodClients.forEach(r => {
-        const c = cMap.get(r.client) || { segment: r.segment, inA: 0, inU: 0, outA: 0, outU: 0 };
-        if (r.channel === 'SELL_IN') { c.inA += r.amount; c.inU += r.units; }
-        else { c.outA += r.amount; c.outU += r.units; }
-        cMap.set(r.client, c);
+      // Registrar todos los clientes existentes en la base (respetando el filtro si se eligió uno específico)
+      allRecords.forEach(r => {
+        if (!r.client) return;
+        if (f.client !== 'ALL' && r.client !== f.client) return;
+        if (f.segment !== 'ALL' && r.segment !== f.segment) return;
+        if (!cMap.has(r.client)) {
+          cMap.set(r.client, { segment: r.segment || 'Cuentas Corporativas', inA: 0, inU: 0, outA: 0, outU: 0 });
+        }
       });
 
       filteredRows.forEach(r => {
+        const c = cMap.get(r.client) || { segment: r.segment, inA: 0, inU: 0, outA: 0, outU: 0 };
+        if (r.channel === 'SELL_IN') { c.inA += r.amount; c.inU += r.units; }
+        else { c.outA += r.amount; c.outU += r.units; }
+        if (r.segment) c.segment = r.segment;
+        cMap.set(r.client, c);
+
         if (r.channel === 'SELL_OUT') {
           const sk = r.storeId || r.storeName || `${r.zone || 'Sin Sucursal'}`;
           const s = sMap.get(sk) || {
@@ -3135,7 +3164,7 @@
             <td class="py-2 px-3 text-right font-semibold">${fmtInt.format(s.units)}</td>
             <td class="py-2 px-4 text-right font-extrabold text-navy-900">${fmtMXN.format(s.amount)}</td>
           </tr>
-        `).join('') || `<tr><td colspan="5" class="py-6 text-center text-slate-400">Sin sucursales de Sell Out</td></tr>`;
+        `).join('') || `<tr><td colspan="5" class="py-6 text-center text-slate-400">Sin sucursales de Sell Out en este filtro</td></tr>`;
     }
 
     function renderZonesModule() {
@@ -3144,10 +3173,11 @@
       const zMap = new Map();
 
       rows.forEach(r => {
-        const m = mMap.get(r.model) || { inU: 0, inA: 0, outU: 0, outA: 0 };
+        const modKey = normalizeModelLabel(r.model);
+        const m = mMap.get(modKey) || { inU: 0, inA: 0, outU: 0, outA: 0 };
         if (r.channel === 'SELL_IN') { m.inU += r.units; m.inA += r.amount; }
         else { m.outU += r.units; m.outA += r.amount; }
-        mMap.set(r.model, m);
+        mMap.set(modKey, m);
 
         if (isValidZoneName(r.zone)) {
           const z = zMap.get(r.zone) || { inA: 0, outU: 0, outA: 0 };
@@ -3373,7 +3403,7 @@
       }
 
       const sNorm = normalizeText(rawSeg);
-      let segment = 'Cuentas Corporativas';
+      let segment = client === 'Super Colchones (GNC)' ? 'Cuentas Corporativas' : 'Canal Horizontal';
       if (sNorm.includes('horizontal') || sNorm.includes('tradicional') || sNorm.includes('detalle') || sNorm.includes('muebler')) {
         segment = 'Canal Horizontal';
       } else if (sNorm.includes('corporat') || sNorm.includes('cadena') || sNorm.includes('autoservicio')) {
@@ -3432,7 +3462,8 @@
           const diagLines = [];
           let seq = 1;
 
-          // 1) DIRECTORIO DE TIENDAS (Columna C = # Sucursal, Columna D = Nombre de la sucursal, Columna G = CADENA)
+          // 1) DIRECTORIO DE TIENDAS
+          // Detecta encabezados y evita confundir CADENA ("SUPER COLCHONES") con Nombre de Tienda ("PLAZA CARACOL") o Zona ("PUERTO VALLARTA")
           const storeDirById = new Map();
           const storeDirByName = new Map();
           const uenIdToZoneName = new Map();
@@ -3458,57 +3489,101 @@
               }
             }
 
+            const hdrRow = headerRowIdx >= 0 ? (aoaDir[headerRowIdx] || []).map(c => normalizeText(c)) : [];
+            const findDirCol = (exactList, partialList = [], excludeCol = -1) => {
+              for (const ex of exactList) {
+                const idx = hdrRow.findIndex((h, i) => i !== excludeCol && h === normalizeText(ex));
+                if (idx >= 0) return idx;
+              }
+              for (const pt of partialList) {
+                const idx = hdrRow.findIndex((h, i) => i !== excludeCol && h.includes(normalizeText(pt)));
+                if (idx >= 0) return idx;
+              }
+              return -1;
+            };
+
+            const idColHdr = findDirCol(['no. sucursal', 'no sucursal', 'numero de sucursal', 'num sucursal', 'no. tienda', 'no tienda', 'sucursal']);
+            const nameColHdr = findDirCol(['nombre de la sucursal', 'nombre de sucursal', 'nombre sucursal', 'nombre tienda', 'tienda', 'pdv', 'punto de venta'], ['nombre sucursal', 'nombre de la sucursal', 'nombre tienda', 'tienda'], idColHdr);
+            const zoneColHdr = findDirCol(['nombre uen', 'zona', 'plaza', 'region', 'territorio'], ['nombre uen', 'zona', 'plaza', 'region'], nameColHdr);
+            const uenColHdr = findDirCol(['uen', 'no. uen', 'num uen'], [], zoneColHdr);
+            const chainColHdr = findDirCol(['cadena', 'cliente', 'grupo', 'empresa'], ['cadena', 'cliente'], nameColHdr);
+
             const startRow = headerRowIdx >= 0 ? headerRowIdx + 1 : 0;
             for (let rIdx = startRow; rIdx < aoaDir.length; rIdx++) {
               const rawArr = aoaDir[rIdx];
               if (!rawArr || !rawArr.some(c => String(c ?? '').trim() !== '')) continue;
 
-              // Columna C (índice 2) = # Sucursal
-              let sId = normalizeStoreKey(rawArr[2]);
-              let usedIdCol = 2;
+              // # Sucursal: encabezado o Col C (índice 2)
+              let usedIdCol = idColHdr >= 0 ? idColHdr : 2;
+              let sId = normalizeStoreKey(rawArr[usedIdCol]);
               if (!sId) {
-                for (const altCol of [1, 0, 3]) {
+                for (const altCol of [2, 1, 0, 3]) {
                   const cand = normalizeStoreKey(rawArr[altCol]);
                   if (cand) { sId = cand; usedIdCol = altCol; break; }
                 }
               }
               if (!sId) continue;
 
-              // Columna D (índice 3) = Nombre de la sucursal | Columna G (índice 6) = CADENA
-              let rawStoreText = String(rawArr[3] ?? '').trim();
-              const rawChain = String(rawArr[6] ?? '').trim();
+              // CADENA: encabezado o Col G (índice 6) o celda que diga SUPER COLCHONES
+              let rawChain = chainColHdr >= 0 ? String(rawArr[chainColHdr] ?? '').trim() : String(rawArr[6] ?? '').trim();
 
-              let uenNum = '';
-              let zoneName = '';
+              // ZONA / UEN: buscar primero por encabezado, luego por regiones conocidas o UEN numérico
+              let uenNum = uenColHdr >= 0 && isPureNumber(rawArr[uenColHdr]) ? String(Number(rawArr[uenColHdr])) : '';
+              let zoneName = zoneColHdr >= 0 && isValidZoneName(rawArr[zoneColHdr]) ? normalizeZoneLabel(rawArr[zoneColHdr]) : '';
 
+              // NOMBRE DE TIENDA: buscar primero por encabezado (si no es "SUPER COLCHONES"), luego Col D o Col E
+              let rawStoreText = nameColHdr >= 0 ? String(rawArr[nameColHdr] ?? '').trim() : '';
+              if (normalizeZoneLabel(rawStoreText).includes('SUPER COLCHONES') || isNumericLike(rawStoreText)) {
+                if (normalizeZoneLabel(rawStoreText).includes('SUPER COLCHONES') && !rawChain) rawChain = rawStoreText;
+                rawStoreText = '';
+              }
+
+              // Escaneo inteligente de celdas restantes para separar Zona Geográfica vs Nombre de Tienda vs Cadena
+              const candidateTexts = [];
               rawArr.forEach((cell, cIdx) => {
-                if (cIdx === usedIdCol || cIdx === 3 || cIdx === 6) return;
+                if (cIdx === usedIdCol) return;
                 const val = String(cell ?? '').trim();
                 if (!val) return;
                 if (isPureNumber(val) && Number(val) >= 1 && Number(val) <= 30) {
                   if (!uenNum) uenNum = String(Number(val));
-                } else if (!isNumericLike(val) && isValidZoneName(val)) {
-                  const zCand = normalizeZoneLabel(val);
-                  if (!zCand.includes('SUPER COLCHONES') && !zCand.includes('CORPORAT') && !zCand.includes('HORIZONTAL')) {
-                    if (!zoneName) zoneName = zCand;
-                  }
+                  return;
                 }
+                if (isNumericLike(val) || isLikelySku(val)) return;
+                const up = normalizeZoneLabel(val);
+                if (up.includes('SUPER COLCHONES') || up === 'GNC') {
+                  if (!rawChain) rawChain = val;
+                  return;
+                }
+                if (up === 'CORPORAT' || up === 'CUENTAS CORPORATIVAS' || up === 'CANAL HORIZONTAL') return;
+                candidateTexts.push({ cIdx, raw: val, up, isRegion: isKnownRegionalZone(up) });
               });
+
+              if (!zoneName) {
+                const regHit = candidateTexts.find(t => t.isRegion && t.raw !== rawStoreText);
+                if (regHit) zoneName = regHit.up;
+              }
+
+              if (!rawStoreText) {
+                // Priorizar columna D (3) o E (4) que no sea la zona geográfica
+                const preferredCols = [3, 4, 5, 1, 0];
+                for (const pc of preferredCols) {
+                  const hit = candidateTexts.find(t => t.cIdx === pc && t.up !== zoneName);
+                  if (hit) { rawStoreText = hit.raw; break; }
+                }
+                if (!rawStoreText) {
+                  const anyHit = candidateTexts.find(t => t.up !== zoneName);
+                  if (anyHit) rawStoreText = anyHit.raw;
+                }
+              }
+
+              if (!zoneName) {
+                const remZone = candidateTexts.find(t => t.raw !== rawStoreText && isValidZoneName(t.up));
+                if (remZone) zoneName = remZone.up;
+              }
 
               if (uenNum && zoneName) uenIdToZoneName.set(uenNum, zoneName);
               const finalZone = zoneName || (uenNum && uenIdToZoneName.get(uenNum)) || '';
               if (isValidZoneName(finalZone)) validZones.add(finalZone);
-
-              if (!rawStoreText || isNumericLike(rawStoreText) || isLikelySku(rawStoreText)) {
-                for (let c = 0; c < rawArr.length; c++) {
-                  if (c === usedIdCol || c === 6) continue;
-                  const candTxt = String(rawArr[c] ?? '').trim();
-                  if (candTxt && !isNumericLike(candTxt) && !isLikelySku(candTxt) && normalizeZoneLabel(candTxt) !== finalZone) {
-                    rawStoreText = candTxt;
-                    break;
-                  }
-                }
-              }
 
               const cleanName = (rawStoreText && !isNumericLike(rawStoreText) && !isLikelySku(rawStoreText))
                 ? rawStoreText.replace(/^\d+\s*[-–:]\s*/, '').trim()
@@ -3532,8 +3607,8 @@
               }
             });
 
-            const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName}${s.chain ? ` [${s.chain}]` : ''} (${s.zone})`).join(' | ');
-            diagLines.push(`• Directorio [${sn}] (Col C #Suc, Col D Nombre, Col G Cadena): ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
+            const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName} (${s.zone})`).join(' | ');
+            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
           });
 
           const resolveZone = (rawUen, dirMatch, isSellIn = false) => {
@@ -3545,12 +3620,12 @@
             }
             const up = normalizeZoneLabel(s);
             if (isValidZoneName(up)) {
-              if (validZones.size === 0 || validZones.has(up)) return up;
+              if (validZones.size === 0 || validZones.has(up) || isKnownRegionalZone(up)) return up;
             }
             return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
           };
 
-          // 2) BD SELL IN (Col D = Agente, Col F = Tipo, Col O = Piezas, Col P = Neto $, Col V = Categoría)
+          // 2) BD SELL IN (Col D = Agente, Col F = Tipo, Col O = Piezas, Col T = Neto $, Col V = Categoría)
           const sellInModelToType = new Map();
           const inSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
@@ -3578,7 +3653,7 @@
               ['unidades netas', 'uds netas', 'pieza', 'pcs', 'pza', 'unid', 'cant']
             );
             const fallbackAmountIdx = findColByHeader(
-              ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto', 'Venta'],
+              ['Neto', 'Suma de Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto', 'Venta'],
               ['neto', 'importe', 'venta', 'monto', 'total']
             );
 
@@ -3607,8 +3682,9 @@
               else if (pDate) lastMonth = pDate.month;
 
               const dayVal = pDate ? pDate.day : (parseInt(getSmartCell(r, ['Dia', 'Día', 'Day'], ['dia']), 10) || 15);
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion', 'Linea'], ['modelo', 'articulo', 'producto'])).trim();
-              if (!model) return;
+              const rawModel = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion', 'Linea'], ['modelo', 'articulo', 'producto'])).trim();
+              if (!rawModel) return;
+              const model = normalizeModelLabel(rawModel);
 
               const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
 
@@ -3633,13 +3709,13 @@
                 sellInModelToType.set(normalizeText(model), productType);
               }
 
-              // Col O (14) = Piezas / Unidades Netas | Col P (15) = Importe Neto ($)
-              const units = rawArr.length > 15
+              // Col O (14) = Piezas / Unidades Netas | Col T (19) = Neto ($)
+              const units = rawArr.length > 14
                 ? Math.round(parseNum(rawArr[14]))
                 : (fallbackUnitsIdx >= 0 ? Math.round(parseNum(rawArr[fallbackUnitsIdx])) : 0);
 
-              const amount = rawArr.length > 15
-                ? parseNum(rawArr[15])
+              const amount = rawArr.length > 19
+                ? parseNum(rawArr[19])
                 : (fallbackAmountIdx >= 0 ? parseNum(rawArr[fallbackAmountIdx]) : 0);
 
               if (units === 0 && amount === 0) return;
@@ -3663,7 +3739,7 @@
               });
               cnt++;
             });
-            diagLines.push(`• SELL IN [${sn}] [Col D Agente | Col F Tipo | Col O Pzas | Col P Neto | Col V Cat]: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
+            diagLines.push(`• SELL IN [${sn}] [Col D Agente | Col F Tipo | Col O Pzas | Col T Neto | Col V Cat]: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
           // 3) SELL OUT
@@ -3709,8 +3785,9 @@
               const vals = Object.values(r).map(v => normalizeText(v));
               if (vals.some(v => v.startsWith('total ') || v === 'total' || v.includes('total general') || v.startsWith('subtotal'))) return;
 
-              const model = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo', 'articulo', 'producto'])).trim();
-              if (!model) return;
+              const rawModel = String(getSmartCell(r, ['Modelo', 'Producto', 'Articulo', 'Descripcion'], ['modelo', 'articulo', 'producto'])).trim();
+              if (!rawModel) return;
+              const model = normalizeModelLabel(rawModel);
 
               const rawClient = getSmartCell(r, ['Cliente', 'Nombre Cliente', 'Nombre de Cadena', 'Cadena', 'Razon Social'], ['cliente', 'cadena']);
               const rawSeg = getSmartCell(r, ['Segmento', 'Tipo de Cliente', 'Tipo Cliente', 'Clasificacion', 'Canal Cliente'], ['segmento', 'tipo de cliente', 'tipo cliente']);
@@ -3784,8 +3861,8 @@
             });
             const withStoreCnt = parsed.filter(x => x.channel === 'SELL_OUT' && x.storeId).length;
             const sampleMatched = parsed.find(x => x.channel === 'SELL_OUT' && x.storeId);
-            const matchNote = sampleMatched ? ` | Ej cruce: #${sampleMatched.storeId} → ${sampleMatched.storeName}` : '';
-            diagLines.push(`• SELL OUT [${sn}] (Col tienda: "${headers[detectedStoreColIdx] || 'auto'}"): ${cnt} filas (${withStoreCnt} cruzadas)${matchNote} | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
+            const matchNote = sampleMatched ? ` | Ej cruce: #${sampleMatched.storeId} → ${sampleMatched.storeName} (${sampleMatched.zone})` : '';
+            diagLines.push(`• SELL OUT [${sn}]: ${cnt} filas (${withStoreCnt} cruzadas)${matchNote} | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
           // 4) PESTAÑA SHARE
