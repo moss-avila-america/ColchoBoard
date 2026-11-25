@@ -7,11 +7,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="ColchoBoard" />
-  <title>ColchoBoard v3.12 | Colchones América</title>
+  <title>ColchoBoard v3.13.1 | Colchones América</title>
 
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" href="./ColchoBoard_icon_app.png" />
-  <link rel="apple-touch-icon" href="./ColchoBoard_icon_app.png" />
+  <link rel="icon" type="image/png" href="./ColchoBoard_icon_app_2.png" />
+  <link rel="apple-touch-icon" href="./ColchoBoard_icon_app_2.png" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -96,9 +96,9 @@
     <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-auto">
       <div class="bg-[#0B1117] px-7 pt-8 pb-6 text-center">
         <div class="w-20 h-20 mx-auto rounded-2xl overflow-hidden shadow-xl ring-2 ring-teal-400/40 mb-3 bg-[#0F1419] flex items-center justify-center">
-          <img src="./ColchoBoard_icon_app.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.png'; this.onerror=function(){ this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); }; };" />
+          <img src="./ColchoBoard_icon_app_2.png" alt="ColchoBoard" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./ColchoBoard_icon_app.png'; this.onerror=function(){ this.src='./icon.png'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-16 h-16'); }; };" />
         </div>
-        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.12</span></h1>
+        <h1 class="text-xl font-black text-white tracking-tight">ColchoBoard <span class="text-teal-400 text-sm font-mono">v3.13.1</span></h1>
         <p class="text-xs text-slate-400 mt-1">Colchones América • Inteligencia Comercial Sell In, Sell Out & Share</p>
       </div>
 
@@ -151,10 +151,10 @@
       <div class="flex flex-col min-h-0">
         <div class="px-4 py-4 border-b border-slate-800/80 flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl overflow-hidden bg-[#0F1419] ring-1 ring-teal-400/40 shrink-0 flex items-center justify-center">
-            <img src="./ColchoBoard_icon_app.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./icon.png'; this.onerror=function(){ this.src='./icon.jpg'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); }; };" />
+            <img src="./ColchoBoard_icon_app_2.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='./ColchoBoard_icon_app.png'; this.onerror=function(){ this.src='./icon.png'; this.onerror=function(){ this.outerHTML=getFallbackAppIconSvg('w-9 h-9'); }; };" />
           </div>
           <div class="min-w-0">
-            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.12</span></span>
+            <span class="block text-white font-extrabold text-sm leading-tight truncate">ColchoBoard <span class="text-[10px] font-mono text-teal-400">v3.13.1</span></span>
             <span class="block text-[10px] uppercase tracking-widest text-sky-400 font-semibold truncate">Colchones América</span>
           </div>
         </div>
@@ -992,7 +992,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 class="text-base font-black text-navy-900">Cargar Información Real desde Excel (.xlsx)</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (Col C, D y CADENA), <strong>BD Sell In</strong> (Col D Vendedor, N Pzas, S Neto, V Categoría), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Lee <strong>Directorio de tiendas</strong> (# Sucursal, Nombre y CADENA), <strong>BD Sell In</strong> (Agente, Piezas, Neto y Categoría), <strong>SELL OUT</strong> y <strong>Share</strong>.</p>
               </div>
               <button onclick="clearSavedDatabase()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition">
                 Limpiar Base Guardada
@@ -1018,7 +1018,7 @@
 
             <label class="block border-2 border-dashed border-slate-300 hover:border-teal-500 hover:bg-teal-50/30 rounded-2xl p-8 text-center cursor-pointer transition">
               <input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" onchange="handleMainExcelFile(event)" class="hidden" />
-              <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_8.xlsx)</p>
+              <p class="text-sm font-extrabold text-navy-900">Haz clic aquí para seleccionar tu archivo Excel (ej. ColchoBoard_9.xlsx)</p>
               <p class="text-xs text-slate-500 mt-1">Procesa automáticamente BD Sell In, Sell Out, Directorio de tiendas y Share</p>
             </label>
 
@@ -1045,7 +1045,7 @@
   <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-navy-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-teal-400/40 text-xs font-bold max-w-sm"></div>
 
   <!-- ========================================================= -->
-  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.12)             -->
+  <!-- MOTOR JAVASCRIPT COMPLETO (COLCHOBOARD v3.13.1)           -->
   <!-- ========================================================= -->
   <script>
     const AUTHORIZED_USERS = [
@@ -1057,7 +1057,7 @@
       { user: 'SUPER2.JONA',   pass: 'America.2026$', role: 'Supervisor',    cred: '2001', name: 'JONATHAN MORALES', canEdit: false, canDownload: false }
     ];
 
-    const SESSION_KEY = 'colchoboard_session_v312';
+    const SESSION_KEY = 'colchoboard_session_v313';
     let currentUser = null;
     let activeModule = 'resumen';
     let allRecords = [];
@@ -1072,7 +1072,7 @@
     const MONTH_SHORT_ES = ['', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
     function getFallbackAppIconSvg(sizeCls = 'w-10 h-10') {
-      return `<svg class="${sizeCls}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" rx="28" fill="#0F1419"/><rect x="26" y="22" width="68" height="54" rx="14" fill="none" stroke="#E2E8F0" stroke-width="3.5"/><rect x="36" y="54" width="9" height="18" rx="2" fill="#E2E8F0"/><rect x="49" y="47" width="9" height="25" rx="2" fill="#E2E8F0"/><rect x="62" y="41" width="9" height="31" rx="2" fill="#E2E8F0"/><rect x="75" y="35" width="9" height="37" rx="2" fill="#E2E8F0"/><path d="M36 50 L53 40 L67 43 L82 30" fill="none" stroke="#14B8A6" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 74 L36 63 L84 63 L98 74 Q102 77 102 82 L102 90 Q102 96 94 96 L26 96 Q18 96 18 90 L18 82 Q18 77 22 74 Z" fill="#FFFFFF"/><rect x="18" y="78" width="84" height="16" rx="6" fill="#1E293B" stroke="#FFFFFF" stroke-width="2.5"/><rect x="20" y="84" width="80" height="4" fill="#14B8A6"/></svg>`;
+      return `<svg class="${sizeCls}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cbBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#090D13"/></linearGradient><linearGradient id="cbBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#94A3B8"/></linearGradient></defs><rect width="120" height="120" rx="28" fill="url(#cbBg)"/><rect x="26" y="21" width="68" height="54" rx="13" fill="none" stroke="#E2E8F0" stroke-width="3.6"/><rect x="35" y="53" width="9" height="19" rx="2" fill="url(#cbBar)"/><rect x="48" y="46" width="9" height="26" rx="2" fill="url(#cbBar)"/><rect x="61" y="40" width="9" height="32" rx="2" fill="url(#cbBar)"/><rect x="74" y="33" width="9" height="39" rx="2" fill="url(#cbBar)"/><path d="M35 49 L52 39 L66 42 L81 29" fill="none" stroke="#14E8D8" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><polygon points="85,26 76,27 82,34" fill="#14E8D8"/><circle cx="52" cy="39" r="3.2" fill="#FFFFFF"/><circle cx="66" cy="42" r="3.2" fill="#FFFFFF"/><path d="M20 74 L35 63 L85 63 L100 74 Q104 77 104 82 L104 91 Q104 97 96 97 L24 97 Q16 97 16 91 L16 82 Q16 77 20 74 Z" fill="#F8FAFC"/><rect x="16" y="79" width="88" height="18" rx="6" fill="#1E293B" stroke="#F8FAFC" stroke-width="2.6"/><rect x="18" y="86" width="84" height="4" fill="#14E8D8"/></svg>`;
     }
 
     function showToast(msg) {
@@ -1135,7 +1135,6 @@
       document.getElementById('sidebarUserName').textContent = userObj.name;
       document.getElementById('sidebarUserLogin').textContent = userObj.user;
 
-      // Control estricto de permisos por perfil
       const adminBlock = document.getElementById('adminNavBlock');
       const hdrExcel = document.getElementById('headerExcelBtn');
       const emptyExcel = document.getElementById('emptyBannerExcelBtn');
@@ -1347,6 +1346,14 @@
       return /[A-ZÁÉÍÓÚÑ]{3,}/.test(s);
     }
 
+    function isValidAgentName(a) {
+      const s = String(a ?? '').trim();
+      if (!s) return false;
+      if (isNumericLike(s)) return false;
+      if (/^#?\d+$/.test(s)) return false;
+      return /[A-ZÁÉÍÓÚÑ]{2,}/i.test(s);
+    }
+
     function normalizeZoneLabel(raw) {
       return String(raw ?? '').trim().replace(/\s+/g, ' ').toUpperCase();
     }
@@ -1359,7 +1366,7 @@
       const segments = [...new Set(allRecords.map(r => r.segment).filter(Boolean))].sort();
       const zones = [...new Set(allRecords.map(r => r.zone).filter(isValidZoneName))].sort();
       const categories = [...new Set(allRecords.map(r => r.category).filter(Boolean))].sort();
-      const agents = [...new Set(allRecords.map(r => r.agent).filter(Boolean))].sort();
+      const agents = [...new Set(allRecords.map(r => r.agent).filter(isValidAgentName))].sort();
       const productTypes = [...new Set(allRecords.map(r => r.productType).filter(Boolean))].sort();
 
       const selY = document.getElementById('filterYear');
@@ -2217,43 +2224,43 @@
         id: 'spring_air', name: 'SPRING AIR', color: '#0866CC', textColorOnWhite: '#0866CC', darkText: false, defaultVal: 16097738,
         aliases: ['spring air', 'springair', 'spring'],
         logoFiles: ['LOGO_SPRING AIR_3.png', 'LOGO_SPRING AIR_2.png', 'LOGO_SPRING AIR.png', 'logos/LOGO_SPRING AIR_3.png', 'logos/LOGO_SPRING AIR.png'],
-        fallbackSvg: `<svg viewBox="0 0 110 86" class="h-10 w-auto object-contain"><path d="M35 28 C30 14, 42 5, 57 7 C68 8, 76 16, 75 27 C75 30, 72 32, 68 32 L40 32 C37 32, 36 30, 35 28 Z" fill="#FFFFFF" stroke="#13295B" stroke-width="4"/><circle cx="53" cy="20" r="2.2" fill="#13295B"/><path d="M56 26 Q62 29 66 24" fill="none" stroke="#13295B" stroke-width="2.5" stroke-linecap="round"/><path d="M55 29 C42 22, 12 24, 12 43 C12 61, 37 74, 55 83 C73 74, 98 61, 98 43 C98 24, 68 22, 55 29 Z" fill="#13295B"/><path d="M55 32 C43 26, 16 28, 16 43 C16 58, 39 70, 55 79 C71 70, 94 58, 94 43 C94 28, 67 26, 55 32 Z" fill="none" stroke="#FFFFFF" stroke-width="2"/><text x="55" y="49" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="14.5" text-anchor="middle" letter-spacing="0.5">SPRING</text><text x="55" y="64" fill="#FFFFFF" font-family="Georgia,serif" font-weight="bold" font-size="14.5" text-anchor="middle" letter-spacing="0.8">AIR</text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 112 96" class="h-11 w-auto object-contain"><path d="M36 33 C33 21, 38 11, 47 9 C51 7, 56 8, 60 11 C64 8, 70 9, 73 14 C77 18, 77 25, 73 30 C71 33, 68 34, 64 34 L42 34 C39 34, 37 34, 36 33 Z" fill="#FFFFFF" stroke="#142B5E" stroke-width="3.6" stroke-linejoin="round"/><path d="M44 10 C42 6, 47 4, 50 8" fill="#FFFFFF" stroke="#142B5E" stroke-width="3" stroke-linecap="round"/><path d="M62 12 C64 8, 69 9, 68 14" fill="#FFFFFF" stroke="#142B5E" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="20" r="1.8" fill="#142B5E"/><circle cx="66" cy="21" r="1.8" fill="#142B5E"/><path d="M60 25 Q63 28 66 25" fill="none" stroke="#142B5E" stroke-width="2" stroke-linecap="round"/><path d="M56 32 C41 24, 12 27, 12 48 C12 67, 37 81, 56 91 C75 81, 100 67, 100 48 C100 27, 71 24, 56 32 Z" fill="#142B5E"/><path d="M56 36 C42 29, 17 31, 17 48 C17 64, 39 76, 56 86 C73 76, 95 64, 95 48 C95 31, 70 29, 56 36 Z" fill="none" stroke="#FFFFFF" stroke-width="2.2"/><text x="56" y="54" fill="#FFFFFF" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="15.5" text-anchor="middle" letter-spacing="0.6">SPRING</text><text x="56" y="70" fill="#FFFFFF" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="15.5" text-anchor="middle" letter-spacing="0.9">AIR</text></svg>`
       },
       {
         id: 'colchones_america', name: 'COLCHONES AMÉRICA', color: '#FFC400', textColorOnWhite: '#D99B00', darkText: true, defaultVal: 4147219,
         aliases: ['colchones america', 'colchones américa', 'america', 'américa'],
         logoFiles: ['LOGO_AMERICA.png', 'LOGO COLCHONES AMERICA_Tu Lugar Favorito.jpg', 'logos/LOGO_AMERICA.png'],
-        fallbackSvg: `<svg viewBox="0 0 116 88" class="h-10 w-auto object-contain"><rect x="4" y="4" width="108" height="80" rx="14" fill="#1E1E1E"/><text x="58" y="24" fill="#FFFFFF" font-family="Arial,sans-serif" font-style="italic" font-weight="900" font-size="13.5" text-anchor="middle">Colchones</text><ellipse cx="58" cy="54" rx="43" ry="18" fill="none" stroke="#FFFFFF" stroke-width="3"/><ellipse cx="58" cy="54" rx="37.5" ry="14" fill="none" stroke="#FFFFFF" stroke-width="1.4"/><text x="58" y="58.5" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="900" font-size="12.5" text-anchor="middle" letter-spacing="0.6">AMERICA</text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 116 96" class="h-11 w-auto object-contain"><rect x="6" y="4" width="104" height="76" rx="14" fill="#1E1E1E"/><text x="58" y="23" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-style="italic" font-weight="900" font-size="13" text-anchor="middle">Colchones</text><ellipse cx="58" cy="51" rx="41" ry="17.5" fill="none" stroke="#FFFFFF" stroke-width="3.2"/><ellipse cx="58" cy="51" rx="35.5" ry="13.5" fill="none" stroke="#FFFFFF" stroke-width="1.4"/><text x="58" y="55.5" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="12" text-anchor="middle" letter-spacing="0.7">AMERICA</text><text x="58" y="92" fill="#1E1E1E" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="9.5" text-anchor="middle">Tu lugar favorito</text></svg>`
       },
       {
         id: 'sealy', name: 'SEALY', color: '#0B2D63', textColorOnWhite: '#0B2D63', darkText: false, defaultVal: 4088459,
         aliases: ['sealy'],
         logoFiles: ['LOGO_SEALY_3.png', 'LOGO_SEALY_2.png', 'LOGO_SEALY.png', 'logos/LOGO_SEALY_3.png', 'logos/LOGO_SEALY.png'],
-        fallbackSvg: `<svg viewBox="0 0 110 80" class="h-10 w-auto object-contain"><path d="M16 14 C30 12, 46 18, 55 24 C64 18, 80 12, 94 14 C98 28, 98 52, 94 66 C80 68, 64 62, 55 56 C46 62, 30 68, 16 66 C12 52, 12 28, 16 14 Z" fill="#0B5394"/><path d="M55 24 C42 29, 24 34, 19 40 C24 46, 42 51, 55 56 C68 51, 86 46, 91 40 C86 34, 68 29, 55 24 Z" fill="#FFFFFF"/><text x="55" y="46" fill="#111827" font-family="Georgia,serif" font-style="italic" font-weight="bold" font-size="21" text-anchor="middle">Sealy</text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 112 86" class="h-10 w-auto object-contain"><path d="M16 14 Q36 12 56 24 Q76 12 96 14 Q102 43 96 72 Q76 74 56 62 Q36 74 16 72 Q10 43 16 14 Z" fill="#0B5394"/><path d="M56 24 Q32 31 19 43 Q32 55 56 62 Q80 55 93 43 Q80 31 56 24 Z" fill="#FFFFFF"/><text x="56" y="49" fill="#111827" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="bold" font-size="22" text-anchor="middle" letter-spacing="-0.3">Sealy</text></svg>`
       },
       {
         id: 'restonic', name: 'RESTONIC', color: '#00A878', textColorOnWhite: '#00A878', darkText: false, defaultVal: 3416247,
         aliases: ['restonic', 'regiomontana', 'regio'],
         logoFiles: ['LOGO_RESTONIC_3.png', 'LOGO_RESTONIC_2.png', 'LOGO_RESTONIC.png', 'logos/LOGO_RESTONIC_3.png', 'logos/LOGO_RESTONIC.png'],
-        fallbackSvg: `<svg viewBox="0 0 156 54" class="h-8 w-auto object-contain"><text x="78" y="30" fill="#0D3B66" font-family="Georgia,serif" font-weight="bold" font-size="25" text-anchor="middle" letter-spacing="0.4">resTOnic</text><circle cx="95" cy="21" r="8.5" fill="#FFFFFF" stroke="#0D3B66" stroke-width="1.6"/><path d="M97 14 A6.5 6.5 0 1 1 90 25 A5.2 5.2 0 1 0 97 14 Z" fill="#0D3B66"/><text x="78" y="47" fill="#0D3B66" font-family="Arial,sans-serif" font-weight="800" font-size="8.2" text-anchor="middle" letter-spacing="0.5">EL COLCHÓN DE TUS SUEÑOS</text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 166 56" class="h-9 w-auto object-contain"><text x="44" y="31" fill="#0D3B66" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="26" text-anchor="middle">resT</text><circle cx="88" cy="22" r="9.5" fill="none" stroke="#0D3B66" stroke-width="2"/><path d="M90 14.5 A7.5 7.5 0 1 1 82.5 26.5 A6 6 0 1 0 90 14.5 Z" fill="#0D3B66"/><text x="128" y="31" fill="#0D3B66" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="26" text-anchor="middle">nic®</text><text x="83" y="49" fill="#0D3B66" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="8.4" text-anchor="middle" letter-spacing="0.6">EL COLCHÓN DE TUS SUEÑOS</text></svg>`
       },
       {
         id: 'therapedic', name: 'THERAPEDIC', color: '#793BAE', textColorOnWhite: '#793BAE', darkText: false, defaultVal: 1575507,
         aliases: ['therapedic', 'thera'],
         logoFiles: ['LOGO_THERAPEDIC_3.png', 'LOGO_THERAPEDIC_2.png', 'LOGO_THERAPEDIC.png', 'logos/LOGO_THERAPEDIC_3.png', 'logos/LOGO_THERAPEDIC.png'],
-        fallbackSvg: `<svg viewBox="0 0 156 56" class="h-8 w-auto object-contain"><text x="78" y="14" fill="#6395CC" font-family="Arial,sans-serif" font-weight="700" font-size="8" letter-spacing="2.2" text-anchor="middle">COLCHONES</text><path d="M12 27 Q78 16 144 27" fill="none" stroke="#6395CC" stroke-width="2.4" stroke-linecap="round"/><circle cx="116" cy="19" r="5" fill="#FACC15"/><text x="78" y="45" fill="#0F2C59" font-family="Arial,sans-serif" font-weight="900" font-size="16.5" text-anchor="middle" letter-spacing="0.3">THERA<tspan fill="#6B9ED4">PEDIC</tspan></text></svg>`
+        fallbackSvg: `<svg viewBox="0 0 164 58" class="h-9 w-auto object-contain"><text x="82" y="14" fill="#6395CC" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8.2" letter-spacing="2.4" text-anchor="middle">COLCHONES</text><path d="M12 28 Q82 16 152 28" fill="none" stroke="#6395CC" stroke-width="2.5" stroke-linecap="round"/><circle cx="122" cy="19.5" r="5.5" fill="#FACC15"/><text x="82" y="47" fill="#0F2C59" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="17" text-anchor="middle" letter-spacing="0.4">THERA<tspan fill="#6B9ED4">PEDIC</tspan></text></svg>`
       },
       {
         id: 'blancos_milenium', name: 'BLANCOS MILENIUM', color: '#08BBD0', textColorOnWhite: '#08BBD0', darkText: false, defaultVal: 1156587,
         aliases: ['blancos milenium', 'milenium', 'millenium'],
         logoFiles: ['LOGO_MILENIUM_3.png', 'LOGO_MILENIUM_2.png', 'LOGO_MILENIUM.png', 'logos/LOGO_MILENIUM_3.png', 'logos/LOGO_MILENIUM.png'],
-        fallbackSvg: `<svg viewBox="0 0 144 54" class="h-8 w-auto object-contain"><rect x="4" y="4" width="136" height="46" rx="8" fill="#2A295C"/><path d="M26 19 Q48 9 70 19" fill="none" stroke="#93C5FD" stroke-width="2.8" stroke-linecap="round"/><text x="72" y="32" fill="#FFFFFF" font-family="Arial,sans-serif" font-weight="800" font-size="14.5" letter-spacing="1.6" text-anchor="middle">MILENIUM</text><path d="M74 36 Q96 46 118 36" fill="none" stroke="#08BBD0" stroke-width="2.8" stroke-linecap="round"/></svg>`
+        fallbackSvg: `<svg viewBox="0 0 148 56" class="h-9 w-auto object-contain"><rect x="4" y="4" width="140" height="48" rx="9" fill="#2A295C"/><path d="M24 20 Q47 9 71 20" fill="none" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/><text x="74" y="33" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="15" letter-spacing="1.8" text-anchor="middle">MILENIUM</text><path d="M76 37 Q100 48 124 37" fill="none" stroke="#08BBD0" stroke-width="3" stroke-linecap="round"/></svg>`
       },
       {
         id: 'atlas_descanso', name: 'ATLAS DEL DESCANSO', color: '#EF2845', textColorOnWhite: '#EF2845', darkText: false, defaultVal: 346448,
         aliases: ['atlas del descanso', 'atlas'],
         logoFiles: ['LOGO_ATLAS DEL DESCANSO_3.png', 'LOGO_ATLAS DEL DESCANSO_2.png', 'LOGO_ATLAS DEL DESCANSO.png', 'logos/LOGO_ATLAS DEL DESCANSO_3.png', 'logos/LOGO_ATLAS DEL DESCANSO.png'],
-        fallbackSvg: `<svg viewBox="0 0 132 78" class="h-10 w-auto object-contain"><text x="66" y="26" fill="#D90429" font-family="Georgia,serif" font-weight="bold" font-size="25" text-anchor="middle" letter-spacing="1">ATLAS</text><path d="M18 47 C24 44, 34 45, 40 42 C45 36, 52 38, 62 39 C72 35, 84 37, 96 42 C104 44, 112 43, 115 45 C114 49, 104 50, 92 49 C78 48, 66 51, 52 50 C40 52, 24 51, 18 47 Z" fill="#D90429"/><line x1="16" y1="64" x2="32" y2="64" stroke="#D90429" stroke-width="1.6"/><text x="66" y="67" fill="#D90429" font-family="Arial,sans-serif" font-weight="700" font-size="8.6" text-anchor="middle" letter-spacing="0.6">DEL DESCANSO</text><line x1="100" y1="64" x2="116" y2="64" stroke="#D90429" stroke-width="1.6"/></svg>`
+        fallbackSvg: `<svg viewBox="0 0 138 84" class="h-10 w-auto object-contain"><text x="69" y="27" fill="#D90429" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="27" text-anchor="middle" letter-spacing="1.2">ATLAS</text><path d="M16 49 C22 45, 31 45, 38 43 C42 36, 49 36, 56 39 C64 41, 72 36, 82 37 C92 38, 102 43, 114 44 C119 45, 122 46, 120 49 C116 52, 105 51, 93 50 C81 49, 71 53, 58 52 C45 51, 31 53, 16 49 Z" fill="#D90429"/><line x1="15" y1="69" x2="33" y2="69" stroke="#D90429" stroke-width="1.6"/><text x="69" y="72" fill="#D90429" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8.8" text-anchor="middle" letter-spacing="0.6">DEL DESCANSO</text><line x1="105" y1="69" x2="123" y2="69" stroke="#D90429" stroke-width="1.6"/></svg>`
       }
     ];
 
@@ -3342,75 +3349,76 @@
       if (!s || isLikelySku(s)) return '';
       if (/^\d+(\.0+)?$/.test(s)) {
         const n = parseInt(s, 10);
-        return (n >= 1 && n <= 99999) ? String(n) : '';
+        return n > 0 ? String(n) : '';
       }
-      const m = s.match(/^(?:suc(?:ursal)?|tda|tienda|pdv)?\s*#?\s*0*(\d{1,5})(?:\s*[-–:|/.\s]|$)/i);
-      if (m) {
-        const n = parseInt(m[1], 10);
-        return (n >= 1 && n <= 99999) ? String(n) : '';
+      const prefixMatch = s.match(/^(?:suc(?:ursal)?|tda|tienda|pdv|no\.?|#)?\s*0*(\d{1,5})(?:\s*[-–:|/.\s]|$)/i);
+      if (prefixMatch) {
+        const n = parseInt(prefixMatch[1], 10);
+        if (n > 0) return String(n);
+      }
+      const anyNumMatch = s.match(/(?:^|\D)0*(\d{1,5})(?:\D|$)/);
+      if (anyNumMatch) {
+        const n = parseInt(anyNumMatch[1], 10);
+        if (n > 0 && n < 50000) return String(n);
       }
       return '';
     }
 
-    function normalizeSegmentLabel(rawSeg, rawClient) {
-      const s = normalizeText(rawSeg);
-      if (s.includes('horizontal') || s.includes('muebler') || s.includes('indep')) return 'Canal Horizontal';
-      if (s.includes('corporat') || s.includes('cadena') || s.includes('retail') || s.includes('gnc')) return 'Cuentas Corporativas';
-
-      const c = normalizeText(rawClient);
-      if (!c || c.includes('gnc') || c.includes('super colchones') || c.includes('grupo nacional')) return 'Cuentas Corporativas';
-      const corpKeys = ['bodegon', 'bodesa', 'mavi', 'colonias', 'liverpool', 'coppel', 'palacio', 'sears', 'suburbia'];
-      return corpKeys.some(k => c.includes(k)) ? 'Cuentas Corporativas' : 'Canal Horizontal';
-    }
-
     function normalizeClientInfo(rawClient, rawSeg) {
-      const c = String(rawClient || '').trim();
-      const u = normalizeText(c);
-      const client = (!u || u.includes('gnc') || u.includes('super colchones') || u.includes('grupo nacional'))
-        ? 'Super Colchones (GNC)'
-        : c;
-      const segment = normalizeSegmentLabel(rawSeg, client);
+      const cRaw = String(rawClient ?? '').trim();
+      const cNorm = normalizeText(cRaw);
+      let client = cRaw || 'Super Colchones (GNC)';
+      if (!cRaw || cNorm.includes('gnc') || cNorm.includes('super colchones') || cNorm.includes('grupo nacional colchonero')) {
+        client = 'Super Colchones (GNC)';
+      }
+
+      const sNorm = normalizeText(rawSeg);
+      let segment = 'Cuentas Corporativas';
+      if (sNorm.includes('horizontal') || sNorm.includes('tradicional') || sNorm.includes('detalle') || sNorm.includes('muebler')) {
+        segment = 'Canal Horizontal';
+      } else if (sNorm.includes('corporat') || sNorm.includes('cadena') || sNorm.includes('autoservicio')) {
+        segment = 'Cuentas Corporativas';
+      } else if (String(rawSeg ?? '').trim()) {
+        segment = String(rawSeg).trim();
+      }
       return { client, segment };
     }
 
     function normalizeCategoryLabel(rawCat, rawType, model) {
-      const s = normalizeText(rawCat);
-      if (s.includes('blanco') || s.includes('accesor') || s.includes('almohad') || s.includes('saban') || s.includes('protector')) return 'BLANCOS';
-      if (s.includes('colchon') || s.includes('box') || s.includes('base') || s.includes('cama')) return 'COLCHONES';
-      if (rawCat && String(rawCat).trim() && !isNumericLike(rawCat)) return String(rawCat).trim().toUpperCase();
-
-      const mix = normalizeText(`${rawType || ''} ${model || ''}`);
-      if (mix.includes('protector') || mix.includes('sabana') || mix.includes('almohada') || mix.includes('blanco') || mix.includes('edredon') || mix.includes('coj')) return 'BLANCOS';
+      const combined = normalizeText(`${rawCat ?? ''} ${rawType ?? ''} ${model ?? ''}`);
+      if (
+        combined.includes('blanco') ||
+        combined.includes('almohada') ||
+        combined.includes('sabana') ||
+        combined.includes('protector') ||
+        combined.includes('edredon') ||
+        combined.includes('cobertor') ||
+        combined.includes('cubre')
+      ) {
+        return 'BLANCOS';
+      }
+      const cleanCat = String(rawCat ?? '').trim().toUpperCase();
+      if (cleanCat && !isNumericLike(cleanCat)) return cleanCat;
       return 'COLCHONES';
     }
 
     function normalizeProductTypeLabel(rawType, model, rawCat) {
-      const t = String(rawType || '').trim();
-      const tn = normalizeText(t);
-      if (tn) {
-        if (tn.includes('colch')) return 'COLCHÓN';
-        if (tn.includes('box') || tn.includes('base')) return 'BOX';
-        if (tn.includes('protector')) return 'PROTECTOR';
-        if (tn.includes('saban')) return 'SÁBANAS';
-        if (tn.includes('almohad')) return 'ALMOHADAS';
-        if (tn.includes('blanco')) return 'BLANCOS';
-        if (tn.includes('bonif') || tn.includes('desc')) return 'BONIFICACIÓN';
-        if (!isNumericLike(t)) return t.toUpperCase();
-      }
-      const mn = normalizeText(`${model || ''} ${rawCat || ''}`);
-      if (mn.includes('box') || mn.includes('base')) return 'BOX';
-      if (mn.includes('protector')) return 'PROTECTOR';
-      if (mn.includes('saban')) return 'SÁBANAS';
-      if (mn.includes('almohad')) return 'ALMOHADAS';
-      if (mn.includes('blanco')) return 'BLANCOS';
-      if (mn.includes('bonif') || mn.includes('desc')) return 'BONIFICACIÓN';
+      const tRaw = String(rawType ?? '').trim().toUpperCase();
+      const combined = normalizeText(`${rawType ?? ''} ${model ?? ''} ${rawCat ?? ''}`);
+      if (combined.includes('protector') || combined.includes('cubre')) return 'PROTECTOR';
+      if (combined.includes('sabana')) return 'SÁBANAS';
+      if (combined.includes('almohada')) return 'ALMOHADAS';
+      if (combined.includes('edredon') || combined.includes('cobertor')) return 'BLANCOS';
+      if (combined.includes('box') || combined.includes('base')) return 'BOX';
+      if (tRaw && !isNumericLike(tRaw)) return tRaw;
+      if (combined.includes('blanco')) return 'BLANCOS';
       return 'COLCHÓN';
     }
 
     function handleMainExcelFile(event) {
       if (!currentUser || !currentUser.canEdit) {
         event.target.value = '';
-        return showToast('Tu perfil no tiene permisos para importar archivos Excel.');
+        return showToast('Tu perfil no tiene permiso para cargar archivos Excel.');
       }
       const file = event.target.files[0];
       if (!file) return;
@@ -3419,12 +3427,12 @@
       reader.onload = (e) => {
         try {
           const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-          const diagLines = [`Archivo: ${file.name}`, `Pestañas: ${wb.SheetNames.join(', ')}`];
           const parsed = [];
           const shareParsed = [];
+          const diagLines = [];
           let seq = 1;
 
-          // 1) DIRECTORIO DE TIENDAS (Columna C = # Sucursal | Columna D = Nombre de Sucursal | Columna CADENA)
+          // 1) DIRECTORIO DE TIENDAS (Detecta dinámicamente # Sucursal, Nombre de Tienda, CADENA y Zona/UEN)
           const storeDirById = new Map();
           const storeDirByName = new Map();
           const uenIdToZoneName = new Map();
@@ -3438,25 +3446,59 @@
           dirSheets.forEach(sn => {
             const aoaDir = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: '' });
             let cnt = 0;
+            let headerRowIdx = -1;
+            let idColIdx = 2;
+            let nameColIdx = 3;
             let chainColIdx = -1;
+            let zoneColIdx = -1;
 
-            for (let i = 0; i < Math.min(8, aoaDir.length); i++) {
+            for (let i = 0; i < Math.min(10, aoaDir.length); i++) {
               const hdr = aoaDir[i] || [];
-              const foundIdx = hdr.findIndex(c => normalizeText(c) === 'cadena' || normalizeText(c).includes('cadena'));
-              if (foundIdx >= 0) { chainColIdx = foundIdx; break; }
+              const normHdr = hdr.map(c => normalizeText(c));
+              const score = normHdr.filter(h => h.includes('sucursal') || h.includes('tienda') || h.includes('nombre') || h.includes('cadena') || h.includes('uen') || h.includes('zona')).length;
+              if (score >= 2) {
+                headerRowIdx = i;
+                const fChain = normHdr.findIndex(h => h === 'cadena' || h.includes('cadena'));
+                if (fChain >= 0) chainColIdx = fChain;
+
+                const fId = normHdr.findIndex(h => (h.includes('sucursal') || h.includes('tienda') || h === 'no' || h === 'no.' || h === 'numero' || h === 'clave') && !h.includes('nombre'));
+                if (fId >= 0) idColIdx = fId;
+
+                const fName = normHdr.findIndex((h, idx) => idx !== chainColIdx && idx !== fId && (h.includes('nombre') || h.includes('tienda') || h.includes('sucursal') || h.includes('pdv') || h.includes('descripcion')));
+                if (fName >= 0) nameColIdx = fName;
+
+                const fZone = normHdr.findIndex((h, idx) => idx !== chainColIdx && idx !== fId && idx !== fName && (h.includes('nombre uen') || h.includes('zona') || h.includes('plaza') || h === 'uen'));
+                if (fZone >= 0) zoneColIdx = fZone;
+                break;
+              }
             }
 
-            aoaDir.forEach((rawArr) => {
-              if (!rawArr || !rawArr.some(c => String(c ?? '').trim() !== '')) return;
-              const sId = normalizeStoreKey(rawArr[2]);
-              const rawColD = String(rawArr[3] ?? '').trim();
-              if (!sId) return;
+            const startRow = headerRowIdx >= 0 ? headerRowIdx + 1 : 0;
+            for (let rIdx = startRow; rIdx < aoaDir.length; rIdx++) {
+              const rawArr = aoaDir[rIdx];
+              if (!rawArr || !rawArr.some(c => String(c ?? '').trim() !== '')) continue;
+
+              let sId = normalizeStoreKey(rawArr[idColIdx]);
+              let usedIdCol = idColIdx;
+              if (!sId) {
+                for (const altCol of [2, 1, 0, 3]) {
+                  const cand = normalizeStoreKey(rawArr[altCol]);
+                  if (cand) { sId = cand; usedIdCol = altCol; break; }
+                }
+              }
+              if (!sId) continue;
 
               const rawChain = chainColIdx >= 0 ? String(rawArr[chainColIdx] ?? '').trim() : '';
               let uenNum = '';
               let zoneName = '';
+              if (zoneColIdx >= 0) {
+                const zVal = String(rawArr[zoneColIdx] ?? '').trim();
+                if (isPureNumber(zVal) && Number(zVal) >= 1 && Number(zVal) <= 30) uenNum = String(Number(zVal));
+                else if (isValidZoneName(zVal)) zoneName = normalizeZoneLabel(zVal);
+              }
+
               rawArr.forEach((cell, cIdx) => {
-                if (cIdx === 2 || cIdx === 3 || cIdx === chainColIdx) return;
+                if (cIdx === usedIdCol || cIdx === nameColIdx || cIdx === chainColIdx) return;
                 const val = String(cell ?? '').trim();
                 if (!val) return;
                 if (isPureNumber(val) && Number(val) >= 1 && Number(val) <= 30) {
@@ -3473,7 +3515,22 @@
               const finalZone = zoneName || (uenNum && uenIdToZoneName.get(uenNum)) || '';
               if (isValidZoneName(finalZone)) validZones.add(finalZone);
 
-              const cleanName = (rawColD && !isNumericLike(rawColD) && !isLikelySku(rawColD)) ? rawColD : `Sucursal ${sId}`;
+              let rawStoreText = String(rawArr[nameColIdx] ?? '').trim();
+              if (!rawStoreText || isNumericLike(rawStoreText) || isLikelySku(rawStoreText) || (chainColIdx >= 0 && nameColIdx === chainColIdx)) {
+                for (let c = 0; c < rawArr.length; c++) {
+                  if (c === usedIdCol || c === chainColIdx || c === zoneColIdx) continue;
+                  const candTxt = String(rawArr[c] ?? '').trim();
+                  if (candTxt && !isNumericLike(candTxt) && !isLikelySku(candTxt) && normalizeZoneLabel(candTxt) !== finalZone) {
+                    rawStoreText = candTxt;
+                    break;
+                  }
+                }
+              }
+
+              const cleanName = (rawStoreText && !isNumericLike(rawStoreText) && !isLikelySku(rawStoreText))
+                ? rawStoreText.replace(/^\d+\s*[-–:]\s*/, '').trim()
+                : `Sucursal ${sId}`;
+
               const entry = {
                 storeId: sId,
                 storeName: cleanName,
@@ -3484,7 +3541,7 @@
               storeDirById.set(sId, entry);
               storeDirByName.set(normalizeText(cleanName), entry);
               cnt++;
-            });
+            }
 
             storeDirById.forEach(entry => {
               if (entry.uenNum && uenIdToZoneName.has(entry.uenNum)) {
@@ -3493,7 +3550,7 @@
             });
 
             const sampleStores = [...storeDirById.values()].slice(0, 3).map(s => `#${s.storeId}: ${s.storeName}${s.chain ? ` [${s.chain}]` : ''} (${s.zone})`).join(' | ');
-            diagLines.push(`• Directorio [${sn}] (Col C=#Suc, Col D=Nombre${chainColIdx >= 0 ? ', CADENA detectada' : ''}): ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
+            diagLines.push(`• Directorio [${sn}]: ${cnt} sucursales | Ej: ${sampleStores || 'Sin cruce'}`);
           });
 
           const resolveZone = (rawUen, dirMatch, isSellIn = false) => {
@@ -3510,19 +3567,44 @@
             return isSellIn ? 'CORPORATIVO' : 'SIN ZONA';
           };
 
-          // 2) BD SELL IN / SELL IN (Col D = Vendedor, Col N = Piezas, Col S = Neto, Col V = Categoría)
+          // 2) BD SELL IN / SELL IN
           const inSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             return u.includes('sellin') || u === 'sin' || u.includes('facturacion');
           });
 
           inSheets.forEach(sn => {
-            const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pcs', 'segmento', 'vendedor', 'categoria']);
-            const isBdSellIn = normalizeText(sn).includes('bd') || headers.length >= 19;
-            const colDHeader = headers[3] || 'Col D';
-            const colNHeader = headers[13] || 'Col N';
-            const colSHeader = headers[18] || 'Col S';
-            const colVHeader = headers[21] || 'Col V';
+            const { headers, rows, rawRows } = sheetToSmartData(wb.Sheets[sn], ['cliente', 'modelo', 'mes', 'ano', 'neto', 'unidades', 'piezas', 'cantidad', 'fecha', 'pcs', 'segmento', 'vendedor', 'agente', 'categoria']);
+            const normHeaders = headers.map(h => normalizeText(h));
+
+            const findColByHeader = (exactList, partialList = []) => {
+              for (const ex of exactList) {
+                const idx = normHeaders.findIndex(h => h === normalizeText(ex));
+                if (idx >= 0) return idx;
+              }
+              for (const pt of partialList) {
+                const idx = normHeaders.findIndex(h => h.includes(normalizeText(pt)));
+                if (idx >= 0) return idx;
+              }
+              return -1;
+            };
+
+            const unitsColIdx = findColByHeader(
+              ['Unidades Netas', 'Suma de Unidades Netas', 'Uds Netas', 'PCS', 'Suma de PCS', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas'],
+              ['unidades netas', 'uds netas', 'pieza', 'pcs', 'pza', 'unid', 'cant']
+            );
+            const amountColIdx = findColByHeader(
+              ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto', 'Venta'],
+              ['neto', 'importe', 'venta', 'monto', 'total']
+            );
+            const agentColIdx = findColByHeader(
+              ['Vendedor', 'Nombre Vendedor', 'Nombre del Vendedor', 'Agente', 'Agente de Ventas', 'Nombre Agente', 'Ejecutivo'],
+              ['vendedor', 'agente', 'ejecutivo']
+            );
+            const catColIdx = findColByHeader(
+              ['Categoría', 'Categoria', 'Division', 'División'],
+              ['categor', 'division']
+            );
 
             let cnt = 0, totPcs = 0, totAmt = 0;
             let lastClient = 'Super Colchones (GNC)', lastSeg = '', lastYear = new Date().getFullYear(), lastMonth = 1;
@@ -3555,26 +3637,34 @@
               const size = String(getSmartCell(r, ['Medida', 'Tamaño', 'Size'], ['medida', 'tamano']) || 'MAT').trim().split(' ').pop();
               const rawType = getSmartCell(r, ['Tipo', 'Tipo Producto', 'Tipo de Producto', 'Subcategoria', 'Subcategoría', 'Familia'], ['tipo', 'subcateg']);
 
-              const rawAgent = (isBdSellIn && rawArr.length > 3 && String(rawArr[3] ?? '').trim())
-                ? String(rawArr[3]).trim()
-                : String(getSmartCell(r, ['Vendedor', 'Agente', 'Agente de Ventas', 'Ejecutivo'], ['vendedor', 'agente'])).trim();
+              let rawAgent = agentColIdx >= 0 ? String(rawArr[agentColIdx] ?? '').trim() : '';
+              if (!isValidAgentName(rawAgent)) {
+                rawAgent = '';
+                for (let c = 0; c < rawArr.length; c++) {
+                  if (c === unitsColIdx || c === amountColIdx || c === catColIdx) continue;
+                  const hn = normHeaders[c] || '';
+                  if (hn.includes('vend') || hn.includes('agent') || hn.includes('ejec')) {
+                    const cand = String(rawArr[c] ?? '').trim();
+                    if (isValidAgentName(cand)) { rawAgent = cand; break; }
+                  }
+                }
+              }
 
-              const rawCat = (isBdSellIn && rawArr.length > 21 && String(rawArr[21] ?? '').trim())
-                ? String(rawArr[21]).trim()
-                : String(getSmartCell(r, ['Categoría', 'Categoria', 'Division', 'División'], ['categor'])).trim();
+              let rawCat = catColIdx >= 0 ? String(rawArr[catColIdx] ?? '').trim() : '';
+              if (!rawCat && rawArr.length > 21 && !isNumericLike(rawArr[21])) {
+                rawCat = String(rawArr[21] ?? '').trim();
+              }
 
               const category = normalizeCategoryLabel(rawCat, rawType, model);
               const productType = normalizeProductTypeLabel(rawType, model, rawCat);
 
-              let units = 0;
-              let amount = 0;
-              if (isBdSellIn && rawArr.length > 18) {
-                units = Math.round(parseNum(rawArr[13]));
-                amount = parseNum(rawArr[18]);
-              } else {
-                units = Math.round(parseNum(getSmartCell(r, ['Unidades Netas', 'Suma de Unidades Netas', 'Uds Netas', 'PCS', 'Suma de PCS', 'Suma de Piezas', 'Piezas', 'Unidades', 'Cantidad', 'Pzas'], ['unidades netas', 'uds netas', 'unid', 'pieza', 'pcs', 'pza', 'cant'])));
-                amount = parseNum(getSmartCell(r, ['Suma de Neto', 'Neto', 'Importe Neto', 'Venta Neta', 'Suma de Total', 'Importe', 'Total', 'Monto'], ['neto', 'importe', 'venta', 'monto', 'total']));
-              }
+              const units = unitsColIdx >= 0
+                ? Math.round(parseNum(rawArr[unitsColIdx]))
+                : Math.round(parseNum(rawArr[13]));
+
+              const amount = amountColIdx >= 0
+                ? parseNum(rawArr[amountColIdx])
+                : (rawArr.length > 18 ? parseNum(rawArr[18]) : 0);
 
               if (units === 0 && amount === 0) return;
 
@@ -3597,11 +3687,11 @@
               });
               cnt++;
             });
-            const colInfo = (isBdSellIn && headers.length > 18) ? ` [D:"${colDHeader}" | N:"${colNHeader}" | S:"${colSHeader}" | V:"${colVHeader}"]` : '';
-            diagLines.push(`• SELL IN [${sn}]${colInfo}: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
+            const mapSummary = ` [Agente:"${headers[agentColIdx] || 'auto'}" | Pzas:"${headers[unitsColIdx] || 'Col N'}" | Neto:"${headers[amountColIdx] || 'Col S'}" | Cat:"${headers[catColIdx] || 'Col V'}"]`;
+            diagLines.push(`• SELL IN [${sn}]${mapSummary}: ${cnt} filas | ${fmtInt.format(totPcs)} pzas | ${fmtMXN.format(totAmt)}`);
           });
 
-          // 3) SELL OUT (Excluye pestañas de resumen como "sell out mismo dia LY" para no duplicar registros)
+          // 3) SELL OUT
           const outSheets = wb.SheetNames.filter(n => {
             const u = normalizeText(n).replace(/\s+/g, '');
             if (u.includes('mismodia') || u.endsWith('ly') || u.includes('comparativo') || u.includes('resumen')) return false;
@@ -3707,7 +3797,7 @@
                 date: `${yVal}-${String(mVal).padStart(2, '0')}-${String(dVal).padStart(2, '0')}`,
                 year: yVal, month: mVal, day: dVal,
                 client: cInfo.client, segment: cInfo.segment,
-                agent: rawAgent, category, productType,
+                agent: isValidAgentName(rawAgent) ? rawAgent : '', category, productType,
                 storeId, storeName, zone,
                 model, size, units,
                 amount: Math.round(amount * 100) / 100
